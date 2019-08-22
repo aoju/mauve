@@ -8,21 +8,23 @@ export const PREFIX = 'ep_';
  * @returns {boolean}
  */
 export const setStore = (name, content, set_time = false, duration = 0) => {
-    if (!name) return false;
+    if (!name) {
+        return false;
+    }
     name = PREFIX + name;
     if (typeof content !== 'string') {
-        content = JSON.stringify(content)
+        content = JSON.stringify(content);
     }
     if (set_time) {
-        let date = new Date;
+        let date = new Date();
         if (duration > 0) {
-            content += '&' + (date.getTime() + duration * 3600 * 1e3)
+            content += '&' + (date.getTime() + duration * 3600 * 1e3);
         } else {
-            content += '&0'
+            content += '&0';
         }
-        content += '&' + (date.getTime())
+        content += '&' + (date.getTime());
     }
-    window.localStorage.setItem(name, content)
+    window.localStorage.setItem(name, content);
 };
 
 /**
@@ -32,23 +34,27 @@ export const setStore = (name, content, set_time = false, duration = 0) => {
  * @returns {boolean}
  */
 export const getStore = (name, parse = false) => {
-    if (!name) return false;
+    if (!name) {
+        return false;
+    }
     name = PREFIX + name;
     if (parse) {
-        if (typeof(window.localStorage.getItem(name)) == "string" && window.localStorage.getItem(name) != "undefined") {
-            return JSON.parse(window.localStorage.getItem(name))
+        if (typeof (window.localStorage.getItem(name)) == 'string' && window.localStorage.getItem(name) !== 'undefined') {
+            return JSON.parse(window.localStorage.getItem(name));
         }
     }
-    return window.localStorage.getItem(name)
+    return window.localStorage.getItem(name);
 };
 
 /**
  * 删除localStorage
  */
 export const removeStore = name => {
-    if (!name) return false;
+    if (!name) {
+        return false;
+    }
     name = PREFIX + name;
-    window.localStorage.removeItem(name)
+    window.localStorage.removeItem(name);
 };
 
 /**
@@ -61,11 +67,11 @@ export const addCookie = (name, value, duration) => {
     name = PREFIX + name;
     let n = name + '=' + escape(value) + '; path=/';
     if (duration > 0) {
-        let date = new Date;
+        let date = new Date();
         date.setTime(date.getTime() + duration * 3600 * 1e3);
-        n = n + ';expires=' + date.toGMTString()
+        n = n + ';expires=' + date.toGMTString();
     }
-    document.cookie = n
+    document.cookie = n;
 };
 
 /**
@@ -80,10 +86,10 @@ export const getCookie = (name) => {
     for (let n = 0; n < a.length; n++) {
         let r = a[n].split('=');
         if (r[0] === name) {
-            return unescape(r[1])
+            return unescape(r[1]);
         }
     }
-    return null
+    return null;
 };
 
 /**
@@ -92,8 +98,10 @@ export const getCookie = (name) => {
  */
 export const delCookie = (name) => {
     name = PREFIX + name;
-    let t = new Date;
+    let t = new Date();
     t.setTime(t.getTime() - 1);
     let a = getCookie(name);
-    if (a !== null) document.cookie = name + '=' + a + '; path=/;expires=' + t.toGMTString()
+    if (a !== null) {
+        document.cookie = name + '=' + a + '; path=/;expires=' + t.toGMTString();
+    }
 };
