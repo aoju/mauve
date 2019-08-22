@@ -89,7 +89,7 @@ module.exports = {
             });
         // 'src/assets/js/lib' 目录下为外部库文件，不参与 eslint 检测
         config.module
-            .rule('eslint').use('eslint-loader')
+            .rule('eslint')
             .exclude
             .add(resolve('src/assets/js/lib'))
             .end();
