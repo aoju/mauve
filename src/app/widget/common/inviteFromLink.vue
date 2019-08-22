@@ -2,7 +2,7 @@
     <div class="inviteFromLink" style="height: 100%;">
         <div class="content">
             <a-spin :spinning="loading">
-                <a-card v-if="inviteLink" :title="`来自 ${inviteLink.member.name} 的邀请`">
+                <a-card :title="`来自 ${inviteLink.member.name} 的邀请`" v-if="inviteLink">
                     <div class="header">
                     <span>
                         {{inviteLink.member.name}} 邀请你
@@ -13,14 +13,14 @@
                     </div>
                     <div class="member-info">
                         <div class="avatar">
-                            <a-avatar size="large" :src="inviteLink.member.avatar"></a-avatar>
+                            <a-avatar :src="inviteLink.member.avatar" size="large"></a-avatar>
                         </div>
                         <div class="info">
                             <p>{{inviteLink.member.name}}</p>
                             <p class="muted">{{inviteLink.member.email}}</p>
                         </div>
                     </div>
-                    <a-button type="primary" block size="large" class="middle-btn" @click="acceptInvite">
+                    <a-button @click="acceptInvite" block class="middle-btn" size="large" type="primary">
                         <span v-if="inviteLink.invite_type == 'project'">加入项目</span>
                         <span v-if="inviteLink.invite_type == 'organization'">加入组织</span>
                     </a-button>
@@ -30,62 +30,62 @@
     </div>
 </template>
 <script>
-import {mapState} from 'vuex';
-import {checkResponse} from '@/assets/js/utils';
-import {inviteInfo} from '../../frames/restapi/common';
-import {_joinByInviteLink} from '../../frames/restapi/projectMember';
-import {_joinByInviteLink as joinOrganation} from '../../frames/restapi/user';
+    import {mapState} from 'vuex';
+    import {checkResponse} from '@/assets/js/utils';
+    import {inviteInfo} from '../../frames/restapi/common';
+    import {_joinByInviteLink} from '../../frames/restapi/projectMember';
+    import {_joinByInviteLink as joinOrganation} from '../../frames/restapi/user';
 
-export default {
-    data() {
-        return {
-            'loading': false,
-            'inviteLink': undefined
-        };
-    },
-    'computed': {
-        ...mapState({
-            'userInfo': state => state.userInfo
-        })
-    },
-    created() {
-        this.getInviteInfo();
-    },
-    'methods': {
-        getInviteInfo() {
-            this.loading = true;
-            inviteInfo(this.$route.params.code).then(res => {
-                this.inviteLink = res.data;
-                this.loading = false;
-            });
+    export default {
+        data() {
+            return {
+                'loading': false,
+                'inviteLink': undefined
+            };
         },
-        acceptInvite() {
-            let app = this;
-            if (this.inviteLink.invite_type == 'project') {
-                _joinByInviteLink(this.$route.params.code).then(res => {
-                    const result = checkResponse(res);
-                    if (!result) {
-                        return false;
-                    }
-                    this.$store.dispatch('setOrganizationList', res.data.organizationList);
-                    this.$store.dispatch('setCurrentOrganization', res.data.currentOrganization);
-                    setTimeout(function () {
-                        app.$router.replace({'name': 'task', 'params': {'code': app.inviteLink.source_code}});
-                    }, 500);
+        'computed': {
+            ...mapState({
+                'userInfo': state => state.userInfo
+            })
+        },
+        created() {
+            this.getInviteInfo();
+        },
+        'methods': {
+            getInviteInfo() {
+                this.loading = true;
+                inviteInfo(this.$route.params.code).then(res => {
+                    this.inviteLink = res.data;
+                    this.loading = false;
                 });
-            } else if (this.inviteLink.invite_type == 'organization') {
-                joinOrganation(this.$route.params.code).then(res => {
-                    this.$store.dispatch('setOrganizationList', res.data.organizationList);
-                    this.$store.dispatch('setCurrentOrganization', res.data.currentOrganization);
-                    this.$notice({'title': '你已成功加入组织', 'msg': '你可以在右上方切换当前组织'}, 'notice', 'success');
-                    setTimeout(function () {
-                        app.$router.replace('/');
-                    }, 500);
-                });
+            },
+            acceptInvite() {
+                let app = this;
+                if (this.inviteLink.invite_type === 'project') {
+                    _joinByInviteLink(this.$route.params.code).then(res => {
+                        const result = checkResponse(res);
+                        if (!result) {
+                            return false;
+                        }
+                        this.$store.dispatch('setOrganizationList', res.data.organizationList);
+                        this.$store.dispatch('setCurrentOrganization', res.data.currentOrganization);
+                        setTimeout(function () {
+                            app.$router.replace({'name': 'task', 'params': {'code': app.inviteLink.source_code}});
+                        }, 500);
+                    });
+                } else if (this.inviteLink.invite_type === 'organization') {
+                    joinOrganation(this.$route.params.code).then(res => {
+                        this.$store.dispatch('setOrganizationList', res.data.organizationList);
+                        this.$store.dispatch('setCurrentOrganization', res.data.currentOrganization);
+                        this.$notice({'title': '你已成功加入组织', 'msg': '你可以在右上方切换当前组织'}, 'notice', 'success');
+                        setTimeout(function () {
+                            app.$router.replace('/');
+                        }, 500);
+                    });
+                }
             }
         }
-    }
-};
+    };
 </script>
 <style lang="less">
     .inviteFromLink {

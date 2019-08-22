@@ -47,32 +47,32 @@ $http.interceptors.response.use(
         response = response.data;
         response.code = Number(response.code);
         switch (response.code) {
-        case 200:
-            response.msg !== '' && notice(response.msg, 'message', 'success');
-            return Promise.resolve(response);
-        case 401:
-            $router.replace('/member/login?redirect=' + $router.currentRoute.fullPath);
-            $store.dispatch('SET_LOGOUT');
-            return Promise.resolve(response);
-        case 403:
-            notice({
-                'title': response.msg !== '' ? response.msg : '无权限操作资源，访问被拒绝'
-            }, 'notice', 'error', 5);
-            return Promise.resolve(response);
-        case 4031:
-            //无权限操作资源
-            notice({
-                'title': response.msg !== '' ? response.msg : '无权限操作资源，访问被拒绝'
-            }, 'notice', 'error', 5);
-            $router.replace(HOME_PAGE);
-            return Promise.resolve(response);
-        case 4041:
-            //资源不存在
-            notice({
-                'title': response.msg !== '' ? response.msg : '资源不存在'
-            }, 'notice', 'warning', 5);
-            $router.replace(HOME_PAGE);
-            return Promise.resolve(response);
+            case 200:
+                response.msg !== '' && notice(response.msg, 'message', 'success');
+                return Promise.resolve(response);
+            case 401:
+                $router.replace('/member/login?redirect=' + $router.currentRoute.fullPath);
+                $store.dispatch('SET_LOGOUT');
+                return Promise.resolve(response);
+            case 403:
+                notice({
+                    'title': response.msg !== '' ? response.msg : '无权限操作资源，访问被拒绝'
+                }, 'notice', 'error', 5);
+                return Promise.resolve(response);
+            case 4031:
+                //无权限操作资源
+                notice({
+                    'title': response.msg !== '' ? response.msg : '无权限操作资源，访问被拒绝'
+                }, 'notice', 'error', 5);
+                $router.replace(HOME_PAGE);
+                return Promise.resolve(response);
+            case 4041:
+                //资源不存在
+                notice({
+                    'title': response.msg !== '' ? response.msg : '资源不存在'
+                }, 'notice', 'warning', 5);
+                $router.replace(HOME_PAGE);
+                return Promise.resolve(response);
         }
         if (response.code === 200) {
             notice({
@@ -92,11 +92,11 @@ $http.interceptors.response.use(
         response.code = Number(response.code);
         message.destroy();
         switch (response.code) {
-        default:
-            response.msg !== '' && notice({
-                'title': response.msg
-            }, 'notice', 'error', 5);
-            return Promise.reject(error);
+            default:
+                response.msg !== '' && notice({
+                    'title': response.msg
+                }, 'notice', 'error', 5);
+                return Promise.reject(error);
         }
     }
 );

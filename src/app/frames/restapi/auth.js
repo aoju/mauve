@@ -1,7 +1,7 @@
 import $http from '@/assets/js/http';
 
 export function getAuthList(data) {
-    return $http.post('project/auth',data);
+    return $http.post('project/auth', data);
 }
 
 export function doAuth(data) {

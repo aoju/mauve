@@ -3,6 +3,7 @@ import $http from '@/assets/js/http';
 export function list(data) {
     return $http.post('project/task_workflow', data);
 }
+
 export function _getTaskWorkflowRules(data) {
     return $http.post('project/task_workflow/_getTaskWorkflowRules', data);
 }

@@ -1,7 +1,7 @@
 import $http from '@/assets/js/http';
 
 export function list(data) {
-    return $http.post('project/organization',data);
+    return $http.post('project/organization', data);
 }
 
 export function doData(data) {

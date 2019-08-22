@@ -3,14 +3,14 @@
         <div class="layout-item left">
             <div class="left-content">
                 <div class="search-content">
-                    <a-input size="large" v-model="keyword" ref="keywordInput" placeholder="搜索">
-                        <a-icon slot="prefix" class="muted" type="search"/>
-                        <a-icon v-if="keyword" slot="suffix" class="muted" type="close-circle" @click="emitEmpty"/>
+                    <a-input placeholder="搜索" ref="keywordInput" size="large" v-model="keyword">
+                        <a-icon class="muted" slot="prefix" type="search"/>
+                        <a-icon @click="emitEmpty" class="muted" slot="suffix" type="close-circle" v-if="keyword"/>
                     </a-input>
                 </div>
                 <div class="content-item muted">成员</div>
                 <div class="menus">
-                    <a-menu mode="inline" v-model="selectedKeys" @click="getMembers">
+                    <a-menu @click="getMembers" mode="inline" v-model="selectedKeys">
                         <a-menu-item :key="index.toString()" v-for="(item,index) in menus">
                             <a-icon :type="item.icon"/>
                             <span>{{item.title}}</span>
@@ -21,16 +21,16 @@
                 <div class="actions content-item">
                     <a-dropdown
                             :trigger="['click']"
-                            v-model="showCreateDepartment"
                             placement="bottomCenter"
+                            v-model="showCreateDepartment"
                     >
                         <a>
                             <a-icon :style="{fontSize: '14px'}" type="plus-circle"/>
                             创建部门</a>
                         <div slot="overlay">
                             <create-department
-                                    v-if="showCreateDepartment"
                                     @update="createDepartmentSuccess"
+                                    v-if="showCreateDepartment"
                             ></create-department>
                         </div>
                     </a-dropdown>
@@ -43,8 +43,8 @@
                         <a-tree
                                 :loadData="onLoadData"
                                 :treeData="treeData"
-                                showIcon
                                 @select="onSelect"
+                                showIcon
                         >
                             <template slot="custom" slot-scope="{selected}">
                                 <a-icon type="bulb"/>
@@ -72,26 +72,26 @@
                         </a>
                         <a-menu slot="overlay">
                             <a-menu-item>
-                                <a href="javascript:;" @click="showInviteMember = true">
+                                <a @click="showInviteMember = true" href="javascript:;">
                                     <a-icon type="user-add"/>
                                     通过邮箱邀请
                                 </a>
                             </a-menu-item>
                             <a-menu-divider/>
                             <a-menu-item>
-                                <a :href="downLoadUrl" target="_blank" class="m-l">
+                                <a :href="downLoadUrl" class="m-l" target="_blank">
                                     <a-icon type="copy"/>
                                     下载批量导入成员模板
                                 </a>
                             </a-menu-item>
                             <a-menu-item>
-                                <a-upload name="file"
-                                          :showUploadList="false"
-                                          :action="uploadAction"
+                                <a-upload :action="uploadAction"
                                           :beforeUpload="beforeUpload"
                                           :headers="headers"
-                                          @change="handleChange">
-                                    <a class="text-default" :loading="uploadLoading" :disabled="uploadLoading">
+                                          :showUploadList="false"
+                                          @change="handleChange"
+                                          name="file">
+                                    <a :disabled="uploadLoading" :loading="uploadLoading" class="text-default">
                                         <a-icon type="upload" v-show="!uploadLoading"/>
                                         上传文件批量导入成员
                                     </a>
@@ -102,33 +102,33 @@
                     <template v-if="currentDepartmentCode">
                         <a-dropdown
                                 :trigger="['click']"
-                                v-model="showCreateChildDepartment"
                                 placement="bottomCenter"
+                                v-model="showCreateChildDepartment"
                         >
                             <a>
                                 <a-icon :style="{fontSize: '14px'}" type="plus-circle"/>
                                 创建子部门</a>
                             <div slot="overlay">
                                 <create-department
-                                        v-if="showCreateChildDepartment"
                                         :parentDepartmentCode="currentDepartmentCode"
                                         @update="createChildDepartmentSuccess"
+                                        v-if="showCreateChildDepartment"
                                 ></create-department>
                             </div>
                         </a-dropdown>
                         <a-dropdown
                                 :trigger="['click']"
-                                v-model="showEditDepartment"
                                 placement="bottomCenter"
+                                v-model="showEditDepartment"
                         >
                             <a>
                                 <a-icon :style="{fontSize: '14px'}" type="edit"/>
                                 编辑部门</a>
                             <div slot="overlay">
                                 <create-department
-                                        v-if="showEditDepartment"
                                         :departmentCode="currentDepartmentCode"
                                         @edit="editDepartmentSuccess"
+                                        v-if="showEditDepartment"
                                 ></create-department>
                             </div>
                         </a-dropdown>
@@ -140,15 +140,15 @@
             </div>
             <div class="members-content">
                 <vue-scroll ref="contentscroll">
-                    <a-list class="member-list" :loading="loading">
-                        <div v-if="showLoadingMore" slot="loadMore"
-                             :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }">
+                    <a-list :loading="loading" class="member-list">
+                        <div :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }" slot="loadMore"
+                             v-if="showLoadingMore">
                             <!--                            <a-spin v-if="loadingMore"/>-->
                             <a-button @click="onLoadMore">加载更多</a-button>
                         </div>
                         <a-list-item :key="index" v-for="(item, index) in members">
                             <a-list-item-meta>
-                                <a-avatar slot="avatar" :src="item.avatar"/>
+                                <a-avatar :src="item.avatar" slot="avatar"/>
                                 <div slot="title">
                                     <router-link :to="`/members/profile/${item.code}`" class="text-default">{{ item.name
                                         }}
@@ -164,19 +164,19 @@
                                 </div>
                             </a-list-item-meta>
                             <template v-if="!item.is_owner">
-                                <a class="muted" slot="actions" v-if="item.status == 0"
-                                   @click="resumeAccount(item,index)">
+                                <a @click="resumeAccount(item,index)" class="muted" slot="actions"
+                                   v-if="item.status == 0">
                                     <a-tooltip title="启用账号">
                                         <a-icon type="check-circle"/>
                                     </a-tooltip>
                                 </a>
-                                <a class="muted" slot="actions" v-if="item.status == 1"
-                                   @click="forbidAccount(item,index)">
+                                <a @click="forbidAccount(item,index)" class="muted" slot="actions"
+                                   v-if="item.status == 1">
                                     <a-tooltip title="停用账号">
                                         <a-icon type="stop"/>
                                     </a-tooltip>
                                 </a>
-                                <a class="muted" slot="actions" @click="deleteAccount(item,index)">
+                                <a @click="deleteAccount(item,index)" class="muted" slot="actions">
                                     <a-tooltip :title="`从${actionTitle}内移除`">
                                         <a-icon type="user-delete"/>
                                     </a-tooltip>
@@ -188,161 +188,83 @@
             </div>
 
         </div>
-        <invite-department-member v-model="showInviteMember" :department-code="currentDepartmentCode"
-                                  v-if="showInviteMember" @update="getMembers"></invite-department-member>
+        <invite-department-member :department-code="currentDepartmentCode" @update="getMembers"
+                                  v-if="showInviteMember" v-model="showInviteMember"></invite-department-member>
     </div>
 </template>
 
 <script>
-import _ from 'lodash';
-import inviteDepartmentMember from '../../exports/project/inviteDepartmentMember';
-import createDepartment from '../../exports/project/createDepartment';
-import {list} from '../../frames/restapi/department';
-import {del, forbid, list as getMembers, resume} from '../../frames/restapi/user';
-import pagination from '../../shared/pagination';
-import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../assets/js/utils';
-import {notice} from '../../../assets/js/notice';
-import {removeMember} from '../../frames/restapi/departmentMember';
-import {del as deleteDepartment} from '../../frames/restapi/department';
+    import _ from 'lodash';
+    import inviteDepartmentMember from '../../exports/project/inviteDepartmentMember';
+    import createDepartment from '../../exports/project/createDepartment';
+    import {del as deleteDepartment, list} from '../../frames/restapi/department';
+    import {del, forbid, list as getMembers, resume} from '../../frames/restapi/user';
+    import pagination from '../../shared/pagination';
+    import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../assets/js/utils';
+    import {notice} from '../../../assets/js/notice';
+    import {removeMember} from '../../frames/restapi/departmentMember';
 
-export default {
-    'name': 'members',
-    'components': {
-        inviteDepartmentMember,
-        createDepartment
-    },
-    'mixins': [pagination],
-    data() {
-        return {
-            'keyword': '',
-            'selectedKeys': ['0'],
-            'menus': [
-                {'icon': 'team', 'title': '所有成员'},
-                {'icon': 'usergroup-add', 'title': '新加入的成员'},
-                {'icon': 'user', 'title': '未分配部门的成员'},
-                {'icon': 'stop', 'title': '停用的成员'}
-            ],
-            'currentMenu': {},
-            'currentDepartmentCode': '',
-            'currentTreeNode': '',//当前部门树节点
-            'treeData': [],
-            'departmentLoading': false,
-            'loading': false,
-            'members': [],
-            'showLoadingMore': false,
-            'loadingMore': false,
-            'showInviteMember': false,
-            'showCreateDepartment': false,
-            'showEditDepartment': false,
-            'showCreateChildDepartment': false,
-
-            'downLoadUrl': getUploadUrl('project/department_member/_downloadTemplate'),
-            'uploadLoading': false,
-            'uploadAction': getApiUrl('project/department_member/uploadFile')
-
-        };
-    },
-    'computed': {
-        actionTitle() {
-            return this.currentDepartmentCode ? '部门' : '组织';
+    export default {
+        'name': 'members',
+        'components': {
+            inviteDepartmentMember,
+            createDepartment
         },
-        headers() {
-            return getAuthorization();
-        }
-    },
-    'watch': {
-        keyword() {
-            this.search();
-        }
-    },
-    created() {
-        this.currentMenu = this.menus[0];
-        this.getMembers({'key': 0});
-        this.getDepartment();
-    },
-    'methods': {
-        getDepartment() {
-            this.departmentLoading = true;
-            list({'page': 1, 'pageSize': 100}).then(res => {
-                let list = [];
-                if (res.data.list) {
-                    res.data.list.forEach((v) => {
-                        list.push({
-                            'key': v.code,
-                            'title': v.name,
-                            'isLeaf': !v.hasNext,
-                            'scopedSlots': {'icon': 'custom'}
-                        });
-                    });
-                }
-                this.treeData = list;
-                this.departmentLoading = false;
-            });
+        'mixins': [pagination],
+        data() {
+            return {
+                'keyword': '',
+                'selectedKeys': ['0'],
+                'menus': [
+                    {'icon': 'team', 'title': '所有成员'},
+                    {'icon': 'usergroup-add', 'title': '新加入的成员'},
+                    {'icon': 'user', 'title': '未分配部门的成员'},
+                    {'icon': 'stop', 'title': '停用的成员'}
+                ],
+                'currentMenu': {},
+                'currentDepartmentCode': '',
+                'currentTreeNode': '',//当前部门树节点
+                'treeData': [],
+                'departmentLoading': false,
+                'loading': false,
+                'members': [],
+                'showLoadingMore': false,
+                'loadingMore': false,
+                'showInviteMember': false,
+                'showCreateDepartment': false,
+                'showEditDepartment': false,
+                'showCreateChildDepartment': false,
+
+                'downLoadUrl': getUploadUrl('project/department_member/_downloadTemplate'),
+                'uploadLoading': false,
+                'uploadAction': getApiUrl('project/department_member/uploadFile')
+
+            };
         },
-        getMembers({key} = {}, reload = true) {
-            let app = this;
-            if (key != undefined) {
-                this.currentDepartmentCode = '';
-                this.currentMenu = this.menus[key];
-                this.selectedKeys = [key.toString()];
-                this.requestData.searchType = key;
+        'computed': {
+            actionTitle() {
+                return this.currentDepartmentCode ? '部门' : '组织';
+            },
+            headers() {
+                return getAuthorization();
             }
-            app.loading = true;
-            if (reload) {
-                this.pagination.page = 1;
+        },
+        'watch': {
+            keyword() {
+                this.search();
             }
-            getMembers(this.requestData).then(res => {
-                if (reload) {
-                    app.members = res.data.list;
-                } else {
-                    app.members = app.members.concat(res.data.list);
-                }
-                app.pagination.total = res.data.total;
-                app.showLoadingMore = app.pagination.total > app.members.length;
-                app.loading = false;
-                app.loadingMore = false;
-            });
         },
-        'search': _.debounce(
-            function () {
-                if (!this.keyword) {
-                    this.list = [];
-                }
-                if (this.keyword.length <= 1) {
-                    return false;
-                }
-                this.requestData.keyword = this.keyword;
-                this.getMembers();
-            }, 500
-        ),
-        onLoadMore() {
-            this.loadingMore = true;
-            this.pagination.page++;
-            this.getMembers({}, false);
+        created() {
+            this.currentMenu = this.menus[0];
+            this.getMembers({'key': 0});
+            this.getDepartment();
         },
-        onSelect(selectedKeys, e) {
-            // this.onLoadData(e.node);
-            this.selectedKeys = [];
-            this.currentMenu = e.node.dataRef;
-            this.currentDepartmentCode = e.node.dataRef.key;
-            this.currentTreeNode = e.node;
-            let app = this;
-            this.requestData.searchType = 4;
-            this.requestData.departmentCode = e.node.dataRef.key;
-            app.loading = true;
-            getMembers(this.requestData).then(res => {
-                app.members = res.data.list;
-                app.pagination.total = res.data.total;
-                app.showLoadingMore = app.pagination.total > app.members.length;
-                app.loading = false;
-                app.loadingMore = false;
-            });
-        },
-        onLoadData(treeNode) {
-            return new Promise((resolve) => {
-                list({'page': 1, 'pageSize': 100, 'pcode': treeNode.dataRef.key}).then(res => {
+        'methods': {
+            getDepartment() {
+                this.departmentLoading = true;
+                list({'page': 1, 'pageSize': 100}).then(res => {
                     let list = [];
-                    if (res.data.list.length) {
+                    if (res.data.list) {
                         res.data.list.forEach((v) => {
                             list.push({
                                 'key': v.code,
@@ -352,160 +274,237 @@ export default {
                             });
                         });
                     }
-                    treeNode.dataRef.isLeaf = !list.length > 0;
-                    treeNode.dataRef.children = list;
-                    this.treeData = [...this.treeData];
-                    resolve();
+                    this.treeData = list;
+                    this.departmentLoading = false;
                 });
-            });
-        },
-        createDepartmentSuccess(data) {
-            let list = [...this.treeData];
-            list.push({
-                'key': data.code,
-                'title': data.name,
-                'isLeaf': true,
-                'scopedSlots': {'icon': 'custom'}
-            });
-            this.treeData = [];
-            this.treeData = list;
-            this.showCreateDepartment = false;
-        },
-        createChildDepartmentSuccess() {
-            this.onLoadData(this.currentTreeNode);
-            this.showCreateChildDepartment = false;
-        },
-        editDepartmentSuccess(data) {
-            this.currentTreeNode.dataRef.title = data;
-            this.showEditDepartment = false;
-        },
-        deleteDepartment() {
-            let app = this;
-            this.$confirm({
-                'title': '您确定要删除当前部门吗？',
-                'content': '删除部门会同时删除其子部门，部门中的成员不会被移出组织。',
-                'okText': '删除',
-                'okType': 'danger',
-                'cancelText': '再想想',
-                onOk() {
-                    deleteDepartment(app.currentDepartmentCode).then((res) => {
-                        if (!checkResponse(res)) {
-                            return;
-                        }
-                        if (app.currentTreeNode.$parent.dataRef) {
-                            app.onLoadData(app.currentTreeNode.$parent);
-                            app.onSelect(null, {'node': app.currentTreeNode.$parent});
-                        } else {
-                            app.getMembers({'key': 0});
-                            app.getDepartment();
-                        }
-                        notice({'title': '删除成功'}, 'notice', 'success');
-                    });
-                    return Promise.resolve();
+            },
+            getMembers({key} = {}, reload = true) {
+                let app = this;
+                if (key !== undefined) {
+                    this.currentDepartmentCode = '';
+                    this.currentMenu = this.menus[key];
+                    this.selectedKeys = [key.toString()];
+                    this.requestData.searchType = key;
                 }
-            });
-        },
-        forbidAccount(member, index) {
-            let app = this;
-            this.$confirm({
-                'title': '您确定要停用当前帐号吗？',
-                'content': `被停用的帐号将无法访问该${this.actionTitle}，但帐号信息仍保留，方便工作交接和管理。支持帐号恢复`,
-                'okText': '停用',
-                'okType': 'danger',
-                'cancelText': '再想想',
-                onOk() {
-                    forbid(member.code).then((res) => {
-                        if (!checkResponse(res)) {
-                            return;
-                        }
-                        app.members.splice(index, 1);
-                        notice({'title': '已成功停用账号'}, 'notice', 'success');
-                    });
-                    return Promise.resolve();
+                app.loading = true;
+                if (reload) {
+                    this.pagination.page = 1;
                 }
-            });
-        },
-        resumeAccount(member, index) {
-            let app = this;
-            this.$confirm({
-                'title': '您确定要启用账号吗？',
-                'content': `被启用的帐号将重新加入该${this.actionTitle}`,
-                'okText': '启用',
-                'okType': 'primary',
-                'cancelText': '再想想',
-                onOk() {
-                    resume(member.code).then((res) => {
-                        if (!checkResponse(res)) {
-                            return;
-                        }
-                        app.members.splice(index, 1);
-                        notice({'title': '已成功启用账号'}, 'notice', 'success');
-                    });
-                    return Promise.resolve();
-                }
-            });
-        },
-        deleteAccount(member, index) {
-            let app = this;
-            this.$confirm({
-                'title': `确认从${this.actionTitle}中移除成员吗？`,
-                'content': `移除后该账号在${this.actionTitle}内的相关信息将会被清除`,
-                'okText': '移除',
-                'okType': 'danger',
-                'cancelText': '再想想',
-                onOk() {
-                    if (app.currentDepartmentCode) {
-                        removeMember(member.code, app.currentDepartmentCode).then((res) => {
-                            if (!checkResponse(res)) {
-                                return;
-                            }
-                            app.members.splice(index, 1);
-                            notice({'title': '移除成功'}, 'notice', 'success');
-                        });
+                getMembers(this.requestData).then(res => {
+                    if (reload) {
+                        app.members = res.data.list;
                     } else {
-                        del(member.code).then((res) => {
+                        app.members = app.members.concat(res.data.list);
+                    }
+                    app.pagination.total = res.data.total;
+                    app.showLoadingMore = app.pagination.total > app.members.length;
+                    app.loading = false;
+                    app.loadingMore = false;
+                });
+            },
+            'search': _.debounce(
+                function () {
+                    if (!this.keyword) {
+                        this.list = [];
+                    }
+                    if (this.keyword.length <= 1) {
+                        return false;
+                    }
+                    this.requestData.keyword = this.keyword;
+                    this.getMembers();
+                }, 500
+            ),
+            onLoadMore() {
+                this.loadingMore = true;
+                this.pagination.page++;
+                this.getMembers({}, false);
+            },
+            onSelect(selectedKeys, e) {
+                // this.onLoadData(e.node);
+                this.selectedKeys = [];
+                this.currentMenu = e.node.dataRef;
+                this.currentDepartmentCode = e.node.dataRef.key;
+                this.currentTreeNode = e.node;
+                let app = this;
+                this.requestData.searchType = 4;
+                this.requestData.departmentCode = e.node.dataRef.key;
+                app.loading = true;
+                getMembers(this.requestData).then(res => {
+                    app.members = res.data.list;
+                    app.pagination.total = res.data.total;
+                    app.showLoadingMore = app.pagination.total > app.members.length;
+                    app.loading = false;
+                    app.loadingMore = false;
+                });
+            },
+            onLoadData(treeNode) {
+                return new Promise((resolve) => {
+                    list({'page': 1, 'pageSize': 100, 'pcode': treeNode.dataRef.key}).then(res => {
+                        let list = [];
+                        if (res.data.list.length) {
+                            res.data.list.forEach((v) => {
+                                list.push({
+                                    'key': v.code,
+                                    'title': v.name,
+                                    'isLeaf': !v.hasNext,
+                                    'scopedSlots': {'icon': 'custom'}
+                                });
+                            });
+                        }
+                        treeNode.dataRef.isLeaf = !list.length > 0;
+                        treeNode.dataRef.children = list;
+                        this.treeData = [...this.treeData];
+                        resolve();
+                    });
+                });
+            },
+            createDepartmentSuccess(data) {
+                let list = [...this.treeData];
+                list.push({
+                    'key': data.code,
+                    'title': data.name,
+                    'isLeaf': true,
+                    'scopedSlots': {'icon': 'custom'}
+                });
+                this.treeData = [];
+                this.treeData = list;
+                this.showCreateDepartment = false;
+            },
+            createChildDepartmentSuccess() {
+                this.onLoadData(this.currentTreeNode);
+                this.showCreateChildDepartment = false;
+            },
+            editDepartmentSuccess(data) {
+                this.currentTreeNode.dataRef.title = data;
+                this.showEditDepartment = false;
+            },
+            deleteDepartment() {
+                let app = this;
+                this.$confirm({
+                    'title': '您确定要删除当前部门吗？',
+                    'content': '删除部门会同时删除其子部门，部门中的成员不会被移出组织。',
+                    'okText': '删除',
+                    'okType': 'danger',
+                    'cancelText': '再想想',
+                    onOk() {
+                        deleteDepartment(app.currentDepartmentCode).then((res) => {
+                            if (!checkResponse(res)) {
+                                return;
+                            }
+                            if (app.currentTreeNode.$parent.dataRef) {
+                                app.onLoadData(app.currentTreeNode.$parent);
+                                app.onSelect(null, {'node': app.currentTreeNode.$parent});
+                            } else {
+                                app.getMembers({'key': 0});
+                                app.getDepartment();
+                            }
+                            notice({'title': '删除成功'}, 'notice', 'success');
+                        });
+                        return Promise.resolve();
+                    }
+                });
+            },
+            forbidAccount(member, index) {
+                let app = this;
+                this.$confirm({
+                    'title': '您确定要停用当前帐号吗？',
+                    'content': `被停用的帐号将无法访问该${this.actionTitle}，但帐号信息仍保留，方便工作交接和管理。支持帐号恢复`,
+                    'okText': '停用',
+                    'okType': 'danger',
+                    'cancelText': '再想想',
+                    onOk() {
+                        forbid(member.code).then((res) => {
                             if (!checkResponse(res)) {
                                 return;
                             }
                             app.members.splice(index, 1);
-                            notice({'title': '移除成功'}, 'notice', 'success');
+                            notice({'title': '已成功停用账号'}, 'notice', 'success');
                         });
+                        return Promise.resolve();
                     }
-                    return Promise.resolve();
+                });
+            },
+            resumeAccount(member, index) {
+                let app = this;
+                this.$confirm({
+                    'title': '您确定要启用账号吗？',
+                    'content': `被启用的帐号将重新加入该${this.actionTitle}`,
+                    'okText': '启用',
+                    'okType': 'primary',
+                    'cancelText': '再想想',
+                    onOk() {
+                        resume(member.code).then((res) => {
+                            if (!checkResponse(res)) {
+                                return;
+                            }
+                            app.members.splice(index, 1);
+                            notice({'title': '已成功启用账号'}, 'notice', 'success');
+                        });
+                        return Promise.resolve();
+                    }
+                });
+            },
+            deleteAccount(member, index) {
+                let app = this;
+                this.$confirm({
+                    'title': `确认从${this.actionTitle}中移除成员吗？`,
+                    'content': `移除后该账号在${this.actionTitle}内的相关信息将会被清除`,
+                    'okText': '移除',
+                    'okType': 'danger',
+                    'cancelText': '再想想',
+                    onOk() {
+                        if (app.currentDepartmentCode) {
+                            removeMember(member.code, app.currentDepartmentCode).then((res) => {
+                                if (!checkResponse(res)) {
+                                    return;
+                                }
+                                app.members.splice(index, 1);
+                                notice({'title': '移除成功'}, 'notice', 'success');
+                            });
+                        } else {
+                            del(member.code).then((res) => {
+                                if (!checkResponse(res)) {
+                                    return;
+                                }
+                                app.members.splice(index, 1);
+                                notice({'title': '移除成功'}, 'notice', 'success');
+                            });
+                        }
+                        return Promise.resolve();
+                    }
+                });
+            },
+            emitEmpty() {
+                this.$refs.keywordInput.focus();
+                this.keyword = '';
+                this.requestData.keyword = '';
+                this.getMembers();
+            },
+            handleChange(info) {
+                if (info.file.status === 'uploading') {
+                    notice('正在导入，请稍后...', 'message', 'loading', 0);
+                    this.uploadLoading = true;
+                    return;
                 }
-            });
-        },
-        emitEmpty() {
-            this.$refs.keywordInput.focus();
-            this.keyword = '';
-            this.requestData.keyword = '';
-            this.getMembers();
-        },
-        handleChange(info) {
-            if (info.file.status === 'uploading') {
-                notice('正在导入，请稍后...', 'message', 'loading', 0);
-                this.uploadLoading = true;
-                return;
-            }
-            if (info.file.status === 'done') {
-                console.log(info);
-                this.uploadLoading = false;
-                if (checkResponse(info.file.response, true)) {
-                    const count = info.file.response.data;
-                    notice('导入成功', 'message', 'success');
-                    this.getMembers();
+                if (info.file.status === 'done') {
+                    console.log(info);
+                    this.uploadLoading = false;
+                    if (checkResponse(info.file.response, true)) {
+                        const count = info.file.response.data;
+                        notice('导入成功', 'message', 'success');
+                        this.getMembers();
+                    }
                 }
+            },
+            beforeUpload(file) {
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isLt2M) {
+                    this.$message.error('文件不能超过2MB!');
+                }
+                return isLt2M;
             }
-        },
-        beforeUpload(file) {
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            if (!isLt2M) {
-                this.$message.error('文件不能超过2MB!');
-            }
-            return isLt2M;
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

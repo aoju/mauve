@@ -7,9 +7,9 @@
 </template>
 
 <script>
-export default {
-    'name': 'project-space-index'
-};
+    export default {
+        'name': 'project-space-index'
+    };
 </script>
 
 <style scoped>

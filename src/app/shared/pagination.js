@@ -1,4 +1,3 @@
-// pagination-mixin.vue
 export default {
     data() {
         return {

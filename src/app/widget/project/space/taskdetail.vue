@@ -1,12 +1,12 @@
 <template>
     <a-modal
-            class="task-detail-modal"
-            width="min-content"
             :closable="false"
-            visible
-            title=""
             :footer="null"
             @cancel="detailClose"
+            class="task-detail-modal"
+            title=""
+            visible
+            width="min-content"
     >
         <task-detail :taskCode="code" @close="detailClose"></task-detail>
 
@@ -14,37 +14,37 @@
 </template>
 
 <script>
-import taskDetail from '../../../exports/project/taskDetail';
+    import taskDetail from '../../../exports/project/taskDetail';
 
-export default {
-    'name': 'task-detail-modal',
-    'components': {
-        taskDetail
-    },
-    data() {
-        return {
-            'loading': false,
-            'code': this.$route.params.taskCode,
-            'projectCode': this.$route.params.code
-        };
-    },
-    created() {
-        this.init();
-    },
-    'methods': {
-        init() {
-            this.loading = true;
+    export default {
+        'name': 'task-detail-modal',
+        'components': {
+            taskDetail
         },
-        detailClose() {
-            const stageIndex = this.$route.query.from;
-            let url = '';
-            if (stageIndex) {
-                url = `?from=${stageIndex}`;
+        data() {
+            return {
+                'loading': false,
+                'code': this.$route.params.taskCode,
+                'projectCode': this.$route.params.code
+            };
+        },
+        created() {
+            this.init();
+        },
+        'methods': {
+            init() {
+                this.loading = true;
+            },
+            detailClose() {
+                const stageIndex = this.$route.query.from;
+                let url = '';
+                if (stageIndex) {
+                    url = `?from=${stageIndex}`;
+                }
+                this.$router.push(`/project/space/task/${this.projectCode}${url}`);
             }
-            this.$router.push(`/project/space/task/${this.projectCode}${url}`);
         }
-    }
-};
+    };
 </script>
 
 

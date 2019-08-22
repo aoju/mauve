@@ -11,6 +11,7 @@ export function doData(data) {
     }
     return $http.post(url, data);
 }
+
 export function del(code) {
     return $http.post('project/task_stages_template/delete', {'code': code});
 }

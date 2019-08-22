@@ -1,14 +1,14 @@
 <template>
     <div class="main">
-        <a-spin class="text-center" :spinning="oauthLoading">
+        <a-spin :spinning="oauthLoading" class="text-center">
             <span v-show="oauthLoading">正在登陆，请稍后...</span>
         </a-spin>
         <a-form
-                v-show="!oauthLoading"
-                class="user-layout-login"
-                ref="formLogin"
-                id="formLogin"
                 :form="form"
+                class="user-layout-login"
+                id="formLogin"
+                ref="formLogin"
+                v-show="!oauthLoading"
         >
             <a-tabs
                     :activeKey="customActiveKey"
@@ -17,57 +17,57 @@
             >
                 <a-tab-pane key="tab1" tab="账号密码登录">
                     <a-form-item>
-                        <a-input size="large" type="text" placeholder="帐户名或邮箱地址"
+                        <a-input placeholder="帐户名或邮箱地址" size="large" type="text"
                                  v-decorator="[
                                 'account',
                                 {rules: [{ required: true, message: '请输入帐户名或邮箱地址' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'blur'}
                             ]">
-                            <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                            <a-icon :style="{ color: 'rgba(0,0,0,.25)' }" slot="prefix" type="user"/>
                         </a-input>
                     </a-form-item>
 
                     <a-form-item
                     >
-                        <a-input size="large" type="password" autocomplete="false" placeholder="密码"
+                        <a-input autocomplete="false" placeholder="密码" size="large" type="password"
                                  v-decorator="[
                                 'password',
                                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
                             ]">
-                            <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                            <a-icon :style="{ color: 'rgba(0,0,0,.25)' }" slot="prefix" type="lock"/>
                         </a-input>
                     </a-form-item>
                 </a-tab-pane>
                 <a-tab-pane key="tab2" tab="手机号登录">
                     <a-form-item
                     >
-                        <a-input size="large" type="text" placeholder="手机号"
+                        <a-input placeholder="手机号" size="large" type="text"
                                  v-decorator="[
                                 'mobile',
                                 {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'change'}
                             ]">
-                            <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                            <a-icon :style="{ color: 'rgba(0,0,0,.25)' }" slot="prefix" type="mobile"/>
                         </a-input>
                     </a-form-item>
 
                     <a-row :gutter="16">
-                        <a-col class="gutter-row" :span="16">
+                        <a-col :span="16" class="gutter-row">
                             <a-form-item
                             >
-                                <a-input size="large" type="text" placeholder="验证码"
+                                <a-input placeholder="验证码" size="large" type="text"
                                          v-decorator="[
                                 'captcha',
                                 {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}
                             ]">
-                                    <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                                    <a-icon :style="{ color: 'rgba(0,0,0,.25)' }" slot="prefix" type="mail"/>
                                 </a-input>
                             </a-form-item>
                         </a-col>
-                        <a-col class="gutter-row" :span="8">
+                        <a-col :span="8" class="gutter-row">
                             <a-button
-                                    class="getCaptcha"
-                                    tabindex="-1"
                                     :disabled="state.smsSendBtn"
                                     @click.stop.prevent="getCaptcha"
+                                    class="getCaptcha"
+                                    tabindex="-1"
                                     v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
                             ></a-button>
                         </a-col>
@@ -78,22 +78,22 @@
             <a-form-item>
                 <a-checkbox v-model="formLogin.rememberMe">自动登录</a-checkbox>
                 <a
+                        @click="routerLink('/member/forgot')"
                         class="forge-password"
                         style="float: right;"
-                        @click="routerLink('/member/forgot')"
                 >忘记密码
                 </a>
             </a-form-item>
 
             <a-form-item style="margin-top:24px">
                 <a-button
-                        size="large"
-                        type="primary"
-                        htmlType="submit"
-                        class="login-button"
+                        :disabled="loginBtn"
                         :loading="loginBtn"
                         @click.stop.prevent="handleSubmit"
-                        :disabled="loginBtn"
+                        class="login-button"
+                        htmlType="submit"
+                        size="large"
+                        type="primary"
                 >登录
                 </a-button>
             </a-form-item>
@@ -102,281 +102,278 @@
 </template>
 
 <script>
-import md5 from 'md5';
-import * as dd from 'dingtalk-jsapi';
-import {mapActions} from 'vuex';
-import {mapState} from 'vuex';
-import {Login, getCaptcha} from '@/app/frames/restapi/user';
-import {info} from '@/app/frames/restapi/system';
-import config from '@/app/frames/config';
-import {checkResponse, createRoute, timeFix} from '@/assets/js/utils';
-import {getStore} from '@/assets/js/storage';
-import {checkInstall} from '../../frames/restapi/common';
-import {setStore} from '../../../assets/js/storage';
-import {_checkLogin} from '../../frames/restapi/user';
-import {dingTalkLoginByCode, dingTalkOauth} from '../../frames/restapi/oauth';
-import {notice} from '../../../assets/js/notice';
+    import md5 from 'md5';
+    import * as dd from 'dingtalk-jsapi';
+    import {mapActions, mapState} from 'vuex';
+    import {getCaptcha, Login} from '@/app/frames/restapi/user';
+    import {info} from '@/app/frames/restapi/system';
+    import config from '@/app/frames/config';
+    import {checkResponse, createRoute, timeFix} from '@/assets/js/utils';
+    import {getStore} from '@/assets/js/storage';
+    import {checkInstall} from '../../frames/restapi/common';
+    import {_checkLogin} from '../../frames/restapi/user';
+    import {dingTalkLoginByCode, dingTalkOauth} from '../../frames/restapi/oauth';
+    import {notice} from '../../../assets/js/notice';
 
-export default {
-    'components': {},
-    data() {
-        return {
-            'customActiveKey': 'tab1',
-            'loginBtn': false,
-            'oauthLoading': false,
-            // login type: 0 email, 1 account, 2 telephone
-            'loginType': 0,
-            'requiredTwoStepCaptcha': false,
-            'stepCaptchaVisible': false,
-            'form': this.$form.createForm(this),
-            'state': {
-                'time': 60,
-                'smsSendBtn': false
-            },
-            'formLogin': {
-                'account': '',
-                'password': '',
-                'captcha': '',
-                'mobile': '',
-                'rememberMe': true
-            }
-        };
-    },
-    'computed': {
-        ...mapState({
-            'system': state => state.system
-        })
-    },
-    mounted() {
-        this.checkInstall();
-        if (this.$route.query.logged) {
-            this.oauthLoading = true;
-            this.checkLogin();
-        }
-        if (this.$route.query.message) {
-            notice({'title': this.$route.query.message}, 'notice');
-            // notice(this.$route.query.message);
-        }
-    },
-    'methods': {
-        ...mapActions(['Login', 'Logout']),
-        checkInstall() {
-            checkInstall().then(res => {
-                if (!checkResponse(res)) {
-                    this.$router.push({'name': 'install'});
-                    return false;
+    export default {
+        'components': {},
+        data() {
+            return {
+                'customActiveKey': 'tab1',
+                'loginBtn': false,
+                'oauthLoading': false,
+                // login type: 0 email, 1 account, 2 telephone
+                'loginType': 0,
+                'requiredTwoStepCaptcha': false,
+                'stepCaptchaVisible': false,
+                'form': this.$form.createForm(this),
+                'state': {
+                    'time': 60,
+                    'smsSendBtn': false
+                },
+                'formLogin': {
+                    'account': '',
+                    'password': '',
+                    'captcha': '',
+                    'mobile': '',
+                    'rememberMe': true
                 }
-                info().then(res => {
-                    if (checkResponse(res)) {
-                        this.$store.dispatch('setSystem', res.data);
-                        this.dingTalkLogin();
-                    }
-                });
-            });
-        },
-        // handler
-        handleUsernameOrEmail(rule, value, callback) {
-            const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-            if (regex.test(value)) {
-                this.loginType = 0;
-            } else {
-                this.loginType = 1;
-            }
-            callback();
-        },
-        handleTabClick(key) {
-            this.customActiveKey = key;
-            // this.form.resetFields()
-        },
-        handleSubmit() {
-            const app = this;
-            let flag = false;
-
-            let loginParams = {
-                'remember_me': app.formLogin.rememberMe
             };
-
-            // 使用账户密码登录
-            if (app.customActiveKey === 'tab1') {
-                app.form.validateFields(['account', 'password'], {'force': true}, (err, values) => {
-                    if (!err) {
-                        flag = true;
-                        loginParams[!app.loginType ? 'account' : 'account'] = values.account;
-                        loginParams.password = md5(values.password);
-                    }
-                });
-                // 使用手机号登录
-            } else {
-                app.form.validateFields(['mobile', 'captcha'], {'force': true}, (err, values) => {
-                    if (!err) {
-                        flag = true;
-                        loginParams = Object.assign(loginParams, values);
-                    }
-                });
-            }
-
-            if (!flag) {
-                return;
-            }
-
-            app.loginBtn = true;
-            loginParams.clientid = getStore('client_id');
-            Login(loginParams).then(res => {
-                if (checkResponse(res)) {
-                    loginParams.token = res.token;
-                    this.dealDataBeforeLogin(res);
-                }
-                this.loginBtn = false;
-            })['catch'](() => {
-                this.loginBtn = false;
-            });
         },
-        getCaptcha(e) {
-            e.preventDefault();
-            const app = this;
-
-            this.form.validateFields(['mobile'], {'force': true}, (err, values) => {
-                if (!err) {
-                    this.state.smsSendBtn = true;
-
-                    const interval = window.setInterval(() => {
-                        if (app.state.time-- <= 0) {
-                            app.state.time = 60;
-                            app.state.smsSendBtn = false;
-                            window.clearInterval(interval);
+        'computed': {
+            ...mapState({
+                'system': state => state.system
+            })
+        },
+        mounted() {
+            this.checkInstall();
+            if (this.$route.query.logged) {
+                this.oauthLoading = true;
+                this.checkLogin();
+            }
+            if (this.$route.query.message) {
+                notice({'title': this.$route.query.message}, 'notice');
+                // notice(this.$route.query.message);
+            }
+        },
+        'methods': {
+            ...mapActions(['Login', 'Logout']),
+            checkInstall() {
+                checkInstall().then(res => {
+                    if (!checkResponse(res)) {
+                        this.$router.push({'name': 'install'});
+                        return false;
+                    }
+                    info().then(res => {
+                        if (checkResponse(res)) {
+                            this.$store.dispatch('setSystem', res.data);
+                            this.dingTalkLogin();
                         }
-                    }, 1000);
+                    });
+                });
+            },
+            // handler
+            handleUsernameOrEmail(rule, value, callback) {
+                const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                if (regex.test(value)) {
+                    this.loginType = 0;
+                } else {
+                    this.loginType = 1;
+                }
+                callback();
+            },
+            handleTabClick(key) {
+                this.customActiveKey = key;
+                // this.form.resetFields()
+            },
+            handleSubmit() {
+                const app = this;
+                let flag = false;
 
-                    const hide = this.$message.loading('验证码发送中..', 0);
-                    getCaptcha(values.mobile)
-                        .then(res => {
-                            this.$message.destroy();
+                let loginParams = {
+                    'remember_me': app.formLogin.rememberMe
+                };
 
-                            if (!checkResponse(res)) {
-                                return false;
+                // 使用账户密码登录
+                if (app.customActiveKey === 'tab1') {
+                    app.form.validateFields(['account', 'password'], {'force': true}, (err, values) => {
+                        if (!err) {
+                            flag = true;
+                            loginParams[!app.loginType ? 'account' : 'account'] = values.account;
+                            loginParams.password = md5(values.password);
+                        }
+                    });
+                    // 使用手机号登录
+                } else {
+                    app.form.validateFields(['mobile', 'captcha'], {'force': true}, (err, values) => {
+                        if (!err) {
+                            flag = true;
+                            loginParams = Object.assign(loginParams, values);
+                        }
+                    });
+                }
+
+                if (!flag) {
+                    return;
+                }
+
+                app.loginBtn = true;
+                loginParams.clientid = getStore('client_id');
+                Login(loginParams).then(res => {
+                    if (checkResponse(res)) {
+                        loginParams.token = res.token;
+                        this.dealDataBeforeLogin(res);
+                    }
+                    this.loginBtn = false;
+                })['catch'](() => {
+                    this.loginBtn = false;
+                });
+            },
+            getCaptcha(e) {
+                e.preventDefault();
+                const app = this;
+
+                this.form.validateFields(['mobile'], {'force': true}, (err, values) => {
+                    if (!err) {
+                        this.state.smsSendBtn = true;
+
+                        const interval = window.setInterval(() => {
+                            if (app.state.time-- <= 0) {
+                                app.state.time = 60;
+                                app.state.smsSendBtn = false;
+                                window.clearInterval(interval);
                             }
-                            let tips = '验证码获取成功';
-                            if (res.data) {
-                                tips += '，您的验证码为：' + res.data;
-                            }
-                            this.$notification.success({
-                                'message': '提示',
-                                'description': tips,
-                                'duration': 8,
-                                'placement': 'bottomLeft'
-                            });
-                        })
-                        ['catch'](err => {
+                        }, 1000);
+
+                        const hide = this.$message.loading('验证码发送中..', 0);
+                        getCaptcha(values.mobile)
+                            .then(res => {
+                                this.$message.destroy();
+
+                                if (!checkResponse(res)) {
+                                    return false;
+                                }
+                                let tips = '验证码获取成功';
+                                if (res.data) {
+                                    tips += '，您的验证码为：' + res.data;
+                                }
+                                this.$notification.success({
+                                    'message': '提示',
+                                    'description': tips,
+                                    'duration': 8,
+                                    'placement': 'bottomLeft'
+                                });
+                            })['catch'](err => {
                             // setTimeout(hide, 1);
                             clearInterval(interval);
                             app.state.time = 60;
                             app.state.smsSendBtn = false;
                             this.requestFailed(err);
                         });
+                    }
+                });
+            },
+            loginSuccess(res) {
+                setTimeout(() => {
+                    const menu = getStore('menu', true);
+                    if (menu) {
+                        let routes = this.$router.options.routes;
+                        menu.forEach(function (v) {
+                            routes[0].children.push(createRoute(v));
+                            if (v.children) {
+                                v.children.forEach(function (v2) {
+                                    routes[0].children.push(createRoute(v2));
+                                    if (v2.children) {
+                                        v2.children.forEach(function (v3) {
+                                            routes[0].children.push(createRoute(v3));
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        this.loginBtn = false;
+                        this.$router.addRoutes(routes);
+                        let redirect = this.$route.query.redirect || config.HOME_PAGE;
+                        this.$router.push({
+                            'path': redirect
+                        });
+                        this.$notification.success({
+                            'message': '欢迎',
+                            'description': `${res.data.member.name}，${timeFix()}，欢迎回来`
+                        });
+                        this.oauthLoading = false;
+                    }
+                }, 500);
+            },
+            dingTalkOauth() {
+                let url = dingTalkOauth() + '?redirect=' + this.$route.query.redirect;
+                let redirect = this.$route.query.redirect;
+                if (redirect) {
+                    url += '?redirect=' + redirect;
                 }
-            });
-        },
-        loginSuccess(res) {
-            setTimeout(() => {
-                const menu = getStore('menu', true);
-                if (menu) {
-                    let routes = this.$router.options.routes;
-                    menu.forEach(function (v) {
-                        routes[0].children.push(createRoute(v));
-                        if (v.children) {
-                            v.children.forEach(function (v2) {
-                                routes[0].children.push(createRoute(v2));
-                                if (v2.children) {
-                                    v2.children.forEach(function (v3) {
-                                        routes[0].children.push(createRoute(v3));
-                                    });
+                location.href = url;
+            },
+            dingTalkLogin() {
+                let app = this;
+                dd.ready(function () {
+                    // dd.ready参数为回调函数，在环境准备就绪时触发，jsapi的调用需要保证在该回调函数触发后调用，否则无效。
+                    dd.runtime.permission.requestAuthCode({
+                        'corpId': 'ding42ccb1a1923b200f35c2f4657eb6378f',
+                        'onSuccess': function (result) {
+                            app.oauthLoading = true;
+                            dingTalkLoginByCode({'code': result.code}).then(res => {
+                                if (checkResponse(res)) {
+                                    app.dealDataBeforeLogin(res);
                                 }
                             });
                         }
                     });
-                    this.loginBtn = false;
-                    this.$router.addRoutes(routes);
-                    let redirect = this.$route.query.redirect || config.HOME_PAGE;
-                    this.$router.push({
-                        'path': redirect
-                    });
-                    this.$notification.success({
-                        'message': '欢迎',
-                        'description': `${res.data.member.name}，${timeFix()}，欢迎回来`
-                    });
-                    this.oauthLoading = false;
-                }
-            }, 500);
-        },
-        dingTalkOauth() {
-            let url = dingTalkOauth() + '?redirect=' + this.$route.query.redirect;
-            let redirect = this.$route.query.redirect;
-            if (redirect) {
-                url += '?redirect=' + redirect;
-            }
-            location.href = url;
-        },
-        dingTalkLogin() {
-            let app = this;
-            dd.ready(function () {
-                // dd.ready参数为回调函数，在环境准备就绪时触发，jsapi的调用需要保证在该回调函数触发后调用，否则无效。
-                dd.runtime.permission.requestAuthCode({
-                    'corpId': 'ding42ccb1a1923b200f35c2f4657eb6378f',
-                    'onSuccess': function (result) {
-                        app.oauthLoading = true;
-                        dingTalkLoginByCode({'code': result.code}).then(res => {
-                            if (checkResponse(res)) {
-                                app.dealDataBeforeLogin(res);
-                            }
-                        });
-                    }
                 });
-            });
-        },
-        checkLogin() {
-            _checkLogin().then(res => {
-                this.dealDataBeforeLogin(res);
-            });
-        },
-        dealDataBeforeLogin(res) {
-            let app = this;
-            if (res.data) {
-                const obj = {
-                    'userInfo': res.data.member,
-                    'tokenList': res.data.tokenList
-                };
-                let currentOrganization = getStore('currentOrganization', true);
-                const organizationList = res.data.organizationList;
-                app.$store.dispatch('SET_LOGGED', obj);
-                app.$store.dispatch('setOrganizationList', organizationList);
-                if (!currentOrganization) {
-                    currentOrganization = organizationList[0];
-                } else {
-                    const has = organizationList.findIndex(item => item.id == currentOrganization.id);
-                    if (has === -1) {
+            },
+            checkLogin() {
+                _checkLogin().then(res => {
+                    this.dealDataBeforeLogin(res);
+                });
+            },
+            dealDataBeforeLogin(res) {
+                let app = this;
+                if (res.data) {
+                    const obj = {
+                        'userInfo': res.data.member,
+                        'tokenList': res.data.tokenList
+                    };
+                    let currentOrganization = getStore('currentOrganization', true);
+                    const organizationList = res.data.organizationList;
+                    app.$store.dispatch('SET_LOGGED', obj);
+                    app.$store.dispatch('setOrganizationList', organizationList);
+                    if (!currentOrganization) {
                         currentOrganization = organizationList[0];
+                    } else {
+                        const has = organizationList.findIndex(item => item.id === currentOrganization.id);
+                        if (has === -1) {
+                            currentOrganization = organizationList[0];
+                        }
                     }
+                    app.$store.dispatch('setCurrentOrganization', currentOrganization);
+                    app.$store.dispatch('GET_MENU').then(() => {
+                        app.loginSuccess(res);
+                    });
+                } else {
+                    app.oauthLoading = false;
+                    app.$store.dispatch('SET_LOGOUT');
+                    // app.$router.replace('/login?redirect=' + this.$router.currentRoute.fullPath);
                 }
-                app.$store.dispatch('setCurrentOrganization', currentOrganization);
-                app.$store.dispatch('GET_MENU').then(() => {
-                    app.loginSuccess(res);
+            },
+            requestFailed(err) {
+                this.$notification.error({
+                    'message': '错误',
+                    'description': ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+                    'duration': 4
                 });
-            } else {
-                app.oauthLoading = false;
-                app.$store.dispatch('SET_LOGOUT');
-                // app.$router.replace('/login?redirect=' + this.$router.currentRoute.fullPath);
+                this.loginBtn = false;
             }
-        },
-        requestFailed(err) {
-            this.$notification.error({
-                'message': '错误',
-                'description': ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
-                'duration': 4
-            });
-            this.loginBtn = false;
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

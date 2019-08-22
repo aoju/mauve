@@ -1,4 +1,5 @@
 import $ from 'jquery';
+
 export function getYiYan(callback, type) {
     if (type === undefined) {
         type = 'f';

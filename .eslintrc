@@ -46,7 +46,7 @@
     //是否允许对象中出现结尾逗号
     "no-cond-assign": 2,
     //条件语句的条件中不允许出现赋值运算符
-    "no-console": 1,
+    "no-console": 0,
     //不允许出现console语句
     "no-constant-condition": 2,
     //条件语句的条件中不允许出现恒定不变的量
@@ -117,7 +117,7 @@
     //将变量声明放在合适的代码块里
     "complexity": 0,
     //限制条件语句的复杂度
-    "consistent-return": 1,
+    "consistent-return": 0,
     //无论有没有返回值都强制要求return语句返回一个值
     "curly": [
       "error",
@@ -141,7 +141,7 @@
     //比较的时候使用严格等于
     "no-alert": 1,
     //不允许使用alert，confirm，prompt语句
-    "no-caller": 2,
+    "no-caller": 0,
     //不允许使用arguments.callee和arguments.caller属性
     "guard-for-in": 0,
     //监视for in循环，防止出现不可预料的情况
@@ -161,7 +161,7 @@
     //不允许对null用==或者!=
     "no-eval": 2,
     //不允许使用eval()
-    "no-extend-native": 1,
+    "no-extend-native": 0,
     //不允许扩展原生对象
     "no-extra-bind": 2,
     //不允许不必要的函数绑定
@@ -183,7 +183,7 @@
     //不允许用\来让字符串换行
     "no-global-assign": 2,
     //不允许重新分配原生对象
-    "no-new": 1,
+    "no-new": 0,
     //不允许new一个实例后不赋值或者不比较
     "no-new-func": 2,
     //不允许使用new Function
@@ -209,7 +209,7 @@
     //不允许使用逗号表达式
     "no-throw-literal": 2,
     //不允许抛出字面量错误 throw "error"
-    "no-unused-expressions": 1,
+    "no-unused-expressions": 0,
     //不允许无用的表达式
     "no-void": 2,
     //不允许void操作符
@@ -226,7 +226,7 @@
     //不允许警告备注
     "no-with": 2,
     //不允许使用with语句
-    "radix": 1,
+    "radix": 0,
     //使用parseInt时强制使用基数来指定是十进制还是其他进制
     "vars-on-top": 0,
     //var必须放在作用域顶部
@@ -254,7 +254,7 @@
     //不允许使用delete操作符
     "no-label-var": 2,
     //不允许标签和变量同名
-    "no-shadow": 1,
+    "no-shadow": 0,
     //外部作用域中的变量不能与它所包含的作用域中的变量或参数同名
     "no-shadow-restricted-names": 2,
     //js关键字和保留字不能作为函数名或者变量名
@@ -262,10 +262,12 @@
     //不允许未声明的变量
     "no-undef-init": 2,
     //不允许初始化变量时给变量赋值undefined
-    "no-undefined": 1,
+    "no-undefined": 0,
     //不允许把undefined当做标识符使用
+    "vue/no-unused-vars": 0,
+    "vue/no-use-v-if-with-v-for": 0,
     "no-unused-vars": [
-      1,
+      0,
       {
         "vars": "all",
         "args": "after-used"
@@ -277,7 +279,7 @@
       "nofunc"
     ],
     //不允许在未定义之前就使用变量
-    "indent": 2,
+    "indent": [0, 4, { "SwitchCase": 1 }],
     //强制一致的缩进风格
     "brace-style": [
       2,
@@ -288,7 +290,7 @@
     ],
     //大括号风格
     "camelcase": [
-      1,
+      0,
       {
         "properties": "never"
       }
@@ -350,17 +352,17 @@
       }
     ],
     //空行最多不能超过两行
-    "no-nested-ternary": 1,
+    "no-nested-ternary": 0,
     //不允许使用嵌套的三目运算符
     "no-new-object": 2,
     //禁止使用new Object()
-    "fun-call-spacing": 1,
+    "fun-call-spacing": 0,
     //函数调用时，函数名与()之间不能有空格
     "no-ternary": 0,
     //不允许使用三目运算符
     "no-trailing-spaces": 2,
     //一行最后不允许有空格
-    "no-underscore-dangle": 1,
+    "no-underscore-dangle": 0,
     //不允许标识符以下划线开头
     "one-var": 0,
     //强制变量声明放在一起

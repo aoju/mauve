@@ -1,4 +1,3 @@
-// common-mixin.vue
 export default {
     data() {
         return {};

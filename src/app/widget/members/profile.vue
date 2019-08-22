@@ -1,6 +1,6 @@
 <template>
     <div class="members-profile">
-        <a-breadcrumb separator=">" class="breadcrumb">
+        <a-breadcrumb class="breadcrumb" separator=">">
             <a-breadcrumb-item>
                 <router-link to="/">
                     <a-icon type="home"/>
@@ -19,7 +19,7 @@
             <div class="member-info">
                 <template v-if="member">
                     <div class="base">
-                        <a-avatar size="large" class="m-r" icon="user" :src="member.avatar"></a-avatar>
+                        <a-avatar :src="member.avatar" class="m-r" icon="user" size="large"></a-avatar>
                         <div class="title">
                             {{member.name}}
                         </div>
@@ -32,11 +32,11 @@
             </div>
         </div>
         <div class="actions">
-            <a-tabs :animated="false" defaultActiveKey="1" @change="tabChange">
-                <a-tab-pane class="info-content base-info" tab="详细资料" key="1">
+            <a-tabs :animated="false" @change="tabChange" defaultActiveKey="1">
+                <a-tab-pane class="info-content base-info" key="1" tab="详细资料">
                     <p class="action-wrapper">
                         <span class="title">详细资料</span>
-                        <a class="muted" @click="showEditBaseInfo">
+                        <a @click="showEditBaseInfo" class="muted">
                             <a-icon type="edit"/>
                             编辑</a>
                     </p>
@@ -84,7 +84,7 @@
                         <span class="title">最近动态</span>
                     </p>
                 </a-tab-pane>-->
-                <a-tab-pane class="info-content" tab="任务安排" key="3">
+                <a-tab-pane class="info-content" key="3" tab="任务安排">
                     <p class="action-wrapper">
                         <span class="title">
                             任务安排
@@ -94,9 +94,9 @@
                                         <span v-else>全部 </span>
                                         <a-icon type="down"/>
                                     </a>
-                                    <a-menu v-model="task.type" @click="changeTaskType" class="field-right-menu"
+                                    <a-menu @click="changeTaskType" class="field-right-menu" selectable
                                             slot="overlay"
-                                            selectable>
+                                            v-model="task.type">
                                         <a-menu-item key="0">
                                             <div class="menu-item-content">
                                                 <span>未完成的任务</span>
@@ -111,7 +111,7 @@
                                 </a-dropdown>
                         </span>
                     </p>
-                    <a-list class="content-wrapper list" :loading="task.loading">
+                    <a-list :loading="task.loading" class="content-wrapper list">
                         <a-list-item :key="index" v-for="(item, index) in task.list">
                             <a-list-item-meta @click="showTaskDetail(item)">
                                 <div slot="title">
@@ -127,14 +127,14 @@
                         </a-list-item>
                     </a-list>
                 </a-tab-pane>
-                <a-tab-pane class="info-content" tab="Ta的项目" key="4">
+                <a-tab-pane class="info-content" key="4" tab="Ta的项目">
                     <p class="action-wrapper">
                         <span class="title">Ta的项目</span>
                     </p>
-                    <a-list class="content-wrapper list default-list" :loading="project.loading">
+                    <a-list :loading="project.loading" class="content-wrapper list default-list">
                         <a-list-item :key="index" v-for="(item, index) in project.list">
                             <a-list-item-meta @click="routerLink(`/project/space/task/${item.code}`)">
-                                <a-avatar slot="avatar" icon="user" :src="item.cover"/>
+                                <a-avatar :src="item.cover" icon="user" slot="avatar"/>
                                 <div slot="title">
                                     <span class="m-l-sm">{{item.name}}</span>
                                 </div>
@@ -145,11 +145,11 @@
             </a-tabs>
         </div>
         <a-modal
-                v-model="actionInfo.modalStatus"
-                :width="600"
-                :title="actionInfo.modalTitle"
                 :bodyStyle="{padding:'6px 18px 1px 18px'}"
                 :footer="null"
+                :title="actionInfo.modalTitle"
+                :width="600"
+                v-model="actionInfo.modalStatus"
         >
             <a-form
                     :form="form"
@@ -198,7 +198,7 @@
                         <a-form-item
                                 label='描述'
                         >
-                            <a-input placeholder='输入描述' size="large" type="textarea" :rows="3"
+                            <a-input :rows="3" placeholder='输入描述' size="large" type="textarea"
                                      v-decorator="['description']"
                             />
                         </a-form-item>
@@ -207,167 +207,167 @@
                 <a-form-item
                 >
                     <div class="action-btn" style="text-align: center">
-                        <a-button type="primary" htmlType='submit'
-                                  block
+                        <a-button :loading="actionInfo.confirmLoading" block
+                                  class="middle-btn"
+                                  htmlType='submit'
                                   size="large"
-                                  :loading="actionInfo.confirmLoading"
-                                  class="middle-btn">保存
+                                  type="primary">保存
                         </a-button>
                     </div>
                 </a-form-item>
             </a-form>
         </a-modal>
         <a-modal
-                class="task-detail-modal"
-                width="min-content"
                 :closable="false"
-                v-model="task.modalStatus"
-                title=""
                 :footer="null"
                 @cancel="detailClose"
+                class="task-detail-modal"
+                title=""
+                v-model="task.modalStatus"
+                width="min-content"
         >
-            <task-detail v-if="task.currentTask.code" :taskCode="task.currentTask.code"
-                         @close="detailClose"></task-detail>
+            <task-detail :taskCode="task.currentTask.code" @close="detailClose"
+                         v-if="task.currentTask.code"></task-detail>
         </a-modal>
     </div>
 </template>
 
 <script>
-import taskDetail from '@/app/exports/project/taskDetail';
-import pagination from '../../shared/pagination';
-import {checkResponse} from '../../../assets/js/utils';
-import {editAccount, read} from '../../frames/restapi/user';
-import {selfList} from '../../frames/restapi/task';
-import {selfList as getProjectList} from '../../frames/restapi/project';
+    import taskDetail from '@/app/exports/project/taskDetail';
+    import pagination from '../../shared/pagination';
+    import {checkResponse} from '../../../assets/js/utils';
+    import {editAccount, read} from '../../frames/restapi/user';
+    import {selfList} from '../../frames/restapi/task';
+    import {selfList as getProjectList} from '../../frames/restapi/project';
 
-export default {
-    'name': 'memberProfile',
-    'components': {
-        taskDetail
-    },
-    'mixins': [pagination],
-    data() {
-        return {
-            'code': this.$route.params.code,
-            'member': {},
-            'task': {
-                'page': 1,
-                'pageSize': 1000,
-                'loading': false,
-                'modalStatus': false,
-                'currentTask': {},
-                'type': ['0'],
-                'total': 0,
-                'list': []
+    export default {
+        'name': 'memberProfile',
+        'components': {
+            taskDetail
+        },
+        'mixins': [pagination],
+        data() {
+            return {
+                'code': this.$route.params.code,
+                'member': {},
+                'task': {
+                    'page': 1,
+                    'pageSize': 1000,
+                    'loading': false,
+                    'modalStatus': false,
+                    'currentTask': {},
+                    'type': ['0'],
+                    'total': 0,
+                    'list': []
+                },
+                'project': {
+                    'page': 1,
+                    'pageSize': 1000,
+                    'loading': false,
+                    'total': 0,
+                    'list': []
+                },
+                'form': this.$form.createForm(this),
+                'actionInfo': {
+                    'modalStatus': false,
+                    'confirmLoading': false,
+                    'modalTitle': '组织成员信息'
+                }
+            };
+        },
+        'computed': {},
+        'watch': {},
+        created() {
+            this.init();
+        },
+        'methods': {
+            init() {
+                this.getMember();
             },
-            'project': {
-                'page': 1,
-                'pageSize': 1000,
-                'loading': false,
-                'total': 0,
-                'list': []
+            tabChange(key) {
+                switch (key) {
+                    case '3':
+                        this.getTasks();
+                        break;
+                    case '4':
+                        this.getProjectList();
+                }
             },
-            'form': this.$form.createForm(this),
-            'actionInfo': {
-                'modalStatus': false,
-                'confirmLoading': false,
-                'modalTitle': '组织成员信息'
-            }
-        };
-    },
-    'computed': {},
-    'watch': {},
-    created() {
-        this.init();
-    },
-    'methods': {
-        init() {
-            this.getMember();
-        },
-        tabChange(key) {
-            switch (key) {
-            case '3':
-                this.getTasks();
-                break;
-            case '4':
-                this.getProjectList();
-            }
-        },
-        getMember() {
-            read(this.code).then(res => {
-                this.member = res.data;
-            });
-        },
-        getTasks() {
-            this.task.loading = true;
-            selfList({
-                'memberCode': this.member.member_code,
-                'type': Number(this.task.type[0]),
-                'page': this.task.page,
-                'pageSize': this.task.pageSize
-            }).then(res => {
-                this.task.loading = false;
-                this.task.list = res.data.list;
-                this.task.total = res.data.total;
-            });
-        },
-        changeTaskType(obj) {
-            this.$nextTick(() => {
-                this.getTasks();
-            });
-        },
-        showTaskDetail(task) {
-            this.task.currentTask = JSON.parse(JSON.stringify(task));
-            this.task.modalStatus = true;
-        },
-        detailClose() {
-            this.task.modalStatus = false;
-            setTimeout(() => {
-                this.task.currentTask.code = '';
-            }, 500);
-        },
-        getProjectList() {
-            this.task.loading = true;
-            getProjectList({
-                'memberCode': this.member.member_code,
-                'page': this.task.page,
-                'pageSize': this.task.pageSize
-            }).then(res => {
-                this.project.loading = false;
-                this.project.list = res.data.list;
-                this.project.total = res.data.total;
-            });
-        },
-        showEditBaseInfo() {
-            this.actionInfo.modalStatus = true;
-            this.$nextTick(() => {
-                this.form.setFieldsValue({
-                    'name': this.member.name,
-                    'mobile': this.member.mobile,
-                    'email': this.member.email,
-                    'position': this.member.position,
-                    'description': this.member.description
+            getMember() {
+                read(this.code).then(res => {
+                    this.member = res.data;
                 });
-            });
-        },
-        handleSubmitBaseInfo() {
-            let app = this;
-            app.form.validateFields(
-                (err, values) => {
-                    if (!err) {
-                        values.code = app.member.code;
-                        editAccount(values).then(res => {
-                            const result = checkResponse(res);
-                            if (result) {
-                                this.actionInfo.modalStatus = false;
-                                Object.assign(app.member, values);
-                            }
-                        });
-                    }
+            },
+            getTasks() {
+                this.task.loading = true;
+                selfList({
+                    'memberCode': this.member.member_code,
+                    'type': Number(this.task.type[0]),
+                    'page': this.task.page,
+                    'pageSize': this.task.pageSize
+                }).then(res => {
+                    this.task.loading = false;
+                    this.task.list = res.data.list;
+                    this.task.total = res.data.total;
                 });
+            },
+            changeTaskType(obj) {
+                this.$nextTick(() => {
+                    this.getTasks();
+                });
+            },
+            showTaskDetail(task) {
+                this.task.currentTask = JSON.parse(JSON.stringify(task));
+                this.task.modalStatus = true;
+            },
+            detailClose() {
+                this.task.modalStatus = false;
+                setTimeout(() => {
+                    this.task.currentTask.code = '';
+                }, 500);
+            },
+            getProjectList() {
+                this.task.loading = true;
+                getProjectList({
+                    'memberCode': this.member.member_code,
+                    'page': this.task.page,
+                    'pageSize': this.task.pageSize
+                }).then(res => {
+                    this.project.loading = false;
+                    this.project.list = res.data.list;
+                    this.project.total = res.data.total;
+                });
+            },
+            showEditBaseInfo() {
+                this.actionInfo.modalStatus = true;
+                this.$nextTick(() => {
+                    this.form.setFieldsValue({
+                        'name': this.member.name,
+                        'mobile': this.member.mobile,
+                        'email': this.member.email,
+                        'position': this.member.position,
+                        'description': this.member.description
+                    });
+                });
+            },
+            handleSubmitBaseInfo() {
+                let app = this;
+                app.form.validateFields(
+                    (err, values) => {
+                        if (!err) {
+                            values.code = app.member.code;
+                            editAccount(values).then(res => {
+                                const result = checkResponse(res);
+                                if (result) {
+                                    this.actionInfo.modalStatus = false;
+                                    Object.assign(app.member, values);
+                                }
+                            });
+                        }
+                    });
+            }
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

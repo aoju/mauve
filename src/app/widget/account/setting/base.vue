@@ -10,10 +10,10 @@
                     <div class="setting-info">
                         <div class="setting-info-content">
                             <a-form
-                                    layout="vertical"
                                     :form="form"
+                                    @submit.prevent="handleSubmit"
                                     hideRequiredMark
-                                    @submit.prevent="handleSubmit">
+                                    layout="vertical">
                                 <!-- <a-form-item
                                          label='邮箱'
                                  >
@@ -37,30 +37,30 @@
                                 <a-form-item
                                         label='简介'
                                 >
-                                    <a-textarea placeholder='个人简介'
-                                                :rows="4"
+                                    <a-textarea :rows="4"
+                                                placeholder='个人简介'
                                                 v-decorator="['description']"
                                     />
                                 </a-form-item>
                                 <a-form-item
                                 >
-                                    <a-button type='primary' htmlType='submit' :loading="loading">更新基本信息</a-button>
+                                    <a-button :loading="loading" htmlType='submit' type='primary'>更新基本信息</a-button>
                                 </a-form-item>
                             </a-form>
                         </div>
                         <div class="setting-info-avatar">
                             <span>头像</span>
-                            <a-avatar class="avatar" :size="150" :src="userInfo.avatar">{{userInfo.name}}</a-avatar>
+                            <a-avatar :size="150" :src="userInfo.avatar" class="avatar">{{userInfo.name}}</a-avatar>
                             <a-upload
-                                    name="avatar"
-                                    class="avatar-uploader"
-                                    :showUploadList="false"
-                                    :headers="headers"
                                     :action="uploadAction"
                                     :beforeUpload="beforeUpload"
+                                    :headers="headers"
+                                    :showUploadList="false"
                                     @change="handleChange"
+                                    class="avatar-uploader"
+                                    name="avatar"
                             >
-                                <a-button icon="upload" class="upload">更换头像</a-button>
+                                <a-button class="upload" icon="upload">更换头像</a-button>
                             </a-upload>
                         </div>
                     </div>
@@ -71,93 +71,93 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
-import AccountSetting from '@/app/exports/layout/account/setting';
-import {checkResponse, getApiUrl, getAuthorization, getBase64} from '../../../../assets/js/utils';
-import {editPersonal} from '../../../frames/restapi/user';
-import {destroyNotice, notice} from '../../../../assets/js/notice';
+    import {mapState} from 'vuex';
+    import AccountSetting from '@/app/exports/layout/account/setting';
+    import {checkResponse, getApiUrl, getAuthorization, getBase64} from '../../../../assets/js/utils';
+    import {editPersonal} from '../../../frames/restapi/user';
+    import {destroyNotice, notice} from '../../../../assets/js/notice';
 
-export default {
-    'name': 'settingBase',
-    'components': {
-        AccountSetting
-    },
-    data() {
-        return {
-            'loading': false,
-            'form': this.$form.createForm(this),
-            'uploadLoading': false,
-            'uploadAction': getApiUrl('project/index/uploadAvatar')
-        };
-    },
-    'computed': {
-        ...mapState({
-            'userInfo': state => state.userInfo
-        }),
-        headers() {
-            return getAuthorization();
-        }
-    },
-    mounted() {
-        this.$nextTick(() => {
-            this.form.setFieldsValue({
-                'email': this.userInfo.email,
-                'name': this.userInfo.name,
-                'description': this.userInfo.description
-            });
-        });
-    },
-    'methods': {
-        handleSubmit() {
-            let app = this;
-            this.form.validateFields(
-                (err) => {
-                    if (!err) {
-                        let obj = app.form.getFieldsValue();
-                        obj.id = app.userInfo.id;
-                        obj.avatar = app.userInfo.avatar;
-                        editPersonal(obj).then(res => {
-                            app.loading = false;
-                            if (!checkResponse(res)) {
-                                return;
-                            }
-                            app.userInfo.email = obj.email;
-                            app.userInfo.name = obj.name;
-                            app.userInfo.name = obj.name;
-                            app.userInfo.description = obj.description;
-                            app.$store.dispatch('SET_USER', app.userInfo);
-                        });
-                    }
-                },
-            );
+    export default {
+        'name': 'settingBase',
+        'components': {
+            AccountSetting
         },
-        handleChange(info) {
-            if (info.file.status === 'uploading') {
-                notice('正在上传，请稍后...', 'message', 'loading', 0);
-                this.uploadLoading = true;
-                return;
+        data() {
+            return {
+                'loading': false,
+                'form': this.$form.createForm(this),
+                'uploadLoading': false,
+                'uploadAction': getApiUrl('project/index/uploadAvatar')
+            };
+        },
+        'computed': {
+            ...mapState({
+                'userInfo': state => state.userInfo
+            }),
+            headers() {
+                return getAuthorization();
             }
-            if (info.file.status === 'done') {
-                getBase64(info.file.originFileObj, () => {
-                    this.userInfo.avatar = info.file.response.data.url;
-                    this.$store.dispatch('SET_USER', this.userInfo);
-                    this.uploadLoading = false;
-                    setTimeout(function () {
-                        destroyNotice();
-                    }, 500);
-                    // this.$store.dispatch('SET_USER', this.userInfo);
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this.form.setFieldsValue({
+                    'email': this.userInfo.email,
+                    'name': this.userInfo.name,
+                    'description': this.userInfo.description
                 });
-            }
+            });
         },
-        beforeUpload(file) {
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            if (!isLt2M) {
-                this.$message.error('图片不能超过2MB!');
+        'methods': {
+            handleSubmit() {
+                let app = this;
+                this.form.validateFields(
+                    (err) => {
+                        if (!err) {
+                            let obj = app.form.getFieldsValue();
+                            obj.id = app.userInfo.id;
+                            obj.avatar = app.userInfo.avatar;
+                            editPersonal(obj).then(res => {
+                                app.loading = false;
+                                if (!checkResponse(res)) {
+                                    return;
+                                }
+                                app.userInfo.email = obj.email;
+                                app.userInfo.name = obj.name;
+                                app.userInfo.name = obj.name;
+                                app.userInfo.description = obj.description;
+                                app.$store.dispatch('SET_USER', app.userInfo);
+                            });
+                        }
+                    }
+                );
+            },
+            handleChange(info) {
+                if (info.file.status === 'uploading') {
+                    notice('正在上传，请稍后...', 'message', 'loading', 0);
+                    this.uploadLoading = true;
+                    return;
+                }
+                if (info.file.status === 'done') {
+                    getBase64(info.file.originFileObj, () => {
+                        this.userInfo.avatar = info.file.response.data.url;
+                        this.$store.dispatch('SET_USER', this.userInfo);
+                        this.uploadLoading = false;
+                        setTimeout(function () {
+                            destroyNotice();
+                        }, 500);
+                        // this.$store.dispatch('SET_USER', this.userInfo);
+                    });
+                }
+            },
+            beforeUpload(file) {
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isLt2M) {
+                    this.$message.error('图片不能超过2MB!');
+                }
+                return isLt2M;
             }
-            return isLt2M;
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

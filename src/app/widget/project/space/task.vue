@@ -1,5 +1,5 @@
 <template>
-    <div class="project-space-task" :class="project.task_board_theme">
+    <div :class="project.task_board_theme" class="project-space-task">
         <div class="project-navigation">
             <div class="project-nav-header">
                 <a-breadcrumb>
@@ -10,8 +10,8 @@
                         <span class="actions">
                              <a-tooltip :mouseEnterDelay="0.3" :title="project.collected ? '取消收藏' : '加入收藏'"
                                         @click="collectProject">
-                            <a-icon type="star" theme="filled" style="color: grey;" v-show="!project.collected"/>
-                            <a-icon type="star" theme="filled" style="color: #ffaf38;" v-show="project.collected"/>
+                            <a-icon style="color: grey;" theme="filled" type="star" v-show="!project.collected"/>
+                            <a-icon style="color: #ffaf38;" theme="filled" type="star" v-show="project.collected"/>
                         </a-tooltip>
                         </span>
                         <span class="label label-normal" v-if="project.private === 0"><a-icon type="global"/> 公开</span>
@@ -21,36 +21,36 @@
             <section class="nav-body">
                 <ul class="nav-wrapper nav nav-underscore pull-left">
                     <li class="actives"><a class="app" data-app="tasks">任务</a></li>
-                    <li class=""><a class="app" data-app="works"
-                                    @click="$router.push('/project/space/files/' + project.code)">
+                    <li class=""><a @click="$router.push('/project/space/files/' + project.code)" class="app"
+                                    data-app="works">
                         文件</a>
-                    <li class=""><a class="app" data-app="build"
-                                    @click="$router.push('/project/space/overview/' + project.code)">
+                    <li class=""><a @click="$router.push('/project/space/overview/' + project.code)" class="app"
+                                    data-app="build">
                         概览</a>
                     </li>
-                    <li class=""><a class="app" data-app="build"
-                                    @click="$router.push('/project/space/features/' + project.code)">
+                    <li class=""><a @click="$router.push('/project/space/features/' + project.code)" class="app"
+                                    data-app="build">
                         版本</a>
                     </li>
                 </ul>
             </section>
             <div class="project-nav-footer">
-                <a class="footer-item" :class="{active:slideMenuKey == 'member'}" @click="visibleDraw('member')">
+                <a :class="{active:slideMenuKey == 'member'}" @click="visibleDraw('member')" class="footer-item">
                     <a-icon type="user"></a-icon>
                     <span> {{projectMembers.length}}</span>
                 </a>
-                <a class="footer-item" :class="{active:slideMenuKey == 'config'}" @click="visibleDraw('config')">
+                <a :class="{active:slideMenuKey == 'config'}" @click="visibleDraw('config')" class="footer-item">
                     <a-icon type="menu"></a-icon>
                     <span> 菜单</span>
                 </a>
             </div>
         </div>
         <wrapper-content :showHeader="false">
-            <draggable v-model="taskStages"
+            <draggable :move="stageMove"
                        :options="{group:'stages',filter:'.undraggables',handle:'.ui-sortable-handle',ghostClass:'stage-ghost',animation: 200,forceFallback:false}"
-                       id="board-scrum-stages" class="board-scrum-stages" :move="stageMove" @update="stageSort">
-                <div class="scrum-stage" v-for="(stage,index) in taskStages" :key="index" :id="stage.code"
-                     :class="{ 'fixed-creator': stage.fixedCreator == true}">
+                       @update="stageSort" class="board-scrum-stages" id="board-scrum-stages" v-model="taskStages">
+                <div :class="{ 'fixed-creator': stage.fixedCreator == true}" :id="stage.code" :key="index" class="scrum-stage"
+                     v-for="(stage,index) in taskStages">
                     <!--<a-spin wrapperClassName="tasks-loading" :spinning="stage.tasksLoading">-->
                     <!--<a-tooltip placement="top" >
                      <template slot="title">
@@ -69,15 +69,15 @@
                                     <template slot="title">
                                         <span>编辑任务列表</span>
                                     </template>
-                                    <a href="javascript:void(0)" class="menu-toggler-title">
-                                        <a-icon type="ellipsis" style="font-size: 18px;"/>
+                                    <a class="menu-toggler-title" href="javascript:void(0)">
+                                        <a-icon style="font-size: 18px;" type="ellipsis"/>
                                     </a>
                                 </a-tooltip>
                                 <!--<div slot="overlay" class="task-popover-content">-->
                                 <!--<header class="popover-header" name="333">
                                     <span class="popover-title">列表菜单</span>
                                 </header>-->
-                                <a-menu slot="overlay" @click="doStage" :selectable="false">
+                                <a-menu :selectable="false" @click="doStage" slot="overlay">
                                     <a-menu-item :key="'editStage_' + stage.code + '_' + index">
                                         <a-icon type="edit"></a-icon>
                                         编辑列表
@@ -104,36 +104,36 @@
                         </div>
                     </header>
                     <!--</a-tooltip>-->
-                    <div class="scrum-stage-wrap ui-sortable"
-                         :class="{ 'hidden-creator-bottom': stage.showTaskCard}">
-                        <vue-scroll :ref="index + '-stage'" @handle-resize="handleResize($event,index)"
-                                    :ops="scrollOps">
+                    <div :class="{ 'hidden-creator-bottom': stage.showTaskCard}"
+                         class="scrum-stage-wrap ui-sortable">
+                        <vue-scroll :ops="scrollOps" :ref="index + '-stage'"
+                                    @handle-resize="handleResize($event,index)">
                             <section :id="stage.code" :task-type-index="index"
                                      class="scrum-stage-content thin-scroll">
-                                <a-spin wrapperClassName="tasks-loading" :spinning="stage.tasksLoading">
+                                <a-spin :spinning="stage.tasksLoading" wrapperClassName="tasks-loading">
                                     <!--未完成列表-->
-                                    <draggable v-model="stage.unDoneTasks"
-                                               :options="{group:'task',ghostClass:'task-ghost',dragClass:'task-drag',fallbackClass:'task-drag',forceFallback:false}"
+                                    <draggable :options="{group:'task',ghostClass:'task-ghost',dragClass:'task-drag',fallbackClass:'task-drag',forceFallback:false}"
                                                @end="taskSort"
-                                               class="scrum-stage-tasks">
+                                               class="scrum-stage-tasks"
+                                               v-model="stage.unDoneTasks">
                                         <template v-for="(task,taskIndex) in stage.unDoneTasks">
-                                            <div class="task task-card ui-sortable-handle"
-                                                 :index="taskIndex"
+                                            <div :class="showTaskPri(task.pri)"
                                                  :id="task.code"
+                                                 :index="taskIndex"
                                                  :key="task. code"
-                                                 :class="showTaskPri(task.pri)"
-                                                 v-if="!task.done && task.canRead"
                                                  @click.stop="taskDetail(task.code,index)"
+                                                 class="task task-card ui-sortable-handle"
+                                                 v-if="!task.done && task.canRead"
                                             >
                                                 <div class="task-priority bg-priority-0"></div>
                                                 <a-tooltip :placement="index > 0 ? 'top':'right'">
                                                     <template slot="title">
-                                                        <span v-if="task.hasUnDone" style="font-size: 12px;">子任务尚未全部完成，无法完成父任务</span>
+                                                        <span style="font-size: 12px;" v-if="task.hasUnDone">子任务尚未全部完成，无法完成父任务</span>
                                                     </template>
-                                                    <div class="check-box-wrapper"
-                                                         @click.stop="taskDone(task.code,index,taskIndex,1)">
-                                                        <a-icon class="check-box" :class="{'disabled': task.hasUnDone}"
-                                                                type="border" :style="{fontSize:'16px'}"/>
+                                                    <div @click.stop="taskDone(task.code,index,taskIndex,1)"
+                                                         class="check-box-wrapper">
+                                                        <a-icon :class="{'disabled': task.hasUnDone}" :style="{fontSize:'16px'}"
+                                                                class="check-box" type="border"/>
                                                     </div>
                                                     <!--<a class="check-box"
                                                        :class="{'disabled': task.hasUnDone}"
@@ -155,7 +155,7 @@
                                                     </div>
                                                     <div class="task-info-wrapper clearfix">
                                                         <div class="task-infos">
-                                                       <span class="label" :class="showTimeLabel(task.end_time)"
+                                                       <span :class="showTimeLabel(task.end_time)" class="label"
                                                              v-if="task.end_time">
                                                             <span :title="task.end_time">
                                                                {{ showTaskTime(task.begin_time,task.end_time)}}
@@ -175,11 +175,11 @@
                                                              <a-icon type="bars"></a-icon>
                                                             <span>{{task.childCount[1]}}/{{task.childCount[0]}}</span>
                                                        </span>
-                                                            <span class="tag muted" v-for="tag in task.tags"
-                                                                  :key="tag.code"
+                                                            <span :key="tag.code" class="tag muted"
+                                                                  v-for="tag in task.tags"
                                                             >
-                                                                <a-badge status="success"
-                                                                         :class="`badge-${tag.tag.color}`"/>
+                                                                <a-badge :class="`badge-${tag.tag.color}`"
+                                                                         status="success"/>
                                                                {{tag.tag.name}}
                                                            </span>
                                                             <span :class="'icon-wrapper text text-' + task.task_execute.color"
@@ -201,66 +201,66 @@
                                         </template>
                                     </draggable>
                                     <!--创建任务卡片-->
-                                    <div class="task-creator-wrap card" :id="'card' + index"
+                                    <div :id="'card' + index" class="task-creator-wrap card"
                                          v-show="stage.showTaskCard">
                                         <form class="task-creator">
-                                            <a-input :ref="`inputTaskName${index}`" v-model="task.name"
-                                                     class="task-content-input" type="textarea"
-                                                     :rows="3"
-                                                     placeholder="任务内容" @keyup.enter="createTask(stage.code,index)"/>
+                                            <a-input :ref="`inputTaskName${index}`" :rows="3"
+                                                     @keyup.enter="createTask(stage.code,index)" class="task-content-input"
+                                                     placeholder="任务内容"
+                                                     type="textarea" v-model="task.name"/>
                                             <div class="handler-wrap">
                                                 <a-dropdown :trigger="['click']">
                                                     <a class="executor-handler"><img
                                                             :src="defaultExecutor.avatar"
                                                             class="avatar img-circle img-24 hinted"> <span
                                                             class="creator-handler-text name">{{ defaultExecutor.name }}</span></a>
-                                                    <a-menu class="executor-handler-menu" @click="selectExecutor"
+                                                    <a-menu @click="selectExecutor" class="executor-handler-menu"
                                                             slot="overlay">
                                                         <a-menu-item
-                                                                v-for="(member,index) in projectMembers"
-                                                                :key="index">
-                                                            <img class="avatar img-circle img-32 pull-left m-r-sm "
-                                                                 :src="member.avatar">
+                                                                :key="index"
+                                                                v-for="(member,index) in projectMembers">
+                                                            <img :src="member.avatar"
+                                                                 class="avatar img-circle img-32 pull-left m-r-sm ">
                                                             <span class="muted"
                                                                   style="line-height: 25px;">{{ member.name }}</span>
-                                                            <a-icon type="check" class="muted"
+                                                            <a-icon class="muted" type="check"
                                                                     v-if="member.code == defaultExecutor.code"></a-icon>
                                                         </a-menu-item>
                                                     </a-menu>
                                                 </a-dropdown>
                                             </div>
                                             <div class="submit-set">
-                                                <a-button type="default" size="large" class="middle-btn"
-                                                          @click.stop="showTaskCard(index,false)">取消
+                                                <a-button @click.stop="showTaskCard(index,false)" class="middle-btn" size="large"
+                                                          type="default">取消
                                                 </a-button>
-                                                <a-button :loading="createTaskLoading" :disabled="!task.name"
-                                                          type="primary" size="large"
-                                                          class="middle-btn" :class="{'disabled-btn':!task.name}"
-                                                          @click.stop="createTask(stage.code,index)">创建
+                                                <a-button :class="{'disabled-btn':!task.name}" :disabled="!task.name"
+                                                          :loading="createTaskLoading" @click.stop="createTask(stage.code,index)"
+                                                          class="middle-btn" size="large"
+                                                          type="primary">创建
                                                 </a-button>
                                             </div>
                                         </form>
                                     </div>
                                     <!--已完成列表-->
-                                    <draggable v-model="stage.doneTasks"
-                                               :options="{group:'task-done',ghostClass:'task-ghost',dragClass:'task-drag',fallbackClass:'task-drag',forceFallback:false}"
+                                    <draggable :options="{group:'task-done',ghostClass:'task-ghost',dragClass:'task-drag',fallbackClass:'task-drag',forceFallback:false}"
                                                @end="taskSort"
-                                               class="scrum-stage-tasks-done">
+                                               class="scrum-stage-tasks-done"
+                                               v-model="stage.doneTasks">
                                         <!--<ul v-if="stage.tasks.length" class="scrum-stage-tasks-done">-->
                                         <template v-for="(task,taskIndex) in stage.doneTasks">
-                                            <div class="task done task-card ui-sortable-handle"
+                                            <div :id="task.code"
                                                  :index="taskIndex"
-                                                 :id="task.code"
                                                  :key="task.code"
-                                                 v-if="task.canRead"
                                                  @click.stop="taskDetail(task.code,index)"
+                                                 class="task done task-card ui-sortable-handle"
+                                                 v-if="task.canRead"
                                             >
                                                 <div class="task-priority bg-priority-0"></div>
-                                                <span class="check-box-wrapper"
-                                                      @click.stop="taskDone(task.code,index,taskIndex,0)">
-                                                       <a-icon class="check-box" type="check-square"
-                                                               :style="{fontSize:'16px'}"
-                                                               :class="{'disabled': task.hasUnDone}"/>
+                                                <span @click.stop="taskDone(task.code,index,taskIndex,0)"
+                                                      class="check-box-wrapper">
+                                                       <a-icon :class="{'disabled': task.hasUnDone}" :style="{fontSize:'16px'}"
+                                                               class="check-box"
+                                                               type="check-square"/>
                                                 </span>
                                                 <!--<a class="check-box"
                                                    @click.stop="taskDone(task.code,index,taskIndex,0)">
@@ -274,16 +274,16 @@
                                                             <template slot="title">
                                                                 <span>{{task.executor.name}}</span>
                                                             </template>
-                                                            <img v-if="task.executor && task.executor.avatar"
-                                                                 :src="task.executor.avatar"
+                                                            <img :src="task.executor.avatar"
                                                                  :title="task.executor.name"
-                                                                 class="avatar img-circle img-24 hinted">
+                                                                 class="avatar img-circle img-24 hinted"
+                                                                 v-if="task.executor && task.executor.avatar">
                                                         </a-tooltip>
                                                     </div>
                                                     <div class="task-info-wrapper clearfix">
                                                         <div class="task-infos">
-                                            <span class="tag muted" :class="'tag-color-'+ tag.color"
-                                                  v-for="(tag,tag_index) in task.task_tag_item_list" :key="tag.code"> {{ tag.name }} </span>
+                                            <span :class="'tag-color-'+ tag.color" :key="tag.code"
+                                                  class="tag muted" v-for="(tag,tag_index) in task.task_tag_item_list"> {{ tag.name }} </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -298,10 +298,10 @@
                                         </li>
                                     </div>
                                     <!--添加任务按钮-->
-                                    <div class="task-creator-handler-wrap" @click.stop="showTaskCard(index)"
+                                    <div @click.stop="showTaskCard(index)" class="task-creator-handler-wrap"
                                          v-if="!stage.showTaskCard">
                                         <a class="task-creator-handler link-add-handler">
-                                            <a-icon type="plus-circle" style="padding-right: 6px;"></a-icon>
+                                            <a-icon style="padding-right: 6px;" type="plus-circle"></a-icon>
                                             添加任务
                                         </a>
                                     </div>
@@ -314,22 +314,22 @@
                 <div class="scrum-stage undraggable create-stage">
                     <header class="scrum-stage-header">
                         <div class="stage-name hinted" style="width: 100%">
-                            <a class="muted" v-show="!showCreateStage" @click="showInputStrageName">
+                            <a @click="showInputStrageName" class="muted" v-show="!showCreateStage">
                                 <a-icon type="plus"/>
                                 <span class="m-l-xs">新建任务列表</span>
                             </a>
                             <div v-show="showCreateStage">
                                 <div>
-                                    <a-input ref="inputStageName" v-model="stageName" placeholder="新建任务列表..."
-                                             @keyup.enter="creteStage"
-                                             auto-focus></a-input>
+                                    <a-input @keyup.enter="creteStage" auto-focus placeholder="新建任务列表..."
+                                             ref="inputStageName"
+                                             v-model="stageName"></a-input>
                                 </div>
                                 <div class="submit-set create-stage-footer">
-                                    <a type="text" class="cancel-text muted"
-                                       @click="showCreateStage = !showCreateStage">
+                                    <a @click="showCreateStage = !showCreateStage" class="cancel-text muted"
+                                       type="text">
                                         取消
                                     </a>
-                                    <a-button type="primary" class="middle-btn" @click="creteStage">保存</a-button>
+                                    <a-button @click="creteStage" class="middle-btn" type="primary">保存</a-button>
                                 </div>
                             </div>
                         </div>
@@ -340,19 +340,19 @@
         </wrapper-content>
         <!--编辑任务列表-->
         <a-modal
-                :width="360"
-                v-model="stageModal.modalStatus"
-                :title="stageModal.modalTitle"
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
+                :title="stageModal.modalTitle"
+                :width="360"
+                v-model="stageModal.modalStatus"
         >
             <a-form
-                    @submit.prevent="editStage"
                     :form="stageModal.form"
+                    @submit.prevent="editStage"
             >
                 <a-form-item
                 >
-                    <a-input ref="inputStageTitle" placeholder='列表标题'
+                    <a-input placeholder='列表标题' ref="inputStageTitle"
                              v-decorator="[
                                             'name',
                                             {rules: [{ required: true, message: '请输入列表标题' }]}
@@ -361,32 +361,32 @@
                 <a-form-item
                 >
                     <div class="action-btn pull-right">
-                        <a type="text" class="cancel-text muted"
-                           @click="stageModal.modalStatus = false">
+                        <a @click="stageModal.modalStatus = false" class="cancel-text muted"
+                           type="text">
                             取消
                         </a>
-                        <a-button type="primary" htmlType='submit' class="middle-btn">保存</a-button>
+                        <a-button class="middle-btn" htmlType='submit' type="primary">保存</a-button>
                     </div>
                 </a-form-item>
             </a-form>
         </a-modal>
         <!--项目成员-->
         <a-drawer
-                wrapClassName="info-drawer"
+                :visible="inviteMemberDraw.visible"
+                @close="inviteMemberDraw.visible = false"
+                placement="right"
                 title="项目成员"
                 width=350
-                placement="right"
-                @close="inviteMemberDraw.visible = false"
-                :visible="inviteMemberDraw.visible"
+                wrapClassName="info-drawer"
         >
             <div class="search-content">
-                <a-input v-model="inviteMemberDraw.keyword" size="large" placeholder="输入昵称或邮箱查找">
+                <a-input placeholder="输入昵称或邮箱查找" size="large" v-model="inviteMemberDraw.keyword">
                     <a-icon slot="prefix" type="search"/>
                 </a-input>
             </div>
             <div class="member-list">
                 <div class="member-list-item ant-list-item header-action">
-                    <div class="ant-list-item-meta" @click="showInviteMember = true">
+                    <div @click="showInviteMember = true" class="ant-list-item-meta">
                         <div class="ant-list-item-meta-avatar">
                             <a-avatar icon="plus"></a-avatar>
                         </div>
@@ -396,14 +396,14 @@
                     </div>
                 </div>
                 <a-list
-                        itemLayout="horizontal"
-                        :loading="inviteMemberDraw.searching"
                         :dataSource="projectMembers"
+                        :loading="inviteMemberDraw.searching"
                         :locale="{emptyText: (inviteMemberDraw.keyword && inviteMemberDraw.keyword.length > 1) ? '没有搜索到相关成员' : ''}"
+                        itemLayout="horizontal"
                 >
                     <a-list-item class="member-list-item" slot="renderItem" slot-scope="item,index">
                    <span slot="actions" v-if="!item.is_owner">
-                         <a class="muted" @click="removeMember(item,index)"><a-icon type="user-delete"/> 移除</a>
+                         <a @click="removeMember(item,index)" class="muted"><a-icon type="user-delete"/> 移除</a>
                        <!-- <a-button size="small" type="dashed" icon="user-add"
                                   v-if="!item.is_owner"
                         >操作</a-button>-->
@@ -412,7 +412,7 @@
                                 :description="item.email"
                         >
                             <span slot="title">{{item.name}}</span>
-                            <a-avatar slot="avatar" icon="user" :src="item.avatar"/>
+                            <a-avatar :src="item.avatar" icon="user" slot="avatar"/>
                         </a-list-item-meta>
                     </a-list-item>
                 </a-list>
@@ -420,12 +420,12 @@
         </a-drawer>
         <!--项目设置菜单-->
         <a-drawer
-                wrapClassName="info-drawer"
+                :visible="configDraw.visible"
+                @close="configDraw.visible = false"
+                placement="right"
                 title="项目设置"
                 width=350
-                placement="right"
-                @close="configDraw.visible = false"
-                :visible="configDraw.visible"
+                wrapClassName="info-drawer"
         >
             <div class="config-wrapper">
                 <ul class="config-menus">
@@ -454,14 +454,14 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a-upload name="file"
-                                  :showUploadList="false"
-                                  :action="uploadAction"
+                        <a-upload :action="uploadAction"
                                   :beforeUpload="beforeUpload"
                                   :data="{projectCode: code}"
                                   :headers="headers"
-                                  @change="handleChange">
-                            <a class="text-default" :loading="uploadLoading" :disabled="uploadLoading">
+                                  :showUploadList="false"
+                                  @change="handleChange"
+                                  name="file">
+                            <a :disabled="uploadLoading" :loading="uploadLoading" class="text-default">
                                 <a-icon type="upload" v-show="!uploadLoading"/>
                                 上传文件导入任务
                             </a>
@@ -491,728 +491,740 @@
         </a-drawer>
         <!--项目设置-->
         <a-modal
-                destroyOnClose
-                class="project-config-modal"
-                :width="800"
-                v-model="projectModal.modalStatus"
-                :title="projectModal.modalTitle"
                 :footer="null"
+                :title="projectModal.modalTitle"
+                :width="800"
+                class="project-config-modal"
+                destroyOnClose
+                v-model="projectModal.modalStatus"
         >
             <project-config :code="code" @update="updateProject"></project-config>
         </a-modal>
         <!--回收站-->
         <a-modal
-                class="recycle-bin-modal"
-                :width="800"
-                v-model="recycleModal.modalStatus"
-                :title="recycleModal.modalTitle"
                 :footer="null"
+                :title="recycleModal.modalTitle"
+                :width="800"
+                class="recycle-bin-modal"
+                v-model="recycleModal.modalStatus"
         >
-            <recycle-bin v-if="recycleModal.modalStatus" :code="code" @update="init"></recycle-bin>
+            <recycle-bin :code="code" @update="init" v-if="recycleModal.modalStatus"></recycle-bin>
         </a-modal>
         <!--任务标签-->
         <a-modal
-                class="task-tag-modal"
-                :width="800"
-                v-model="taskTagModal.modalStatus"
-                :title="taskTagModal.modalTitle"
                 :footer="null"
+                :title="taskTagModal.modalTitle"
+                :width="800"
+                class="task-tag-modal"
+                v-model="taskTagModal.modalStatus"
         >
-            <task-tag v-if="taskTagModal.modalStatus" :code="code" @update="init"></task-tag>
+            <task-tag :code="code" @update="init" v-if="taskTagModal.modalStatus"></task-tag>
         </a-modal>
         <!--设置任务执行者-->
         <a-modal
-                class="invite-project-member"
-                :width="360"
-                v-model="projectMemberModal.modalStatus"
-                :title="projectMemberModal.modalTitle"
                 :footer="null"
+                :title="projectMemberModal.modalTitle"
+                :width="360"
+                class="invite-project-member"
+                v-model="projectMemberModal.modalStatus"
         >
             <div class="member-list">
                 <a-list
+                        :dataSource="projectMembers"
+                        :loading="loading"
                         class="project-list"
                         itemLayout="horizontal"
-                        :loading="loading"
-                        :dataSource="projectMembers"
                 >
                     <a-list-item slot="renderItem" slot-scope="item">
                     <span slot="actions">
-                        <a-button size="small" type="dashed" icon="user-add"
-                                  @click="setExecutor(item)"
+                        <a-button @click="setExecutor(item)" icon="user-add" size="small"
+                                  type="dashed"
                         >设置</a-button>
                      </span>
                         <a-list-item-meta
                                 :description="item.email"
                         >
                             <span slot="title">{{item.name}}</span>
-                            <a-avatar slot="avatar" icon="user" :src="item.avatar"/>
+                            <a-avatar :src="item.avatar" icon="user" slot="avatar"/>
                         </a-list-item-meta>
                     </a-list-item>
                 </a-list>
             </div>
         </a-modal>
 
-        <invite-project-member v-model="showInviteMember" :project-code="code"
-                               v-if="showInviteMember"></invite-project-member>
+        <invite-project-member :project-code="code" v-if="showInviteMember"
+                               v-model="showInviteMember"></invite-project-member>
     </div>
 </template>
 
 <script>
-import {mapState} from 'vuex';
-import _ from 'lodash';
-import moment from 'moment';
-import draggable from 'vuedraggable';
-import inviteProjectMember from '@/app/exports/project/inviteProjectMember';
-import projectConfig from '@/app/exports/project/projectConfig';
-import RecycleBin from '@/app/exports/project/recycleBin';
-import TaskTag from '@/app/exports/project/taskTag';
+    import {mapState} from 'vuex';
+    import _ from 'lodash';
+    import moment from 'moment';
+    import draggable from 'vuedraggable';
+    import inviteProjectMember from '@/app/exports/project/inviteProjectMember';
+    import projectConfig from '@/app/exports/project/projectConfig';
+    import RecycleBin from '@/app/exports/project/recycleBin';
+    import TaskTag from '@/app/exports/project/taskTag';
 
-import {list as getTaskStages, sort, tasks as getTasks} from '../../../frames/restapi/taskStages';
-import {read as getProject} from '../../../frames/restapi/project';
-import {inviteMember, list as getProjectMembers, removeMember} from '../../../frames/restapi/projectMember';
-import {save as createTask, taskDone, sort as sortTask, recycleBatch, batchAssignTask} from '../../../frames/restapi/task';
-import {save as createState, edit as editStage, del as delStage} from '../../../frames/restapi/taskStages';
-import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../../assets/js/utils';
-import {formatTaskTime} from '../../../../assets/js/dateTime';
-import {collect} from '../../../frames/restapi/projectCollect';
-import {notice} from '../../../../assets/js/notice';
+    import {
+        del as delStage,
+        edit as editStage,
+        list as getTaskStages,
+        save as createState,
+        sort,
+        tasks as getTasks
+    } from '../../../frames/restapi/taskStages';
+    import {read as getProject} from '../../../frames/restapi/project';
+    import {inviteMember, list as getProjectMembers, removeMember} from '../../../frames/restapi/projectMember';
+    import {
+        batchAssignTask,
+        recycleBatch,
+        save as createTask,
+        sort as sortTask,
+        taskDone
+    } from '../../../frames/restapi/task';
+    import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../../assets/js/utils';
+    import {formatTaskTime} from '../../../../assets/js/dateTime';
+    import {collect} from '../../../frames/restapi/projectCollect';
+    import {notice} from '../../../../assets/js/notice';
 
-export default {
-    'name': 'project-space-task',
-    'components': {
-        RecycleBin,
-        TaskTag,
-        draggable,
-        inviteProjectMember,
-        projectConfig
-    },
-    data() {
-        return {
-            'code': this.$route.params.code,
-            'loading': true,
-            'project': {'task_board_theme': 'simple'},
-            'stageName': '',
-            'task': {}, //当前任务
-            'taskStages': [], //任务列表
-            'defaultExecutor': {},//默认执行人
-            'projectMembers': [], //项目成员列表
-            'projectMembersCopy': [], //项目成员列表副本
-            'createTaskLoading': false, //创建任务loading
-            'showCreateStage': false,
-
-            'preCode': '',
-            'nextCode': '',
-
-            'stageKeys': [],
-            'stageModal': {
-                'form': this.$form.createForm(this),
-                'stageCode': '',
-                'stageIndex': 0,
-                'modalStatus': false,
-                'confirmLoading': false,
-                'modalTitle': '编辑列表'
-            },
-
-            'slideMenuKey': '',
-            'showInviteMember': false,
-            'inviteMemberDraw': {
-                'visible': false,
-                'keyword': '',
-                'searching': false,
-                'list': []
-            },
-            'configDraw': {
-                'visible': false
-            },
-
-
-            'downLoadUrl': getUploadUrl('project/task/_downloadTemplate'),
-            'uploadLoading': false,
-            'uploadAction': getApiUrl('project/task/uploadFile'),
-
-            /*项目设置*/
-            'projectModal': {
-                'modalStatus': false,
-                'modalTitle': '项目设置'
-            },
-            /*回收站*/
-            'recycleModal': {
-                'modalStatus': false,
-                'modalTitle': '查看回收站'
-            },
-            /*任务标签*/
-            'taskTagModal': {
-                'modalStatus': false,
-                'modalTitle': '任务标签'
-            },
-
-            /*项目成员*/
-            'projectMemberModal': {
-                'loading': false,
-                'currentStageIndex': 0,
-                'modalStatus': false,
-                'modalTitle': '设置任务执行者'
-            }
-        };
-    },
-    'computed': {
-        ...mapState({
-            'userInfo': state => state.userInfo,
-            'viewRefresh': state => state.common.viewRefresh,
-            'socketAction': state => state.socketAction
-        }),
-        headers() {
-            return getAuthorization();
+    export default {
+        'name': 'project-space-task',
+        'components': {
+            RecycleBin,
+            TaskTag,
+            draggable,
+            inviteProjectMember,
+            projectConfig
         },
-        scrollOps() {
+        data() {
             return {
-                'rail': {
-                    'background': '#e5e5e5',
-                    'opacity': 1
+                'code': this.$route.params.code,
+                'loading': true,
+                'project': {'task_board_theme': 'simple'},
+                'stageName': '',
+                'task': {}, //当前任务
+                'taskStages': [], //任务列表
+                'defaultExecutor': {},//默认执行人
+                'projectMembers': [], //项目成员列表
+                'projectMembersCopy': [], //项目成员列表副本
+                'createTaskLoading': false, //创建任务loading
+                'showCreateStage': false,
+
+                'preCode': '',
+                'nextCode': '',
+
+                'stageKeys': [],
+                'stageModal': {
+                    'form': this.$form.createForm(this),
+                    'stageCode': '',
+                    'stageIndex': 0,
+                    'modalStatus': false,
+                    'confirmLoading': false,
+                    'modalTitle': '编辑列表'
                 },
-                'bar': {
-                    'keepShow': true
+
+                'slideMenuKey': '',
+                'showInviteMember': false,
+                'inviteMemberDraw': {
+                    'visible': false,
+                    'keyword': '',
+                    'searching': false,
+                    'list': []
+                },
+                'configDraw': {
+                    'visible': false
+                },
+
+
+                'downLoadUrl': getUploadUrl('project/task/_downloadTemplate'),
+                'uploadLoading': false,
+                'uploadAction': getApiUrl('project/task/uploadFile'),
+
+                /*项目设置*/
+                'projectModal': {
+                    'modalStatus': false,
+                    'modalTitle': '项目设置'
+                },
+                /*回收站*/
+                'recycleModal': {
+                    'modalStatus': false,
+                    'modalTitle': '查看回收站'
+                },
+                /*任务标签*/
+                'taskTagModal': {
+                    'modalStatus': false,
+                    'modalTitle': '任务标签'
+                },
+
+                /*项目成员*/
+                'projectMemberModal': {
+                    'loading': false,
+                    'currentStageIndex': 0,
+                    'modalStatus': false,
+                    'modalTitle': '设置任务执行者'
                 }
             };
-        }
-    },
-    'watch': {
-        $route(to, from) {
-            if (from.name == 'taskdetail') {
-                const stageIndex = from.query.from;
+        },
+        'computed': {
+            ...mapState({
+                'userInfo': state => state.userInfo,
+                'viewRefresh': state => state.common.viewRefresh,
+                'socketAction': state => state.socketAction
+            }),
+            headers() {
+                return getAuthorization();
+            },
+            scrollOps() {
+                return {
+                    'rail': {
+                        'background': '#e5e5e5',
+                        'opacity': 1
+                    },
+                    'bar': {
+                        'keepShow': true
+                    }
+                };
+            }
+        },
+        'watch': {
+            $route(to, from) {
+                if (from.name === 'taskdetail') {
+                    const stageIndex = from.query.from;
+                    // this.getTaskStages(false);
+                    if (stageIndex !== undefined) {
+                        getTasks({'stageCode': this.taskStages[stageIndex].code}).then((res) => {
+                            this.taskStages[stageIndex].tasksLoading = false;
+                            this.taskStages[stageIndex].tasks = res.data;
+                            let doneTasks = this.taskStages[stageIndex].doneTasks = [];
+                            let unDoneTasks = this.taskStages[stageIndex].unDoneTasks = [];
+                            res.data.forEach((task) => {
+                                if (task.done) {
+                                    doneTasks.push(task);
+                                } else {
+                                    unDoneTasks.push(task);
+                                }
+                            });
+                        });
+                    }
+                }
+            },
+            socketAction(val) {
+                if (val.action === 'organization:task') {
+                    const data = val.data.data;
+                    if (data.projectCode === this.code) {
+                        this.getTaskStages(false);
+                    }
+                }
+            },
+            viewRefresh() {
+                // console.log('viewRefresh');
                 // this.getTaskStages(false);
-                if (stageIndex != undefined) {
-                    getTasks({'stageCode': this.taskStages[stageIndex].code}).then((res) => {
-                        this.taskStages[stageIndex].tasksLoading = false;
-                        this.taskStages[stageIndex].tasks = res.data;
-                        let doneTasks = this.taskStages[stageIndex].doneTasks = [];
-                        let unDoneTasks = this.taskStages[stageIndex].unDoneTasks = [];
-                        res.data.forEach((task) => {
-                            if (task.done) {
-                                doneTasks.push(task);
-                            } else {
-                                unDoneTasks.push(task);
+            },
+            'inviteMemberDraw': {
+                handler(newVal) {
+                    if (newVal.visible) {
+                        this.slideMenuKey = 'member';
+                    } else {
+                        this.slideMenuKey = false;
+                    }
+                    if (newVal.keyword) {
+                        this.searchInviteMember();
+                    }
+                },
+                'deep': true
+            },
+            'configDraw': {
+                handler(newVal) {
+                    if (newVal.visible) {
+                        this.slideMenuKey = 'config';
+                    } else {
+                        this.slideMenuKey = false;
+                    }
+                },
+                'deep': true
+            },
+            showInviteMember(val) {
+                if (!val) {
+                    this.getProjectMembers();
+                }
+            }
+        },
+        created() {
+            this.defaultExecutor = this.userInfo;
+            this.getProject();
+            this.getProjectMembers();
+            this.init();
+        },
+        'methods': {
+            init() {
+                this.getTaskStages();
+            },
+            getProject() {
+                this.loading = true;
+                getProject(this.code).then((res) => {
+                    this.loading = false;
+                    this.project = res.data;
+                });
+            },
+            getProjectMembers() {
+                getProjectMembers({'projectCode': this.code, 'pageSize': 100}).then((res) => {
+                    this.projectMembers = res.data.list;
+                    this.projectMembersCopy = res.data.list;
+                });
+            },
+            getTaskStages(showLoading = true) {
+                let app = this;
+                getTaskStages({'projectCode': this.code, 'pageSize': 30}).then(async (res) => {
+                    let taskStages = [];
+                    if (!showLoading) {
+                        res.data.list.forEach((v) => {
+                            v.tasksLoading = false;
+                            taskStages.push(v);
+                        });
+                        // this.taskStages = taskStages;
+                    } else {
+                        //提前赋值，展现loading
+                        this.taskStages = taskStages = res.data.list;
+                    }
+                    if (taskStages) {
+                        for (const v of taskStages) {
+                            await getTasks({'stageCode': v.code}).then((res) => {
+                                let canNotReadCount = 0;
+                                res.data.forEach((task) => {
+                                    if (!task.canRead) {
+                                        canNotReadCount++;
+                                    }
+                                    if (task.done) {
+                                        v.doneTasks.push(task);
+                                    } else {
+                                        v.unDoneTasks.push(task);
+                                    }
+                                });
+                                v.canNotReadCount = canNotReadCount;
+                                v.tasksLoading = false;
+                                v.tasks = res.data;
+                            });
+                        }
+                    }
+                    if (!showLoading) {
+                        app.taskStages = taskStages;
+                    }
+                });
+            },
+            filterTask(tasks, done) {
+                return tasks.filter(item => item.done === done);
+            },
+            //显示添加任务卡片
+            showTaskCard(index = false, show = true) {
+                this.taskStages.forEach((v) => {
+                    v.showTaskCard = false;
+                });
+                if (index === false) {
+                    return false;
+                }
+                this.taskStages[index].showTaskCard = show;
+                this.$nextTick(() => {
+                    //滚动创建到创建窗口
+                    this.$refs[index + '-stage'][0].scrollIntoView('#card' + index);
+                    this.$refs[`inputTaskName${index}`][0].focus();
+                });
+            },
+            selectExecutor({key}) {
+                this.defaultExecutor = this.projectMembers[key];
+            },
+            //准备添加任务
+            createTask(stageCode, stageIndex) {
+                if (!this.task.name) {
+                    this.$message.warning('任务内容不能为空', 2);
+                    return false;
+                }
+                this.task.stage_code = stageCode;
+                this.task.project_code = this.code;
+                this.task.assign_to = this.defaultExecutor.code;
+                //判断换行，添加多条任务
+                // let titles = this.task.name.split("\n");
+                // if (titles.length > 1) {
+                //     this.$confirm({
+                //         title: '任务提示',
+                //         content: `系统检测到你输入了 ${titles.length} 行内容，你是想创建多条任务吗？`,
+                //         okText: '创建1条',
+                //         cancelText: `创建${titles.length}条`,
+                //         onCancel() {
+                //             console.log('Cancel');
+                //         },
+                //         onOk() {
+                //             this.confirmCreateTask(stageIndex);
+                //             return Promise.resolve();
+                //         }
+                //     });
+                //     return false;
+                // }
+                this.confirmCreateTask(stageIndex);
+            },
+            //添加任务
+            confirmCreateTask(stageIndex) {
+                let app = this;
+                if (app.createTaskLoading) {
+                    app.$message.warning('正在添加任务，请稍后...', 2);
+                    return false;
+                }
+                setTimeout(function () {
+                    if (app.createTaskLoading === true) {
+                        app.$message.loading({
+                            'content': '正在添加任务，请稍后...',
+                            'duration': 5
+                        });
+                    }
+                }, 2000);
+                app.createTaskLoading = true;
+                createTask(app.task).then(res => {
+                    app.createTaskLoading = false;
+                    const result = checkResponse(res);
+                    if (result) {
+                        app.$message.destroy();
+                        let taskStages = app.taskStages[stageIndex];
+                        taskStages.tasks.push(res.data);
+                        app.taskStages[stageIndex].unDoneTasks.push(res.data);
+                        // getTasks({stageCode: app.task.stage_code}).then((res) => {
+                        //     let taskStages = app.taskStages[stageIndex];
+                        //     taskStages.tasks = res.data;
+                        // });
+                        app.task = {};
+                        // notice({
+                        //     title: '添加任务成功',
+                        //     msg: '你可以点击该任务继续进行详细设置'
+                        // }, 'notice', 'success', 5);
+                    }
+                })['catch'](() => {
+                    app.createTaskLoading = false;
+                });
+            },
+            taskDone(taskCode, stageIndex, taskIndex, done) {
+                let task = null;
+                let unDoneTasks = this.taskStages[stageIndex].unDoneTasks;
+                let doneTasks = this.taskStages[stageIndex].doneTasks;
+                if (done) {
+                    task = unDoneTasks[taskIndex];
+                } else {
+                    task = doneTasks[taskIndex];
+                }
+                // let task = this.taskStages[stageIndex].tasks[taskIndex];
+                if (task.hasUnDone) {
+                    return false;
+                }
+                task.done = done;
+                if (done) {
+                    unDoneTasks.splice(taskIndex, 1);
+                    doneTasks.push(task);
+                    doneTasks = doneTasks.sort(function (a, b) {
+                        if (a.sort === b.sort) {
+                            return a.id_num - b.id_num;
+                        } else {
+                            return a.sort - b.sort;
+                        }
+                    });
+                } else {
+                    doneTasks.splice(taskIndex, 1);
+                    unDoneTasks.push(task);
+                    unDoneTasks = unDoneTasks.sort(function (a, b) {
+                        if (a.sort === b.sort) {
+                            return a.id_num - b.id_num;
+                        } else {
+                            return a.sort - b.sort;
+                        }
+                    });
+                }
+                taskDone(taskCode, done).then((res) => {
+                    const result = checkResponse(res);
+                    if (!result) {
+                        return false;
+                    }
+                    //可能会触发工作流，所以全部刷新
+                    this.getTaskStages(false);
+                });
+            },
+            showInputStrageName() {
+                this.showCreateStage = !this.showCreateStage;
+                this.$nextTick(() => {
+                    this.$refs.inputStageName.focus();
+                });
+            },
+            doStage(action) {
+                let app = this;
+                let actionKeys = action.key.split('_');
+                const stageCode = actionKeys[actionKeys.length - 2];
+                const stageIndex = actionKeys[actionKeys.length - 1];
+                const actionKey = actionKeys[0];
+                switch (actionKey) {
+                    case 'editStage':
+                        this.stageModal.stageCode = stageCode;
+                        this.stageModal.stageIndex = stageIndex;
+                        this.$nextTick(() => {
+                            this.stageModal.form.setFieldsValue({
+                                'name': this.taskStages[stageIndex].name
+                            });
+                            this.$refs.inputStageTitle.focus();
+                        });
+                        this.stageModal.modalStatus = true;
+                        break;
+                    case 'recycleBatch':
+                        //您确定要把列表下的所有任务移到回收站吗？
+                        this.$confirm({
+                            'title': '移到回收站',
+                            'content': '您确定要把列表下的所有任务移到回收站吗？',
+                            'okText': '移到回收站',
+                            'okType': 'danger',
+                            'cancelText': '再想想',
+                            onOk() {
+                                app.taskStages[stageIndex].tasks = [];
+                                app.$set(app.taskStages[stageIndex], 'doneTasks', []);
+                                recycleBatch({'stageCode': stageCode}).then(res => {
+                                    const result = checkResponse(res);
+                                    if (!result) {
+                                        return false;
+                                    }
+                                    app.$set(app.taskStages[stageIndex], 'doneTasks', []);
+                                    app.$set(app.taskStages[stageIndex], 'unDoneTasks', []);
+                                });
+                                return Promise.resolve();
                             }
                         });
-                    });
-                }
-            }
-        },
-        socketAction(val) {
-            if (val.action === 'organization:task') {
-                const data = val.data.data;
-                if (data.projectCode == this.code) {
-                    this.getTaskStages(false);
-                }
-            }
-        },
-        viewRefresh() {
-            // console.log('viewRefresh');
-            // this.getTaskStages(false);
-        },
-        'inviteMemberDraw': {
-            handler(newVal) {
-                if (newVal.visible) {
-                    this.slideMenuKey = 'member';
-                } else {
-                    this.slideMenuKey = false;
-                }
-                if (newVal.keyword) {
-                    this.searchInviteMember();
-                }
-            },
-            'deep': true
-        },
-        'configDraw': {
-            handler(newVal) {
-                if (newVal.visible) {
-                    this.slideMenuKey = 'config';
-                } else {
-                    this.slideMenuKey = false;
+                        break;
+                    case 'setEndTime':
+                        this.set_type_endTime_modal = true;
+                        break;
+                    case 'setExecutor':
+                        this.projectMemberModal.currentStageIndex = stageIndex;
+                        this.projectMemberModal.modalStatus = true;
+                        break;
+                    case 'delStage':
+                        if (this.taskStages[stageIndex].tasks.length > 0) {
+                            this.$warning({
+                                'title': '删除列表',
+                                'content': '请先清空此列表上的任务，然后再删除这个列表',
+                                'okText': '确定'
+                            });
+                            return false;
+                        }
+                        this.$confirm({
+                            'title': '删除列表',
+                            'content': '您确定要永远删除这个列表吗？',
+                            'okText': '删除',
+                            'okType': 'danger',
+                            'cancelText': '再想想',
+                            onOk() {
+                                delStage(stageCode);
+                                app.taskStages.splice(stageIndex, 1);
+                                return Promise.resolve();
+                            }
+                        });
+                        break;
                 }
             },
-            'deep': true
-        },
-        showInviteMember(val) {
-            if (!val) {
-                this.getProjectMembers();
-            }
-        }
-    },
-    created() {
-        this.defaultExecutor = this.userInfo;
-        this.getProject();
-        this.getProjectMembers();
-        this.init();
-    },
-    'methods': {
-        init() {
-            this.getTaskStages();
-        },
-        getProject() {
-            this.loading = true;
-            getProject(this.code).then((res) => {
-                this.loading = false;
-                this.project = res.data;
-            });
-        },
-        getProjectMembers() {
-            getProjectMembers({'projectCode': this.code, 'pageSize': 100}).then((res) => {
-                this.projectMembers = res.data.list;
-                this.projectMembersCopy = res.data.list;
-            });
-        },
-        getTaskStages(showLoading = true) {
-            let app = this;
-            getTaskStages({'projectCode': this.code, 'pageSize': 30}).then(async (res) => {
-                let taskStages = [];
-                if (!showLoading) {
-                    res.data.list.forEach((v) => {
-                        v.tasksLoading = false;
-                        taskStages.push(v);
-                    });
-                    // this.taskStages = taskStages;
-                } else {
-                    //提前赋值，展现loading
-                    this.taskStages = taskStages = res.data.list;
+            creteStage() {
+                if (!this.stageName) {
+                    this.$message.warning('请输入列表名称', 2);
+                    return false;
                 }
-                if (taskStages) {
-                    for (const v of taskStages) {
-                        await getTasks({'stageCode': v.code}).then((res) => {
+                createState({'name': this.stageName, 'projectCode': this.code}).then(res => {
+                    const result = checkResponse(res);
+                    if (!result) {
+                        return false;
+                    }
+                    const stage = res.data;
+                    this.taskStages.push(stage);
+                    this.stageName = '';
+                    this.$nextTick(() => {
+                        document.getElementById('board-scrum-stages').scrollLeft = 10000;
+                    });
+                });
+            },
+            editStage() {
+                let stage = this.stageModal.form.getFieldsValue();
+                if (!stage.name) {
+                    this.$message.warning('请输入列表名称', 2);
+                    return false;
+                }
+                editStage({'name': stage.name, 'stageCode': this.stageModal.stageCode}).then((res) => {
+                    const result = checkResponse(res);
+                    if (!result) {
+                        return false;
+                    }
+                    this.taskStages[this.stageModal.stageIndex].name = stage.name;
+                    this.stageModal.modalStatus = false;
+                });
+            },
+            setExecutor(member) {
+                let stage = this.taskStages[this.projectMemberModal.currentStageIndex];
+                let taskCodes = [];
+                stage.tasks.forEach((v) => {
+                    if (v.canRead) {
+                        taskCodes.push(v.code);
+                    }
+                });
+                if (taskCodes) {
+                    batchAssignTask({'taskCodes': JSON.stringify(taskCodes), 'executorCode': member.code}).then(res => {
+                        this.projectMemberModal.modalStatus = false;
+                        if (!checkResponse(res)) {
+                            return false;
+                        }
+                        getTasks({'stageCode': stage.code}).then((res) => {
                             let canNotReadCount = 0;
                             res.data.forEach((task) => {
                                 if (!task.canRead) {
                                     canNotReadCount++;
                                 }
-                                if (task.done) {
-                                    v.doneTasks.push(task);
-                                } else {
-                                    v.unDoneTasks.push(task);
-                                }
                             });
-                            v.canNotReadCount = canNotReadCount;
-                            v.tasksLoading = false;
-                            v.tasks = res.data;
+                            stage.canNotReadCount = canNotReadCount;
+                            stage.tasksLoading = false;
+                            stage.tasks = res.data;
                         });
-                    }
-                }
-                if (!showLoading) {
-                    app.taskStages = taskStages;
-                }
-            });
-        },
-        filterTask(tasks, done) {
-            return tasks.filter(item => item.done == done);
-        },
-        //显示添加任务卡片
-        showTaskCard(index = false, show = true) {
-            this.taskStages.forEach((v) => {
-                v.showTaskCard = false;
-            });
-            if (index === false) {
-                return false;
-            }
-            this.taskStages[index].showTaskCard = show;
-            this.$nextTick(() => {
-                //滚动创建到创建窗口
-                this.$refs[index + '-stage'][0].scrollIntoView('#card' + index);
-                this.$refs[`inputTaskName${index}`][0].focus();
-            });
-        },
-        selectExecutor({key}) {
-            this.defaultExecutor = this.projectMembers[key];
-        },
-        //准备添加任务
-        createTask(stageCode, stageIndex) {
-            if (!this.task.name) {
-                this.$message.warning('任务内容不能为空', 2);
-                return false;
-            }
-            this.task.stage_code = stageCode;
-            this.task.project_code = this.code;
-            this.task.assign_to = this.defaultExecutor.code;
-            //判断换行，添加多条任务
-            // let titles = this.task.name.split("\n");
-            // if (titles.length > 1) {
-            //     this.$confirm({
-            //         title: '任务提示',
-            //         content: `系统检测到你输入了 ${titles.length} 行内容，你是想创建多条任务吗？`,
-            //         okText: '创建1条',
-            //         cancelText: `创建${titles.length}条`,
-            //         onCancel() {
-            //             console.log('Cancel');
-            //         },
-            //         onOk() {
-            //             this.confirmCreateTask(stageIndex);
-            //             return Promise.resolve();
-            //         }
-            //     });
-            //     return false;
-            // }
-            this.confirmCreateTask(stageIndex);
-        },
-        //添加任务
-        confirmCreateTask(stageIndex) {
-            let app = this;
-            if (app.createTaskLoading) {
-                app.$message.warning('正在添加任务，请稍后...', 2);
-                return false;
-            }
-            setTimeout(function () {
-                if (app.createTaskLoading === true) {
-                    app.$message.loading({
-                        'content': '正在添加任务，请稍后...',
-                        'duration': 5
                     });
-                }
-            }, 2000);
-            app.createTaskLoading = true;
-            createTask(app.task).then(res => {
-                app.createTaskLoading = false;
-                const result = checkResponse(res);
-                if (result) {
-                    app.$message.destroy();
-                    let taskStages = app.taskStages[stageIndex];
-                    taskStages.tasks.push(res.data);
-                    app.taskStages[stageIndex].unDoneTasks.push(res.data);
-                    // getTasks({stageCode: app.task.stage_code}).then((res) => {
-                    //     let taskStages = app.taskStages[stageIndex];
-                    //     taskStages.tasks = res.data;
-                    // });
-                    app.task = {};
-                    // notice({
-                    //     title: '添加任务成功',
-                    //     msg: '你可以点击该任务继续进行详细设置'
-                    // }, 'notice', 'success', 5);
-                }
-            })['catch'](() => {
-                app.createTaskLoading = false;
-            });
-        },
-        taskDone(taskCode, stageIndex, taskIndex, done) {
-            let task = null;
-            let unDoneTasks = this.taskStages[stageIndex].unDoneTasks;
-            let doneTasks = this.taskStages[stageIndex].doneTasks;
-            if (done) {
-                task = unDoneTasks[taskIndex];
-            } else {
-                task = doneTasks[taskIndex];
-            }
-            // let task = this.taskStages[stageIndex].tasks[taskIndex];
-            if (task.hasUnDone) {
-                return false;
-            }
-            task.done = done;
-            if (done) {
-                unDoneTasks.splice(taskIndex, 1);
-                doneTasks.push(task);
-                doneTasks = doneTasks.sort(function (a, b) {
-                    if (a.sort === b.sort) {
-                        return a.id_num - b.id_num;
-                    } else {
-                        return a.sort - b.sort;
-                    }
-                });
-            } else {
-                doneTasks.splice(taskIndex, 1);
-                unDoneTasks.push(task);
-                unDoneTasks = unDoneTasks.sort(function (a, b) {
-                    if (a.sort === b.sort) {
-                        return a.id_num - b.id_num;
-                    } else {
-                        return a.sort - b.sort;
-                    }
-                });
-            }
-            taskDone(taskCode, done).then((res) => {
-                const result = checkResponse(res);
-                if (!result) {
-                    return false;
-                }
-                //可能会触发工作流，所以全部刷新
-                this.getTaskStages(false);
-            });
-        },
-        showInputStrageName() {
-            this.showCreateStage = !this.showCreateStage;
-            this.$nextTick(() => {
-                this.$refs.inputStageName.focus();
-            });
-        },
-        doStage(action) {
-            let app = this;
-            let actionKeys = action.key.split('_');
-            const stageCode = actionKeys[actionKeys.length - 2];
-            const stageIndex = actionKeys[actionKeys.length - 1];
-            const actionKey = actionKeys[0];
-            switch (actionKey) {
-            case 'editStage':
-                this.stageModal.stageCode = stageCode;
-                this.stageModal.stageIndex = stageIndex;
-                this.$nextTick(() => {
-                    this.stageModal.form.setFieldsValue({
-                        'name': this.taskStages[stageIndex].name
-                    });
-                    this.$refs.inputStageTitle.focus();
-                });
-                this.stageModal.modalStatus = true;
-                break;
-            case 'recycleBatch':
-                //您确定要把列表下的所有任务移到回收站吗？
-                this.$confirm({
-                    'title': '移到回收站',
-                    'content': '您确定要把列表下的所有任务移到回收站吗？',
-                    'okText': '移到回收站',
-                    'okType': 'danger',
-                    'cancelText': '再想想',
-                    onOk() {
-                        app.taskStages[stageIndex].tasks = [];
-                        app.$set(app.taskStages[stageIndex], 'doneTasks', []);
-                        recycleBatch({'stageCode': stageCode}).then(res => {
-                            const result = checkResponse(res);
-                            if (!result) {
-                                return false;
-                            }
-                            app.$set(app.taskStages[stageIndex], 'doneTasks', []);
-                            app.$set(app.taskStages[stageIndex], 'unDoneTasks', []);
-                        });
-                        return Promise.resolve();
-                    }
-                });
-                break;
-            case 'setEndTime':
-                this.set_type_endTime_modal = true;
-                break;
-            case 'setExecutor':
-                this.projectMemberModal.currentStageIndex = stageIndex;
-                this.projectMemberModal.modalStatus = true;
-                break;
-            case 'delStage':
-                if (this.taskStages[stageIndex].tasks.length > 0) {
-                    this.$warning({
-                        'title': '删除列表',
-                        'content': '请先清空此列表上的任务，然后再删除这个列表',
-                        'okText': '确定'
-                    });
-                    return false;
-                }
-                this.$confirm({
-                    'title': '删除列表',
-                    'content': '您确定要永远删除这个列表吗？',
-                    'okText': '删除',
-                    'okType': 'danger',
-                    'cancelText': '再想想',
-                    onOk() {
-                        delStage(stageCode);
-                        app.taskStages.splice(stageIndex, 1);
-                        return Promise.resolve();
-                    }
-                });
-                break;
-            }
-        },
-        creteStage() {
-            if (!this.stageName) {
-                this.$message.warning('请输入列表名称', 2);
-                return false;
-            }
-            createState({'name': this.stageName, 'projectCode': this.code}).then(res => {
-                const result = checkResponse(res);
-                if (!result) {
-                    return false;
-                }
-                const stage = res.data;
-                this.taskStages.push(stage);
-                this.stageName = '';
-                this.$nextTick(() => {
-                    document.getElementById('board-scrum-stages').scrollLeft = 10000;
-                });
-            });
-        },
-        editStage() {
-            let stage = this.stageModal.form.getFieldsValue();
-            if (!stage.name) {
-                this.$message.warning('请输入列表名称', 2);
-                return false;
-            }
-            editStage({'name': stage.name, 'stageCode': this.stageModal.stageCode}).then((res) => {
-                const result = checkResponse(res);
-                if (!result) {
-                    return false;
-                }
-                this.taskStages[this.stageModal.stageIndex].name = stage.name;
-                this.stageModal.modalStatus = false;
-            });
-        },
-        setExecutor(member) {
-            let stage = this.taskStages[this.projectMemberModal.currentStageIndex];
-            let taskCodes = [];
-            stage.tasks.forEach((v) => {
-                if (v.canRead) {
-                    taskCodes.push(v.code);
-                }
-            });
-            if (taskCodes) {
-                batchAssignTask({'taskCodes': JSON.stringify(taskCodes), 'executorCode': member.code}).then(res => {
+                } else {
                     this.projectMemberModal.modalStatus = false;
-                    if (!checkResponse(res)) {
+                }
+            },
+            showTaskPri(pri) {
+                return {
+                    'warning': pri === 1,
+                    'error': pri === 2
+                };
+            },
+            showTimeLabel(time) {
+                let str = 'label-primary';
+                if (time === null) {
+                    return str;
+                }
+                let cha = moment(moment(time).format('YYYY-MM-DD')).diff(moment().format('YYYY-MM-DD'), 'days');
+                if (cha < 0) {
+                    str = 'label-danger';
+                } else if (cha === 0) {
+                    str = 'label-warning';
+                } else if (cha > 7) {
+                    str = 'label-normal';
+                }
+                return str;
+            },
+            showTaskTime(time, timeEnd) {
+                return formatTaskTime(time, timeEnd);
+                // return moment(time).format('MM月DD日 HH:mm')
+            },
+            taskDetail(code, stageIndex) {
+                this.$router.push(`${this.$route.path}/detail/${code}?from=${stageIndex}`);
+            },
+            stageMove(evt) {
+                this.preCode = evt.draggedContext.element.code;
+                this.nextCode = evt.relatedContext.element.code;
+            },
+            stageSort() {
+                sort(this.preCode, this.nextCode, this.code);
+            },
+            taskSort(event) {
+                const toStageCode = event.to.parentNode.parentNode.parentNode.getAttribute('id');
+                let codes = '';
+                for (let i = 0, len = event.to.children.length; i < len; i++) {
+                    codes += ',' + event.to.children[i].getAttribute('id');
+                }
+                sortTask({'stageCode': toStageCode, 'codes': codes.substr(1)}).then(res => {
+                    this.getTaskStages(false);
+                });
+            },
+            handleResize(vertical, stageIndex) {
+                if (vertical.barSize) {
+                    this.taskStages[stageIndex].fixedCreator = true;
+                }
+            },
+            visibleDraw(type) {
+                if (type === 'member') {
+                    this.configDraw.visible = false;
+                    this.inviteMemberDraw.visible = !this.inviteMemberDraw.visible;
+                } else {
+                    this.inviteMemberDraw.visible = false;
+                    this.configDraw.visible = !this.configDraw.visible;
+                }
+            },
+            removeMember(member, index) {
+                let app = this;
+                this.$confirm({
+                    'title': `您确定要将「${member.name}」从项目中移除吗？`,
+                    'content': '移除后该成员将不能查看任何关于该项目的信息',
+                    'okText': '移除',
+                    'okType': 'danger',
+                    'cancelText': '再想想',
+                    onOk() {
+                        removeMember(member.code, app.code).then((res) => {
+                            if (!checkResponse(res)) {
+                                return;
+                            }
+                            app.projectMembers.splice(index, 1);
+                            notice({'title': '移除成功'}, 'notice', 'success');
+                        });
+                        return Promise.resolve();
+                    }
+                });
+            },
+            inviteMember(item) {
+                inviteMember(item.memberCode, this.projectCode).then((res) => {
+                    const success = checkResponse(res);
+                    if (success) {
+                        item.joined = true;
+                    }
+                });
+            },
+            'searchInviteMember': _.debounce(
+                function () {
+                    if (!this.inviteMemberDraw.keyword) {
+                        this.projectMembers = JSON.parse(JSON.stringify(this.projectMembersCopy));
+                    }
+                    if (this.inviteMemberDraw.keyword.length <= 1) {
                         return false;
                     }
-                    getTasks({'stageCode': stage.code}).then((res) => {
-                        let canNotReadCount = 0;
-                        res.data.forEach((task) => {
-                            if (!task.canRead) {
-                                canNotReadCount++;
-                            }
-                        });
-                        stage.canNotReadCount = canNotReadCount;
-                        stage.tasksLoading = false;
-                        stage.tasks = res.data;
-                    });
+                    this.searching = true;
+                    this.projectMembers = this.projectMembers.filter(item => item.name.indexOf(this.inviteMemberDraw.keyword) !== -1);
+                }, 500
+            ),
+            updateProject(data) {
+                this.project = data;
+            },
+            collectProject() {
+                const type = this.project.collected ? 'cancel' : 'collect';
+                collect(this.project.code, type).then((res) => {
+                    if (!checkResponse(res)) {
+                        return;
+                    }
+                    this.project.collected = !this.project.collected;
                 });
-            } else {
-                this.projectMemberModal.modalStatus = false;
-            }
-        },
-        showTaskPri(pri) {
-            return {
-                'warning': pri == 1,
-                'error': pri == 2
-            };
-        },
-        showTimeLabel(time) {
-            let str = 'label-primary';
-            if (time == null) {
-                return str;
-            }
-            let cha = moment(moment(time).format('YYYY-MM-DD')).diff(moment().format('YYYY-MM-DD'), 'days');
-            if (cha < 0) {
-                str = 'label-danger';
-            } else if (cha == 0) {
-                str = 'label-warning';
-            } else if (cha > 7) {
-                str = 'label-normal';
-            }
-            return str;
-        },
-        showTaskTime(time, timeEnd) {
-            return formatTaskTime(time, timeEnd);
-            // return moment(time).format('MM月DD日 HH:mm')
-        },
-        taskDetail(code, stageIndex) {
-            this.$router.push(`${this.$route.path}/detail/${code}?from=${stageIndex}`);
-        },
-        stageMove(evt) {
-            this.preCode = evt.draggedContext.element.code;
-            this.nextCode = evt.relatedContext.element.code;
-        },
-        stageSort() {
-            sort(this.preCode, this.nextCode, this.code);
-        },
-        taskSort(event) {
-            const toStageCode = event.to.parentNode.parentNode.parentNode.getAttribute('id');
-            let codes = '';
-            for (let i = 0, len = event.to.children.length; i < len; i++) {
-                codes += ',' + event.to.children[i].getAttribute('id');
-            }
-            sortTask({'stageCode': toStageCode, 'codes': codes.substr(1)}).then(res => {
-                this.getTaskStages(false);
-            });
-        },
-        handleResize(vertical, stageIndex) {
-            if (vertical.barSize) {
-                this.taskStages[stageIndex].fixedCreator = true;
-            }
-        },
-        visibleDraw(type) {
-            if (type == 'member') {
-                this.configDraw.visible = false;
-                this.inviteMemberDraw.visible = !this.inviteMemberDraw.visible;
-            } else {
-                this.inviteMemberDraw.visible = false;
-                this.configDraw.visible = !this.configDraw.visible;
-            }
-        },
-        removeMember(member, index) {
-            let app = this;
-            this.$confirm({
-                'title': `您确定要将「${member.name}」从项目中移除吗？`,
-                'content': '移除后该成员将不能查看任何关于该项目的信息',
-                'okText': '移除',
-                'okType': 'danger',
-                'cancelText': '再想想',
-                onOk() {
-                    removeMember(member.code, app.code).then((res) => {
-                        if (!checkResponse(res)) {
-                            return;
-                        }
-                        app.projectMembers.splice(index, 1);
-                        notice({'title': '移除成功'}, 'notice', 'success');
-                    });
-                    return Promise.resolve();
-                }
-            });
-        },
-        inviteMember(item) {
-            inviteMember(item.memberCode, this.projectCode).then((res) => {
-                const success = checkResponse(res);
-                if (success) {
-                    item.joined = true;
-                }
-            });
-        },
-        'searchInviteMember': _.debounce(
-            function () {
-                if (!this.inviteMemberDraw.keyword) {
-                    this.projectMembers = JSON.parse(JSON.stringify(this.projectMembersCopy));
-                }
-                if (this.inviteMemberDraw.keyword.length <= 1) {
-                    return false;
-                }
-                this.searching = true;
-                this.projectMembers = this.projectMembers.filter(item => item.name.indexOf(this.inviteMemberDraw.keyword) != -1);
-            }, 500
-        ),
-        updateProject(data) {
-            this.project = data;
-        },
-        collectProject() {
-            const type = this.project.collected ? 'cancel' : 'collect';
-            collect(this.project.code, type).then((res) => {
-                if (!checkResponse(res)) {
+            },
+            handleChange(info) {
+                if (info.file.status === 'uploading') {
+                    notice('正在导入，请稍后...', 'message', 'loading', 0);
+                    this.uploadLoading = true;
                     return;
                 }
-                this.project.collected = !this.project.collected;
-            });
-        },
-        handleChange(info) {
-            if (info.file.status === 'uploading') {
-                notice('正在导入，请稍后...', 'message', 'loading', 0);
-                this.uploadLoading = true;
-                return;
-            }
-            if (info.file.status === 'done') {
-                this.uploadLoading = false;
-                if (checkResponse(info.file.response, true)) {
-                    const count = info.file.response.data;
-                    if (count) {
-                        notice(`成功导入${count}个任务`, 'message', 'success');
-                    } else {
-                        notice('没有成功导入任何任务', 'message', 'warning');
+                if (info.file.status === 'done') {
+                    this.uploadLoading = false;
+                    if (checkResponse(info.file.response, true)) {
+                        const count = info.file.response.data;
+                        if (count) {
+                            notice(`成功导入${count}个任务`, 'message', 'success');
+                        } else {
+                            notice('没有成功导入任何任务', 'message', 'warning');
+                        }
+                        this.getTaskStages(false);
                     }
-                    this.getTaskStages(false);
                 }
+            },
+            beforeUpload(file) {
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isLt2M) {
+                    this.$message.error('文件不能超过2MB!');
+                }
+                return isLt2M;
             }
-        },
-        beforeUpload(file) {
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            if (!isLt2M) {
-                this.$message.error('文件不能超过2MB!');
-            }
-            return isLt2M;
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

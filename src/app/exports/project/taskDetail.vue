@@ -1,14 +1,14 @@
 <template>
     <div class="task-detail">
-        <a-spin class="task-detail-spin" :spinning="loading">
-            <div class="task-header" :class="{'disabled': task.deleted}">
+        <a-spin :spinning="loading" class="task-detail-spin">
+            <div :class="{'disabled': task.deleted}" class="task-header">
                     <span class="head-title" v-if="!task.deleted">
                         <span v-if="task.parentTask">
                             <span class="muted">属于任务：</span>
                             <!--<a class="text-default" @click="init(task.pcode)">{{task.parentTask.name}}</a>-->
-                             <a-breadcrumb separator=">" class="breadcrumb text-default">
-                                <a-breadcrumb-item v-for="parent in  task.parentTasks" :key="parent.code">
-                                    <a class="text-default" @click="init(parent.code)">{{parent.name}}</a>
+                             <a-breadcrumb class="breadcrumb text-default" separator=">">
+                                <a-breadcrumb-item :key="parent.code" v-for="parent in  task.parentTasks">
+                                    <a @click="init(parent.code)" class="text-default">{{parent.name}}</a>
                                 </a-breadcrumb-item>
                             </a-breadcrumb>
                         </span>
@@ -24,14 +24,14 @@
                             <template slot="title">
                                 <span>复制任务链接</span>
                             </template>
-                             <a class="action-item muted" v-clipboard="taskLink" @success="copyLink"><a-icon
+                             <a @success="copyLink" class="action-item muted" v-clipboard="taskLink"><a-icon
                                      type="link"/></a>
                          </a-tooltip>
                              <a-tooltip :mouseEnterDelay="0.5">
                                 <template slot="title">
                                     <span>点个赞</span>
                                 </template>
-                                <a class="action-item muted" :class="{'active': task.liked}" @click="like(!task.liked)">
+                                <a :class="{'active': task.liked}" @click="like(!task.liked)" class="action-item muted">
                                     <a-icon type="like"/>
                                     <span v-show="task.like">{{task.like}}</span>
                                 </a>
@@ -83,10 +83,10 @@
                         </a-dropdown>
                         </template>
                         <template v-else>
-                            <a class="action-item muted" @click="recoveryTask">
+                            <a @click="recoveryTask" class="action-item muted">
                                 <a-icon type="undo"/> <span>恢复内容</span>
                             </a>
-                            <a class="action-item muted" @click="deleteTask">
+                            <a @click="deleteTask" class="action-item muted">
                                 <a-icon type="delete"/> <span>彻底删除</span>
                             </a>
                         </template>
@@ -94,7 +94,7 @@
                             <template slot="title">
                                 <span>关闭面板</span>
                             </template>
-                         <a class="action-item muted" @click="detailClose"><a-icon type="close"/></a>
+                         <a @click="detailClose" class="action-item muted"><a-icon type="close"/></a>
                      </a-tooltip>
                     </span>
             </div>
@@ -102,23 +102,23 @@
                 <div class="task-content">
                     <div class="content-left">
                         <vue-scroll :ops="scrollOps">
-                            <div class="task-title" :class="{'disabled': task.deleted}">
-                                <a-input ref="inputTitle" auto-focus @blur="doName" v-model="task.name" size="large"
+                            <div :class="{'disabled': task.deleted}" class="task-title">
+                                <a-input @blur="doName" auto-focus ref="inputTitle" size="large" v-model="task.name"
                                          v-show="showEditName"/>
                                 <a-tooltip :mouseEnterDelay="0.5" v-if="!task.deleted">
                                     <template slot="title">
                                         <span>点击即可编辑</span>
                                     </template>
-                                    <div class="title-text" @click="editTitle" v-show="!showEditName">
+                                    <div @click="editTitle" class="title-text" v-show="!showEditName">
                                         {{task.name}}
                                     </div>
                                 </a-tooltip>
-                                <div v-else class="title-text" v-show="!showEditName">
+                                <div class="title-text" v-else v-show="!showEditName">
                                     {{task.name}}
                                 </div>
                             </div>
                             <div class="task-basic-attrs-view muted">
-                                <div class="field-list" :class="{'disabled': task.deleted}">
+                                <div :class="{'disabled': task.deleted}" class="field-list">
                                     <div class="component-mount">
                                         <div class="field">
                                             <div class="field-left">
@@ -126,33 +126,33 @@
                                                 <span class="field-name">状态</span>
                                             </div>
                                             <div class="field-right">
-                                                <a-dropdown :trigger="['click']"
+                                                <a-dropdown :class="{'disabled': task.hasUnDone}"
                                                             :disabled="!!task.deleted || !!task.hasUnDone"
-                                                            :class="{'disabled': task.hasUnDone}">
+                                                            :trigger="['click']">
                                                     <a-tooltip placement="top">
                                                         <template slot="title">
-                                                            <span v-if="task.hasUnDone" style="font-size: 12px;">子任务尚未全部完成，无法完成父任务</span>
+                                                            <span style="font-size: 12px;" v-if="task.hasUnDone">子任务尚未全部完成，无法完成父任务</span>
                                                         </template>
                                                         <span>
                                                         <!--<a-icon type="check-square"/>-->
-                                                        <a-tag v-if="task.done" color="green">已完成</a-tag>
+                                                        <a-tag color="green" v-if="task.done">已完成</a-tag>
                                                         <span v-show="!task.done">未完成</span>
                                                     </span>
                                                     </a-tooltip>
-                                                    <a-menu class="field-right-menu" slot="overlay"
-                                                            :selectable="false"
-                                                            @click="taskDone(task.code,!task.done)">
+                                                    <a-menu :selectable="false" @click="taskDone(task.code,!task.done)"
+                                                            class="field-right-menu"
+                                                            slot="overlay">
                                                         <a-menu-item key="done">
                                                             <div class="menu-item-content">
                                                                 <a-tag color="green">已完成</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="task.done"></a-icon>
                                                             </div>
                                                         </a-menu-item>
                                                         <a-menu-item key="undone">
                                                             <div class="menu-item-content">
                                                                 <a-tag color="grey">未完成</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="!task.done"></a-icon>
                                                             </div>
                                                         </a-menu-item>
@@ -169,10 +169,10 @@
                                             </div>
                                             <div class="field-right">
                                                 <a-dropdown
-                                                        :trigger="['click']"
-                                                        v-model="visibleTaskMemberMenu"
                                                         :disabled="!!task.deleted"
+                                                        :trigger="['click']"
                                                         placement="bottomCenter"
+                                                        v-model="visibleTaskMemberMenu"
                                                 >
                                                     <a-tooltip :mouseEnterDelay="0.5" v-if="!task.deleted">
                                                         <template slot="title">
@@ -203,13 +203,13 @@
                                                     </div>
                                                     <div slot="overlay">
                                                         <task-member-menu
-                                                                v-if="visibleTaskMemberMenu"
                                                                 :projectCode="projectCodeCurrent"
                                                                 :taskCode="code"
                                                                 @close="init(false)"
                                                                 @inviteProjectMember="
                                                             showInviteMember = true,
                                                             visibleTaskMemberMenu = false"
+                                                                v-if="visibleTaskMemberMenu"
                                                         ></task-member-menu>
                                                     </div>
                                                 </a-dropdown>
@@ -224,8 +224,8 @@
                                             </div>
                                             <div class="field-right field-date">
                                                 <template v-if="task.openBeginTime">
-                                                    <a-dropdown :trigger="['click']" v-model="showBeginTime"
-                                                                :disabled="!!task.deleted">
+                                                    <a-dropdown :disabled="!!task.deleted" :trigger="['click']"
+                                                                v-model="showBeginTime">
                                                         <a-tooltip :mouseEnterDelay="0.5" v-if="!task.deleted">
                                                             <template slot="title">
                                                                 <span>点击设置开始时间</span>
@@ -247,26 +247,26 @@
                                                         </div>
                                                         <div slot="overlay">
                                                             <a-date-picker
-                                                                    v-model="task.begin_time"
-                                                                    size="small"
+                                                                    :open="showBeginTime"
+                                                                    :showToday="false"
+                                                                    @ok="doBeginTime(true)"
+                                                                    allowClear
                                                                     format="MM月DD日 HH:mm"
                                                                     showTime
-                                                                    allowClear
-                                                                    :showToday="false"
-                                                                    :open="showBeginTime"
-                                                                    @ok="doBeginTime(true)"
+                                                                    size="small"
+                                                                    v-model="task.begin_time"
                                                             >
                                                                 <template slot="renderExtraFooter">
-                                                                    <a style="position: absolute;" size="small"
-                                                                       @click="doBeginTime(false)">清除</a>
+                                                                    <a @click="doBeginTime(false)" size="small"
+                                                                       style="position: absolute;">清除</a>
                                                                 </template>
                                                             </a-date-picker>
                                                         </div>
                                                     </a-dropdown>
                                                     <span class="m-l-sm m-r-sm">-</span>
                                                 </template>
-                                                <a-dropdown :trigger="['click']" v-model="showEndTime"
-                                                            :disabled="!!task.deleted">
+                                                <a-dropdown :disabled="!!task.deleted" :trigger="['click']"
+                                                            v-model="showEndTime">
                                                     <a-tooltip :mouseEnterDelay="0.5" v-if="!task.deleted">
                                                         <template slot="title">
                                                             <span>点击设置截止时间</span>
@@ -286,18 +286,18 @@
                                                     </div>
                                                     <div slot="overlay">
                                                         <a-date-picker
-                                                                v-model="task.end_time"
-                                                                size="small"
+                                                                :open="showEndTime"
+                                                                :showToday="false"
+                                                                @ok="doEndTime(true)"
+                                                                allowClear
                                                                 format="MM月DD日 HH:mm"
                                                                 showTime
-                                                                allowClear
-                                                                :showToday="false"
-                                                                :open="showEndTime"
-                                                                @ok="doEndTime(true)"
+                                                                size="small"
+                                                                v-model="task.end_time"
                                                         >
                                                             <template slot="renderExtraFooter">
-                                                                <a style="position: absolute;" size="small"
-                                                                   @click="doEndTime(false)">清除</a>
+                                                                <a @click="doEndTime(false)" size="small"
+                                                                   style="position: absolute;">清除</a>
                                                             </template>
                                                         </a-date-picker>
                                                     </div>
@@ -312,34 +312,35 @@
                                                 <span class="field-name">备注</span>
                                             </div>
                                             <div class="field-right width-block">
-                                                <div class="task-description" :class="{'disabled': task.deleted}"
-                                                     v-show="!showTaskDescriptionEdit"
-                                                     @click="showTaskDesc">
-                                                    <div class="description-txt" v-show="task.description"
-                                                         v-html="task.description"></div>
+                                                <div :class="{'disabled': task.deleted}" @click="showTaskDesc"
+                                                     class="task-description"
+                                                     v-show="!showTaskDescriptionEdit">
+                                                    <div class="description-txt" v-html="task.description"
+                                                         v-show="task.description"></div>
                                                     <span v-show="!task.description">添加备注</span>
                                                 </div>
                                                 <div class="m-t-sm" v-if="hasMoreDesc">
-                                                    <a v-show="!showMoreDesc"
-                                                       @click="checkShowMoreDesc(true)">显示更多</a>
-                                                    <a v-show="showMoreDesc"
-                                                       @click="checkShowMoreDesc(false)">收起备注</a>
+                                                    <a @click="checkShowMoreDesc(true)"
+                                                       v-show="!showMoreDesc">显示更多</a>
+                                                    <a @click="checkShowMoreDesc(false)"
+                                                       v-show="showMoreDesc">收起备注</a>
                                                 </div>
                                                 <div v-show="showTaskDescriptionEdit">
-                                                    <editor ref="vueWangeditor"
-                                                            id="editor"
-                                                            :uploadImgServer="editorConfig.uploadImgServer"
+                                                    <editor :menus="editorConfig.menus"
                                                             :uploadImgHeaders="editorConfig.uploadImgHeaders"
-                                                            :menus="editorConfig.menus"
+                                                            :uploadImgServer="editorConfig.uploadImgServer"
+                                                            id="editor"
+                                                            ref="vueWangeditor"
                                                     ></editor>
                                                     <div class="action-btn pull-right">
-                                                        <a type="text" class="cancel-text muted"
-                                                           @click="showTaskDescriptionEdit = false,initContent(false)">
+                                                        <a @click="showTaskDescriptionEdit = false,initContent(false)"
+                                                           class="cancel-text muted"
+                                                           type="text">
                                                             取消
                                                         </a>
-                                                        <a-button type="primary" htmlType='submit'
-                                                                  class="middle-btn"
-                                                                  @click="doContent">保存
+                                                        <a-button @click="doContent" class="middle-btn"
+                                                                  htmlType='submit'
+                                                                  type="primary">保存
                                                         </a-button>
                                                     </div>
                                                 </div>
@@ -353,30 +354,30 @@
                                                 <span class="field-name">优先级</span>
                                             </div>
                                             <div class="field-right">
-                                                <a-dropdown :trigger="['click']" :disabled="!!task.deleted">
+                                                <a-dropdown :disabled="!!task.deleted" :trigger="['click']">
                                                 <span>
                                                     <a-tag :color="priColor(task.pri)">{{task.priText}}</a-tag>
                                                 </span>
-                                                    <a-menu class="field-right-menu" slot="overlay" @click="doPri"
-                                                            :selectable="false">
+                                                    <a-menu :selectable="false" @click="doPri" class="field-right-menu"
+                                                            slot="overlay">
                                                         <a-menu-item :key="0">
                                                             <div class="menu-item-content">
                                                                 <a-tag :color="priColor(0)">普通</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="task.pri == 0"></a-icon>
                                                             </div>
                                                         </a-menu-item>
                                                         <a-menu-item :key="1">
                                                             <div class="menu-item-content">
                                                                 <a-tag :color="priColor(1)">紧急</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="task.pri == 1"></a-icon>
                                                             </div>
                                                         </a-menu-item>
                                                         <a-menu-item :key="2">
                                                             <div class="menu-item-content">
                                                                 <a-tag :color="priColor(2)">非常紧急</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="task.pri == 2"></a-icon>
                                                             </div>
                                                         </a-menu-item>
@@ -393,39 +394,39 @@
                                             </div>
                                             <div class="field-right">
                                                 <div class="inline-block">
-                                                    <a-tag :color="tag.tag.color" v-for="(tag,index) in task.tags"
-                                                           :key="index">
+                                                    <a-tag :color="tag.tag.color" :key="index"
+                                                           v-for="(tag,index) in task.tags">
                                                         {{tag.tag.name}}
-                                                        <a-icon type="close" @click="removeTag(tag.tag,index)"/>
+                                                        <a-icon @click="removeTag(tag.tag,index)" type="close"/>
                                                     </a-tag>
                                                 </div>
                                                 <a-dropdown
-                                                        :trigger="['click']"
-                                                        v-model="visibleTaskTagMenu"
                                                         :disabled="!!task.deleted"
+                                                        :trigger="['click']"
                                                         placement="bottomCenter"
+                                                        v-model="visibleTaskTagMenu"
                                                 >
                                                     <a-tooltip :mouseEnterDelay="0.5" v-if="!task.deleted">
                                                         <template slot="title">
                                                             <span>添加标签</span>
                                                         </template>
                                                         <div class="inline-block">
-                                                            <a-icon class="member-item invite" type="plus-circle"
-                                                                    theme="twoTone"/>
+                                                            <a-icon class="member-item invite" theme="twoTone"
+                                                                    type="plus-circle"/>
                                                         </div>
                                                     </a-tooltip>
                                                     <div class="inline-block">
-                                                        <a-icon class="member-item invite" type="plus-circle"
-                                                                theme="twoTone"/>
+                                                        <a-icon class="member-item invite" theme="twoTone"
+                                                                type="plus-circle"/>
                                                     </div>
                                                     <div slot="overlay">
                                                         <task-tag-menu
-                                                                v-if="visibleTaskTagMenu"
                                                                 :projectCode="projectCodeCurrent"
                                                                 :taskCode="code"
                                                                 @change="taskTagChange"
-                                                                @update="taskTagUpdate"
                                                                 @delete="taskTagDelete"
+                                                                @update="taskTagUpdate"
+                                                                v-if="visibleTaskTagMenu"
                                                         ></task-tag-menu>
                                                     </div>
                                                 </a-dropdown>
@@ -447,26 +448,26 @@
                                             <div class="block-field width-block">
                                                 <div class="task-child">
                                                     <div class="task-list" v-show="childTaskList.length">
-                                                        <div v-for="done in [0,1]" :key="done">
+                                                        <div :key="done" v-for="done in [0,1]">
                                                             <div
-                                                                    v-for="(childTask, index) in childTaskList"
-                                                                    :key="childTask.code">
+                                                                    :key="childTask.code"
+                                                                    v-for="(childTask, index) in childTaskList">
                                                                 <div class="list-item task"
                                                                      v-if="childTask.done == done"
                                                                 >
                                                                     <a-tooltip placement="top">
                                                                         <template slot="title">
-                                                                            <span v-if="childTask.parentDone"
-                                                                                  style="font-size: 12px;">父任务已完成，无法重做子任务</span>
-                                                                            <span v-else-if="childTask.hasUnDone"
-                                                                                  style="font-size: 12px;">子任务尚未全部完成，无法完成父任务</span>
+                                                                            <span style="font-size: 12px;"
+                                                                                  v-if="childTask.parentDone">父任务已完成，无法重做子任务</span>
+                                                                            <span style="font-size: 12px;"
+                                                                                  v-else-if="childTask.hasUnDone">子任务尚未全部完成，无法完成父任务</span>
                                                                         </template>
-                                                                        <div class="check-box-wrapper task-item"
-                                                                             @click.stop="()=>{if(task.deleted || childTask.parentDone || childTask.hasUnDone) return false;taskDone(childTask.code,!childTask.done,index,'child')}">
-                                                                            <a-icon class="check-box"
-                                                                                    :class="{'disabled': task.deleted || childTask.parentDone || childTask.hasUnDone}"
+                                                                        <div @click.stop="()=>{if(task.deleted || childTask.parentDone || childTask.hasUnDone) return false;taskDone(childTask.code,!childTask.done,index,'child')}"
+                                                                             class="check-box-wrapper task-item">
+                                                                            <a-icon :class="{'disabled': task.deleted || childTask.parentDone || childTask.hasUnDone}"
+                                                                                    :style="{fontSize:'16px'}"
                                                                                     :type="childTask.done ? 'check-square' : 'border'"
-                                                                                    :style="{fontSize:'16px'}"/>
+                                                                                    class="check-box"/>
                                                                         </div>
                                                                         <!--<a class="task-item check-box"
                                                                            :class="{'disabled': task.deleted || childTask.parentDone || childTask.hasUnDone}"
@@ -481,32 +482,32 @@
                                                                             <span v-else>待认领</span>
                                                                         </template>
                                                                         <a-avatar
-                                                                                v-if="childTask.executor"
-                                                                                class="task-item"
                                                                                 :class="{'disabled': task.deleted}"
-
-                                                                                size="small"
-                                                                                icon="user"
                                                                                 :src="childTask.executor.avatar"
+                                                                                class="task-item"
+
+                                                                                icon="user"
+                                                                                size="small"
+                                                                                v-if="childTask.executor"
                                                                         ></a-avatar>
                                                                         <a-avatar
-                                                                                v-else
-                                                                                class="task-item"
                                                                                 :class="{'disabled': task.deleted}"
+                                                                                class="task-item"
+                                                                                icon="user"
 
                                                                                 size="small"
-                                                                                icon="user"
+                                                                                v-else
                                                                         ></a-avatar>
                                                                     </a-tooltip>
-                                                                    <div class="task-item task-title"
-                                                                         @click.stop="init(childTask.code)">
-                                                                        <div class="title-text"
-                                                                             :class="{'done': childTask.done}"
+                                                                    <div @click.stop="init(childTask.code)"
+                                                                         class="task-item task-title">
+                                                                        <div :class="{'done': childTask.done}"
+                                                                             class="title-text"
                                                                         >
                                                                             {{childTask.name}}
                                                                         </div>
                                                                     </div>
-                                                                    <a class="muted" @click.stop="init(childTask.code)">
+                                                                    <a @click.stop="init(childTask.code)" class="muted">
                                                                         <a-icon class="task-item" type="right"/>
                                                                     </a>
                                                                 </div>
@@ -518,10 +519,10 @@
                                                             <div class="list-item task">
                                                                 <span class="task-item check-box"></span>
 
-                                                                <a-dropdown :trigger="['click']"
-                                                                            v-model="visibleChildTaskMemberMenu"
-                                                                            :disabled="!!task.deleted"
+                                                                <a-dropdown :disabled="!!task.deleted"
+                                                                            :trigger="['click']"
                                                                             placement="bottomCenter"
+                                                                            v-model="visibleChildTaskMemberMenu"
 
                                                                 >
                                                                     <a-tooltip :mouseEnterDelay="0.5">
@@ -531,8 +532,8 @@
                                                                         </template>
                                                                         <div class="field-flex">
                                                                             <template v-if="childExecutor">
-                                                                                <a-avatar class="task-item"
-                                                                                          :src="childExecutor.avatar"
+                                                                                <a-avatar :src="childExecutor.avatar"
+                                                                                          class="task-item"
                                                                                           icon="user"
                                                                                           size="small"/>
                                                                             </template>
@@ -546,41 +547,42 @@
                                                                     </a-tooltip>
                                                                     <div slot="overlay">
                                                                         <task-member-menu
-                                                                                v-if="visibleChildTaskMemberMenu"
+                                                                                :isCommit="false"
                                                                                 :projectCode="projectCodeCurrent"
                                                                                 :taskCode="childExecutor ? code : ''"
-                                                                                :isCommit="false"
                                                                                 @close="updateChildExecutor"
                                                                                 @inviteProjectMember="
                                                             showInviteChildTaskMember = true,
                                                             visibleChildTaskMemberMenu = false"
+                                                                                v-if="visibleChildTaskMemberMenu"
                                                                         ></task-member-menu>
                                                                     </div>
                                                                 </a-dropdown>
                                                                 <div class="task-item task-input">
-                                                                    <a-input v-model="childTaskName"
-                                                                             @pressEnter="createTask"/>
+                                                                    <a-input @pressEnter="createTask"
+                                                                             v-model="childTaskName"/>
                                                                 </div>
                                                             </div>
                                                             <div class="action-btn text-right">
-                                                                <a type="text" class="cancel-text muted"
-                                                                   @click="showChildTask = false">取消</a>
-                                                                <a-button type="primary" htmlType='submit'
-                                                                          class="middle-btn"
-                                                                          @click="createTask">保存
+                                                                <a @click="showChildTask = false"
+                                                                   class="cancel-text muted"
+                                                                   type="text">取消</a>
+                                                                <a-button @click="createTask" class="middle-btn"
+                                                                          htmlType='submit'
+                                                                          type="primary">保存
                                                                 </a-button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <a-tooltip placement="top">
                                                         <template slot="title">
-                                                            <span v-if="task.done" style="font-size: 12px;">父任务已完成，无法添加新的子任务</span>
+                                                            <span style="font-size: 12px;" v-if="task.done">父任务已完成，无法添加新的子任务</span>
                                                         </template>
-                                                        <a class="add-handler"
-                                                           :class="{'disabled': task.done}"
-                                                           v-show="!showChildTask"
-                                                           @click="()=>{if (task.deleted || task.done) return false; showChildTask = true}">
-                                                            <a-icon type="plus" style="margin-right: 6px;"/>
+                                                        <a :class="{'disabled': task.done}"
+                                                           @click="()=>{if (task.deleted || task.done) return false; showChildTask = true}"
+                                                           class="add-handler"
+                                                           v-show="!showChildTask">
+                                                            <a-icon style="margin-right: 6px;" type="plus"/>
                                                             添加子任务
                                                         </a>
                                                     </a-tooltip>
@@ -594,7 +596,7 @@
                                                 <a-icon type="clock-circle"/>
                                                 <span class="field-name">工时
                                                     <span v-show="workTimeList.length"> · 实际工时 {{workTimeTotal}} 小时，工时记录 {{workTimeList.length}} 条，预估工时 {{task.work_time}} 小时   <a
-                                                            class="muted m-l-sm" @click="doPlainWorkTime">
+                                                            @click="doPlainWorkTime" class="muted m-l-sm">
                                                                     <a-icon class="task-item" type="edit"/>
                                                                 </a>
                                                     </span>
@@ -608,8 +610,8 @@
                                                 <div class="task-child">
                                                     <div class="task-list" v-show="workTimeList.length">
                                                         <div
-                                                                v-for="(workTime, index) in workTimeList"
-                                                                :key="workTime.code">
+                                                                :key="workTime.code"
+                                                                v-for="(workTime, index) in workTimeList">
                                                             <div class="list-item task m-l-xs">
                                                                 <div class="task-item task-title hover-none">
                                                                     <div class="title-text"
@@ -620,35 +622,34 @@
                                                                                 <span v-else>待认领</span>
                                                                             </template>
                                                                             <a-avatar
-                                                                                    class="task-item"
-                                                                                    size="small"
-                                                                                    icon="user"
                                                                                     :src="workTime.member.avatar"
+                                                                                    class="task-item"
+                                                                                    icon="user"
+                                                                                    size="small"
                                                                             ></a-avatar>
                                                                         </a-tooltip>
                                                                         {{workTime.member.name}}
-                                                                        {{moment(workTime.begin_time).format('MM月DD日 HH:mm')}}开始 工时为
-                                                                        {{workTime.num}} 小时
+                                                                        {{moment(workTime.begin_time).format('MM月DD日 HH:mm')}}开始工时为{{workTime.num}} 小时
                                                                         <div class="muted"
-                                                                             v-show="workTime.content"
-                                                                             style="padding-left: 40px;margin-top: 6px;">
+                                                                             style="padding-left: 40px;margin-top: 6px;"
+                                                                             v-show="workTime.content">
                                                                             {{workTime.content}}
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <a class="muted" @click="doWorkTime(workTime)">
+                                                                <a @click="doWorkTime(workTime)" class="muted">
                                                                     <a-icon class="task-item" type="edit"/>
                                                                 </a>
-                                                                <a class="muted"
-                                                                   @click="deleteWorkTime(workTime, index)">
+                                                                <a @click="deleteWorkTime(workTime, index)"
+                                                                   class="muted">
                                                                     <a-icon class="task-item" type="delete"/>
                                                                 </a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <a-tooltip placement="top">
-                                                        <a class="add-handler" @click="doWorkTime(false)">
-                                                            <a-icon type="plus" style="margin-right: 6px;"/>
+                                                        <a @click="doWorkTime(false)" class="add-handler">
+                                                            <a-icon style="margin-right: 6px;" type="plus"/>
                                                             添加工时
                                                         </a>
                                                     </a-tooltip>
@@ -672,7 +673,7 @@
                                                 <div class="task-child">
                                                     <a class="add-handler" id="upload-file"
                                                        v-show="!showChildTask">
-                                                        <a-icon type="plus" style="margin-right: 6px;"/>
+                                                        <a-icon style="margin-right: 6px;" type="plus"/>
                                                         上传文件
                                                     </a>
                                                 </div>
@@ -688,12 +689,13 @@
                                                         <a-list-item :key="index"
                                                                      v-for="(item, index) in taskSourceList">
                                                             <a-list-item-meta>
-                                                                <a-avatar size="small" slot="avatar" shape="square"
-                                                                          icon="link"
-                                                                          :src="item.sourceDetail.file_url"/>
+                                                                <a-avatar :src="item.sourceDetail.file_url" icon="link"
+                                                                          shape="square"
+                                                                          size="small"
+                                                                          slot="avatar"/>
                                                                 <div slot="title">
-                                                                    <a class="muted" target="_blank"
-                                                                       :href="item.sourceDetail.file_url">{{ item.title
+                                                                    <a :href="item.sourceDetail.file_url" class="muted"
+                                                                       target="_blank">{{ item.title
                                                                         }}</a>
                                                                 </div>
                                                                 <div slot="description">
@@ -714,10 +716,10 @@
                                                                         <a-icon type="down"/>
                                                                     </a>
                                                                     <!--</a-tooltip>-->
-                                                                    <a-menu v-clipboard="item.sourceDetail.file_url"
-                                                                            @click="doSource($event,item)"
+                                                                    <a-menu @click="doSource($event,item)"
                                                                             class="field-right-menu"
-                                                                            slot="overlay">
+                                                                            slot="overlay"
+                                                                            v-clipboard="item.sourceDetail.file_url">
                                                                         <a-menu-item key="copy">
                                                                             <a-icon type="link"/>
                                                                             <span>复制链接</span>
@@ -746,18 +748,18 @@
                             </div>
                             <div class="member-list">
                                 <a-tooltip
+                                        :key="member.code"
                                         :mouseEnterDelay="0.5"
                                         v-for="member in taskMemberList"
-                                        :key="member.code"
                                 >
                                     <template slot="title">
                                         <span>{{member.name}} <span v-if="member.is_owner"> · 创建者</span></span>
                                     </template>
                                     <a-avatar
+                                            :src="member.avatar"
                                             class="member-item"
                                             icon="user"
                                             size="small"
-                                            :src="member.avatar"
                                     />
                                 </a-tooltip>
                                 <a-dropdown :trigger="['click']" placement="bottomCenter"
@@ -766,18 +768,18 @@
                                         <template slot="title">
                                             <span>点击添加参与者</span>
                                         </template>
-                                        <a-icon class="member-item invite" type="plus-circle" theme="twoTone"
-                                                style="font-size: 24px;"/>
+                                        <a-icon class="member-item invite" style="font-size: 24px;" theme="twoTone"
+                                                type="plus-circle"/>
                                     </a-tooltip>
                                     <div slot="overlay">
                                         <project-member-menu
-                                                v-if="visibleProjectMemberMenu"
-                                                :taskCode="code"
                                                 :projectCode="projectCodeCurrent"
+                                                :taskCode="code"
                                                 @close="init(false)"
                                                 @inviteProjectMember="
                                                             showInviteMember = true,
                                                             visibleProjectMemberMenu = false"
+                                                v-if="visibleProjectMemberMenu"
                                         ></project-member-menu>
                                     </div>
                                 </a-dropdown>
@@ -790,8 +792,8 @@
                                         所有动态
                                         <a-icon type="down"/>
                                     </a>
-                                    <a-menu v-model="taskLogType" class="field-right-menu" slot="overlay"
-                                            selectable>
+                                    <a-menu class="field-right-menu" selectable slot="overlay"
+                                            v-model="taskLogType">
                                         <a-menu-item key="all">
                                             <div class="menu-item-content">
                                                 <span>所有动态</span>
@@ -812,27 +814,29 @@
                             </div>
                             <vue-scroll>
                                 <div class="log-list muted">
-                                    <a class="show-more muted" v-show="checkShowMoreLog"
-                                       @click="getMoreTaskLog">
+                                    <a @click="getMoreTaskLog" class="show-more muted"
+                                       v-show="checkShowMoreLog">
                                         <a-icon type="ellipsis"/>
                                         显示较早的 {{taskLogTotal - taskLogList.length}} 条动态
                                     </a>
                                     <div :class="{'log-comment': log.is_comment,'list-item': !log.is_comment}"
-                                         v-for="log in taskLogList" :key="log.code">
+                                         :key="log.code" v-for="log in taskLogList">
                                         <template v-if="!log.is_comment">
-                                            <a-icon class="log-item" :type="log.icon"/>
+                                            <a-icon :type="log.icon" class="log-item"/>
                                             <div class="log-item log-txt">
                                                 <div>{{log.member.name}} <span v-html="log.remark"></span></div>
-                                                <div v-if="log.content" class="log-content"
-                                                     v-html="log.content"></div>
+                                                <div class="log-content" v-html="log.content"
+                                                     v-if="log.content"></div>
                                             </div>
                                         </template>
                                         <template v-if="log.is_comment">
-                                            <div class="log-txt text-default" style="width:100%; display: flex;justify-content: space-between">
-                                               <div style="display: flex;align-items: center">
-                                                   <a-avatar :size="24" :src="log.member.avatar" class="m-r-sm" style="margin-left: -5px"/>
-                                                   <div>{{log.member.name}}</div>
-                                               </div>
+                                            <div class="log-txt text-default"
+                                                 style="width:100%; display: flex;justify-content: space-between">
+                                                <div style="display: flex;align-items: center">
+                                                    <a-avatar :size="24" :src="log.member.avatar" class="m-r-sm"
+                                                              style="margin-left: -5px"/>
+                                                    <div>{{log.member.name}}</div>
+                                                </div>
                                                 <a-tooltip :mouseEnterDelay="0.5">
                                                     <template slot="title">
                                                         <span>{{log.create_time}}</span>
@@ -841,10 +845,10 @@
                                                 </a-tooltip>
                                             </div>
                                             <div class="log-txt text-default" style="padding: 0 0 0 30px;">
-                                                <div class="m-t-xs" v-html="checkLink(log.content)" ></div>
+                                                <div class="m-t-xs" v-html="checkLink(log.content)"></div>
                                             </div>
                                         </template>
-                                        <a-tooltip v-if="!log.is_comment" :mouseEnterDelay="0.5">
+                                        <a-tooltip :mouseEnterDelay="0.5" v-if="!log.is_comment">
                                             <template slot="title">
                                                 <span>{{log.create_time}}</span>
                                             </template>
@@ -855,39 +859,44 @@
                             </vue-scroll>
                         </div>
                         <div class="footer" id="footer">
-                            <a-popover trigger="click" placement="top" :visible="showMentions" arrowPointAtCenter :getPopupContainer="getPopup">
+                            <a-popover :getPopupContainer="getPopup" :visible="showMentions" arrowPointAtCenter
+                                       placement="top"
+                                       trigger="click">
                                 <template slot="content">
                                     <div class="mentions-content" style="width: 200px;">
-                                        <div class="mentions-wrapper" v-for="member in taskMemberList" :key="member.id" @click="selectMentionMember(member)">
-                                            <a-avatar :src="member.avatar" icon="user" :size="28"/>
+                                        <div :key="member.id" @click="selectMentionMember(member)"
+                                             class="mentions-wrapper"
+                                             v-for="member in taskMemberList">
+                                            <a-avatar :size="28" :src="member.avatar" icon="user"/>
                                             <span class="muted name m-l-xs">{{member.name}}</span>
                                         </div>
                                     </div>
                                 </template>
-<!--                                <span slot="title">Title</span>-->
-                                <a-textarea ref="commentText" v-model="comment" :rows="1" placeholder="支持@提及任务成员，Ctrl+Enter发表评论"
-                                            style="margin-right: 24px;"/>
+                                <!--                                <span slot="title">Title</span>-->
+                                <a-textarea :rows="1" placeholder="支持@提及任务成员，Ctrl+Enter发表评论" ref="commentText"
+                                            style="margin-right: 24px;"
+                                            v-model="comment"/>
                             </a-popover>
-                            <a-button class="middle-btn" type="primary" @click="createComment">评论</a-button>
+                            <a-button @click="createComment" class="middle-btn" type="primary">评论</a-button>
                         </div>
                     </div>
                 </div>
             </div>
         </a-spin>
-        <invite-project-member v-model="showInviteMember" :project-code="projectCodeCurrent"
-                               v-if="showInviteMember"></invite-project-member>
+        <invite-project-member :project-code="projectCodeCurrent" v-if="showInviteMember"
+                               v-model="showInviteMember"></invite-project-member>
         <a-modal
+                :bodyStyle="{paddingBottom:'1px'}"
+                :confirmLoading="workTimeDo.confirmLoading"
+                :title="workTimeDo.modalTitle"
+                @ok="workTimeHandleSubmit"
                 class="work-time-modal"
                 v-model="workTimeDo.modalStatus"
-                :title="workTimeDo.modalTitle"
-                :bodyStyle="{paddingBottom:'1px'}"
-                @ok="workTimeHandleSubmit"
-                :confirmLoading="workTimeDo.confirmLoading"
         >
             <a-form
-                    layout="vertical"
+                    :form="workTimeDo.form"
                     @submit.prevent="workTimeHandleSubmit"
-                    :form="workTimeDo.form">
+                    layout="vertical">
                 <div>
                     <div style="font-size: 15px;">登记任务</div>
                     <div>{{task.name}}</div>
@@ -914,10 +923,10 @@
                                 label="开始时间"
                         >
                             <a-date-picker
-                                    showTime
-                                    format="YYYY年MM月DD日 HH:mm"
                                     allowClear
+                                    format="YYYY年MM月DD日 HH:mm"
                                     placeholder="请选择日期"
+                                    showTime
                                     v-decorator="[
                                 'begin_time',
                                 {rules: [{ required: true, message: '请选择日期' }], validateTrigger: 'change',initialValue: moment()}
@@ -931,9 +940,9 @@
                                 label="消耗时间"
                         >
                             <a-input
-                                    type="text"
-                                    placeholder="请输入数字"
                                     addonAfter="小时"
+                                    placeholder="请输入数字"
+                                    type="text"
                                     v-decorator="[
                                 'num',
                                 {rules: [{ required: true, message: '请输入消耗时间' }], validateTrigger: 'change'}
@@ -948,8 +957,8 @@
                         >
                             <a-textarea
                                     :rows="4"
-                                    type="text"
                                     placeholder="在这期间做了什么"
+                                    type="text"
                                     v-decorator="[
                                 'content',
                             ]"
@@ -961,23 +970,23 @@
             </a-form>
         </a-modal>
         <a-modal
-                v-model="plainWorkTime.modalStatus"
-                :title="plainWorkTime.modalTitle"
                 :bodyStyle="{paddingBottom:'1px'}"
-                @ok="workTimePlainHandleSubmit"
                 :confirmLoading="plainWorkTime.confirmLoading"
+                :title="plainWorkTime.modalTitle"
+                @ok="workTimePlainHandleSubmit"
+                v-model="plainWorkTime.modalStatus"
         >
             <a-form
-                    layout="vertical"
+                    :form="plainWorkTime.form"
                     @submit.prevent="workTimePlainHandleSubmit"
-                    :form="plainWorkTime.form">
+                    layout="vertical">
                 <a-form-item
                         label=""
                 >
                     <a-input
-                            type="text"
-                            placeholder="请输入数字"
                             addonAfter="小时"
+                            placeholder="请输入数字"
+                            type="text"
                             v-decorator="[
                                 'work_time',
                                 {rules: [{ required: true, message: '请输入预估工时' }], validateTrigger: 'change'}
@@ -991,844 +1000,856 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
-import $ from 'jquery';
-import moment from 'moment';
-import editor from '@/app/exports/editor';
-import {createComment, del, edit, logs, read, recovery, recycle, star, taskDone} from '@/app/frames/restapi/task';
-import {del as delSourceLink} from '@/app/frames/restapi/sourceLink';
-import {list as getTaskMembers} from '@/app/frames/restapi/taskMember';
-import taskMemberMenu from '@/app/exports/project/taskMemberMenu';
-import taskTagMenu from '@/app/exports/project/taskTagMenu';
-import projectMemberMenu from '@/app/exports/project/projectMemberMenu';
-import inviteProjectMember from '@/app/exports/project/inviteProjectMember';
-import {getStore} from '@/assets/js/storage';
-import {getApiUrl} from '@/assets/js/utils';
-import {save as createTask, list as getTasks, like as doLike} from '@/app/frames/restapi/task';
-import {notice} from '@/assets/js/notice';
-import {relativelyTaskTime, relativelyTime} from '@/assets/js/dateTime';
-import {checkResponse} from '../../../assets/js/utils';
-import {
-    _taskWorkTimeList, delTaskWorkTime,
-    editTaskWorkTime,
-    saveTaskWorkTime,
-    setPrivate,
-    setTag,
-    taskSources
-} from '../../frames/restapi/task';
-import ATextarea from 'ant-design-vue/es/input/TextArea';
+    import {mapState} from 'vuex';
+    import $ from 'jquery';
+    import moment from 'moment';
+    import editor from '@/app/exports/editor';
+    import {
+        createComment,
+        del,
+        edit,
+        like as doLike,
+        list as getTasks,
+        logs,
+        read,
+        recovery,
+        recycle,
+        save as createTask,
+        star,
+        taskDone
+    } from '@/app/frames/restapi/task';
+    import {del as delSourceLink} from '@/app/frames/restapi/sourceLink';
+    import {list as getTaskMembers} from '@/app/frames/restapi/taskMember';
+    import taskMemberMenu from '@/app/exports/project/taskMemberMenu';
+    import taskTagMenu from '@/app/exports/project/taskTagMenu';
+    import projectMemberMenu from '@/app/exports/project/projectMemberMenu';
+    import inviteProjectMember from '@/app/exports/project/inviteProjectMember';
+    import {getStore} from '@/assets/js/storage';
+    import {getApiUrl} from '@/assets/js/utils';
+    import {notice} from '@/assets/js/notice';
+    import {relativelyTaskTime, relativelyTime} from '@/assets/js/dateTime';
+    import {checkResponse} from '../../../assets/js/utils';
+    import {
+        _taskWorkTimeList,
+        delTaskWorkTime,
+        editTaskWorkTime,
+        saveTaskWorkTime,
+        setPrivate,
+        setTag,
+        taskSources
+    } from '../../frames/restapi/task';
+    import ATextarea from 'ant-design-vue/es/input/TextArea';
 
-let tokenList = getStore('tokenList', true);
-let authorization = '';
-if (tokenList) {
-    let accessToken = tokenList.accessToken;
-    let tokenType = tokenList.tokenType;
-    authorization = `${tokenType} ${accessToken}`;
-}
-export default {
-    'name': 'task-detail',
-    'components': {
-        ATextarea,
-        editor,
-        taskMemberMenu,
-        taskTagMenu,
-        projectMemberMenu,
-        inviteProjectMember
-    },
-    'props': {
-        'taskCode': {
-            'type': [String],
-            default() {
-                return '';
-            }
+    let tokenList = getStore('tokenList', true);
+    let authorization = '';
+    if (tokenList) {
+        let accessToken = tokenList.accessToken;
+        let tokenType = tokenList.tokenType;
+        authorization = `${tokenType} ${accessToken}`;
+    }
+    export default {
+        'name': 'task-detail',
+        'components': {
+            ATextarea,
+            editor,
+            taskMemberMenu,
+            taskTagMenu,
+            projectMemberMenu,
+            inviteProjectMember
         },
-        'width': {
-            'type': [String, Number],
-            default() {
-                return '1200';
-            }
-        }
-    },
-    data() {
-        return {
-            moment,
-            'loading': false,
-            'code': this.taskCode,
-            'projectCodeCurrent': '',
-            'task': {},
-            'taskLogList': [],
-            'taskLogTotal': 0,
-            'taskMemberList': [],
-            'workTimeList': [],
-            'workTimeTotal': [],
-
-            /*任务菜单*/
-            'visibleTaskMenu': false,
-
-            /*成员菜单*/
-            'visibleTaskMemberMenu': false,
-            /*任务标签*/
-            'visibleTaskTagMenu': false,
-            'visibleProjectMemberMenu': false,
-            'showInviteMember': false,
-
-            /*任务标题*/
-            'taskName': '',
-
-            /*日期*/
-            'showEditName': false,
-            'showBeginTime': false,
-            'showEndTime': false,
-
-            /*备注*/
-            'showTaskDescriptionEdit': false,
-            'showMoreDesc': false,
-            'hasMoreDesc': false,
-            'editorConfig': {
-                'uploadImgServer': getApiUrl('project/index/uploadImg'),
-                'uploadImgHeaders': {
-                    'Authorization': authorization
-                },
-                'menus': [
-                    'head',	// 标题
-                    'bold',	// 粗体
-                    'italic',	// 斜体
-                    'justify',	// 居中
-                    'image',	// 图片
-                    'link',	// 链接
-                    'list',	// 无序列表
-                    'quote',	// 引用
-                    'table',	// 表格
-                    '|',
-                    'fullscreen'	// 全屏
-                ]
+        'props': {
+            'taskCode': {
+                'type': [String],
+                default() {
+                    return '';
+                }
             },
-
-            /*子任务*/
-            'childTaskList': [],
-            'showChildTask': false,
-            'childTaskName': '',
-            'childExecutor': null,
-            'visibleChildTaskMemberMenu': false,
-            'showInviteChildTaskMember': false,
-
-            /*资源*/
-            'taskSourceList': [],
-
-            /*任务动态*/
-            'taskLogType': ['all'],
-            'showMoreTaskLog': 0,
-            'hasMoreTaskLog': false,
-            'hideShowMore': false,
-
-            /*评论*/
-            'comment': '',
-
-            /*工时*/
-            'workTimeDo': {
-                'form': this.$form.createForm(this),
-                'info': null,
-                'modalTitle': '登记工时记录',
-                'modalStatus': false,
-                'confirmLoading': false
-            },
-            'plainWorkTime': {
-                'form': this.$form.createForm(this),
-                'modalTitle': '设置预估工时',
-                'modalStatus': false,
-                'confirmLoading': false
-            },
-            //显示评论提及
-            'showMentions': false,
-            'mentionsList': []
-        };
-    },
-    'computed': {
-        ...mapState({
-            'userInfo': state => state.userInfo,
-            'uploader': state => state.common.uploader,
-            'socketAction': state => state.socketAction
-        }),
-        childTaskDoneNum() {
-            const list = this.childTaskList.filter(item => item.done == 1);
-            return list.length;
-        },
-        checkShowMoreLog() {
-            if (!this.hideShowMore) {
-                if (this.taskLogTotal > 5) {
-                    return true;
+            'width': {
+                'type': [String, Number],
+                default() {
+                    return '1200';
                 }
             }
-            return false;
         },
-        taskLink() {
-            return window.location.href;
-        },
-        scrollOps() {
+        data() {
             return {
-                'rail': {
-                    'background': '#e5e5e5',
-                    'opacity': 1
+                moment,
+                'loading': false,
+                'code': this.taskCode,
+                'projectCodeCurrent': '',
+                'task': {},
+                'taskLogList': [],
+                'taskLogTotal': 0,
+                'taskMemberList': [],
+                'workTimeList': [],
+                'workTimeTotal': [],
+
+                /*任务菜单*/
+                'visibleTaskMenu': false,
+
+                /*成员菜单*/
+                'visibleTaskMemberMenu': false,
+                /*任务标签*/
+                'visibleTaskTagMenu': false,
+                'visibleProjectMemberMenu': false,
+                'showInviteMember': false,
+
+                /*任务标题*/
+                'taskName': '',
+
+                /*日期*/
+                'showEditName': false,
+                'showBeginTime': false,
+                'showEndTime': false,
+
+                /*备注*/
+                'showTaskDescriptionEdit': false,
+                'showMoreDesc': false,
+                'hasMoreDesc': false,
+                'editorConfig': {
+                    'uploadImgServer': getApiUrl('project/index/uploadImg'),
+                    'uploadImgHeaders': {
+                        'Authorization': authorization
+                    },
+                    'menus': [
+                        'head',	// 标题
+                        'bold',	// 粗体
+                        'italic',	// 斜体
+                        'justify',	// 居中
+                        'image',	// 图片
+                        'link',	// 链接
+                        'list',	// 无序列表
+                        'quote',	// 引用
+                        'table',	// 表格
+                        '|',
+                        'fullscreen'	// 全屏
+                    ]
                 },
-                'bar': {
-                    'keepShow': true
+
+                /*子任务*/
+                'childTaskList': [],
+                'showChildTask': false,
+                'childTaskName': '',
+                'childExecutor': null,
+                'visibleChildTaskMemberMenu': false,
+                'showInviteChildTaskMember': false,
+
+                /*资源*/
+                'taskSourceList': [],
+
+                /*任务动态*/
+                'taskLogType': ['all'],
+                'showMoreTaskLog': 0,
+                'hasMoreTaskLog': false,
+                'hideShowMore': false,
+
+                /*评论*/
+                'comment': '',
+
+                /*工时*/
+                'workTimeDo': {
+                    'form': this.$form.createForm(this),
+                    'info': null,
+                    'modalTitle': '登记工时记录',
+                    'modalStatus': false,
+                    'confirmLoading': false
+                },
+                'plainWorkTime': {
+                    'form': this.$form.createForm(this),
+                    'modalTitle': '设置预估工时',
+                    'modalStatus': false,
+                    'confirmLoading': false
+                },
+                //显示评论提及
+                'showMentions': false,
+                'mentionsList': []
+            };
+        },
+        'computed': {
+            ...mapState({
+                'userInfo': state => state.userInfo,
+                'uploader': state => state.common.uploader,
+                'socketAction': state => state.socketAction
+            }),
+            childTaskDoneNum() {
+                const list = this.childTaskList.filter(item => item.done === 1);
+                return list.length;
+            },
+            checkShowMoreLog() {
+                if (!this.hideShowMore) {
+                    if (this.taskLogTotal > 5) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+            taskLink() {
+                return window.location.href;
+            },
+            scrollOps() {
+                return {
+                    'rail': {
+                        'background': '#e5e5e5',
+                        'opacity': 1
+                    },
+                    'bar': {
+                        'keepShow': true
+                    }
+                };
+            }
+        },
+        'watch': {
+            $route(to, from) {
+                // if (from.name == 'taskdetail') {
+                //     this.init();
+                // }
+            },
+            showInviteMember(val) {
+                if (!val) {
+                    this.getTaskMembers();
+                }
+            },
+            taskLogType() {
+                this.getTaskLog();
+            },
+            socketAction(val) {
+                if (val.action === 'organization:task') {
+                    const data = val.data.data;
+                    if (data.taskCode === this.code) {
+                        this.init(null, false);
+                    }
+                }
+            },
+            'uploader': {
+                handler(newVal, oldVal) {
+                    //监听是否有上传文件行为
+                    console.log(newVal);
+                    console.log(newVal.fileList);
+                    const files = newVal.fileList;
+                    const index = files.findIndex(item => item.projectName === this.task.projectName);
+                    if (index !== -1) {
+                        this.taskSources();
+                        this.getTaskLog();
+                    }
+                },
+                'deep': true
+            }
+        },
+        created() {
+            this.init();
+        },
+        mounted() {
+            this.changeModalHeight();
+            window.onresize = () => {
+                return (() => {
+                    this.changeModalHeight();
+                })();
+            };
+            document.onkeydown = (event) => {
+                console.log(event);
+                let e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e.keyCode === 13 && e.ctrlKey) {
+                    //处理的部分
+                    this.createComment();
+                }
+                if (e.code === 'Digit2') {
+                    this.showMentions = true;
+                } else {
+                    this.showMentions = false;
                 }
             };
-        }
-    },
-    'watch': {
-        $route(to, from) {
-            // if (from.name == 'taskdetail') {
-            //     this.init();
-            // }
+            setTimeout(() => {
+                this.uploader.assignBrowse(document.getElementById('upload-file'));
+            }, 500);
         },
-        showInviteMember(val) {
-            if (!val) {
+        'filters': {
+            formatLogTime(value) {
+                return relativelyTime(value);
+            }
+        },
+        'methods': {
+            init(code = null, loading = true) {
+                if (code) {
+                    this.code = code;//子任务
+                }
+                if (loading) {
+                    this.loading = true;
+                }
+                this.clearMemberMenu();
+                this.getTask();
+                this.getChildTasks();
                 this.getTaskMembers();
-            }
-        },
-        taskLogType() {
-            this.getTaskLog();
-        },
-        socketAction(val) {
-            if (val.action === 'organization:task') {
-                const data = val.data.data;
-                if (data.taskCode == this.code) {
-                    this.init(null, false);
-                }
-            }
-        },
-        'uploader': {
-            handler(newVal, oldVal) {
-                //监听是否有上传文件行为
-                console.log(newVal);
-                console.log(newVal.fileList);
-                const files = newVal.fileList;
-                const index = files.findIndex(item => item.projectName == this.task.projectName);
-                if (index !== -1) {
-                    this.taskSources();
-                    this.getTaskLog();
-                }
+                this.getTaskWorkTimeList();
             },
-            'deep': true
-        }
-    },
-    created() {
-        this.init();
-    },
-    mounted() {
-        this.changeModalHeight();
-        window.onresize = () => {
-            return (() => {
-                this.changeModalHeight();
-            })();
-        };
-        document.onkeydown = (event) => {
-            console.log(event);
-            var e = event || window.event || arguments.callee.caller.arguments[0];
-            if (e.keyCode == 13 && e.ctrlKey) {
-                //处理的部分
-                this.createComment();
-            }
-            if (e.code == 'Digit2') {
-                this.showMentions = true;
-            } else {
-                this.showMentions = false;
-            }
-        };
-        setTimeout(() => {
-            this.uploader.assignBrowse(document.getElementById('upload-file'));
-        }, 500);
-    },
-    'filters': {
-        formatLogTime(value) {
-            return relativelyTime(value);
-        }
-    },
-    'methods': {
-        init(code = null, loading = true) {
-            if (code) {
-                this.code = code;//子任务
-            }
-            if (loading) {
-                this.loading = true;
-            }
-            this.clearMemberMenu();
-            this.getTask();
-            this.getChildTasks();
-            this.getTaskMembers();
-            this.getTaskWorkTimeList();
-        },
-        detailClose() {
-            this.$emit('close', this.task);
-            // this.$router.push(`/project/space/task/${this.task.project_code}`);
-        },
-        clearMemberMenu() {
-            this.visibleTaskTagMenu = false;
-            this.visibleTaskMemberMenu = false;
-            this.visibleProjectMemberMenu = false;
-            this.showChildTask = false;
-        },
-        getTask() {
-            this.$store.commit('viewRefresh');
-            this.clearMemberMenu();
-            read(this.code).then((res) => {
-                this.getTaskLog();
-                this.taskSources();
-                this.taskName = res.data.name;
-                this.task = res.data;
-                this.projectCodeCurrent = res.data.project_code;
-                if (!this.task.end_time) {
-                    this.task.setEndTime = false;
-                    this.task.end_time = moment(moment().format('YYYY-MM-DD') + ' 18:00');
-                } else {
-                    this.task.setEndTime = true;
-                    this.task.end_time = moment(this.task.end_time);
-                }
-                this.task.end_time_format = relativelyTaskTime(this.task.end_time, true);
-                if (!this.task.begin_time) {
-                    this.task.setBeginTime = false;
-                    this.task.begin_time = moment(moment().format('YYYY-MM-DD') + ' 18:00');
-                } else {
-                    this.task.setBeginTime = true;
-                    this.task.begin_time = moment(this.task.begin_time);
-                }
-                this.task.begin_time_format = relativelyTaskTime(this.task.begin_time, true);
-                this.initContent(this.task.description);
-                if (this.task.executor) {
-                    this.childExecutor = this.task.executor;
-                }
-                this.loading = false;
-                this.$store.dispatch('setTempData', {
-                    'projectCode': this.projectCodeCurrent,
-                    'taskCode': this.code,
-                    'projectName': res.data.projectName
-                });
-            });
-        },
-        getTaskLog() {
-            logs({
-                'taskCode': this.code,
-                'all': this.showMoreTaskLog,
-                'pageSize': 5,
-                'comment': this.taskLogType[0] == 'comment' ? 1 : 0
-            }).then((res) => {
-                this.taskLogList = res.data.list;
-                this.taskLogTotal = res.data.total;
-                if (res.data.total > 5) {
-                    this.hasMoreTaskLog = true;
-                    // this.showMoreTaskLog = 1;
-                }
-            });
-        },
-        taskSources() {
-            taskSources({'taskCode': this.code}).then((res) => {
-                this.taskSourceList = res.data;
-            });
-        },
-        getMoreTaskLog() {
-            this.showMoreTaskLog = 1;
-            this.hideShowMore = true;
-            this.getTaskLog();
-        },
-        getTaskWorkTimeList() {
-            _taskWorkTimeList({'taskCode': this.code}).then(res => {
-                this.workTimeList = res.data;
-                let total = 0;
-                if (res.data) {
-                    res.data.forEach(v => {
-                        total += Number(v.num);
+            detailClose() {
+                this.$emit('close', this.task);
+                // this.$router.push(`/project/space/task/${this.task.project_code}`);
+            },
+            clearMemberMenu() {
+                this.visibleTaskTagMenu = false;
+                this.visibleTaskMemberMenu = false;
+                this.visibleProjectMemberMenu = false;
+                this.showChildTask = false;
+            },
+            getTask() {
+                this.$store.commit('viewRefresh');
+                this.clearMemberMenu();
+                read(this.code).then((res) => {
+                    this.getTaskLog();
+                    this.taskSources();
+                    this.taskName = res.data.name;
+                    this.task = res.data;
+                    this.projectCodeCurrent = res.data.project_code;
+                    if (!this.task.end_time) {
+                        this.task.setEndTime = false;
+                        this.task.end_time = moment(moment().format('YYYY-MM-DD') + ' 18:00');
+                    } else {
+                        this.task.setEndTime = true;
+                        this.task.end_time = moment(this.task.end_time);
+                    }
+                    this.task.end_time_format = relativelyTaskTime(this.task.end_time, true);
+                    if (!this.task.begin_time) {
+                        this.task.setBeginTime = false;
+                        this.task.begin_time = moment(moment().format('YYYY-MM-DD') + ' 18:00');
+                    } else {
+                        this.task.setBeginTime = true;
+                        this.task.begin_time = moment(this.task.begin_time);
+                    }
+                    this.task.begin_time_format = relativelyTaskTime(this.task.begin_time, true);
+                    this.initContent(this.task.description);
+                    if (this.task.executor) {
+                        this.childExecutor = this.task.executor;
+                    }
+                    this.loading = false;
+                    this.$store.dispatch('setTempData', {
+                        'projectCode': this.projectCodeCurrent,
+                        'taskCode': this.code,
+                        'projectName': res.data.projectName
                     });
-                    this.workTimeTotal = total;
-                }
-            });
-        },
-        getTaskMembers() {
-            this.clearMemberMenu();
-            getTaskMembers({'taskCode': this.code, 'pageSize': 100}).then((res) => {
-                this.taskMemberList = res.data.list;
-                this.loading = false;
-            });
-        },
-        doTask(action) {
-            let app = this;
-            const actionKey = action.key;
-            switch (actionKey) {
-            case 'recycle':
-                this.$confirm({
-                    'title': '移到回收站',
-                    'content': '您确定要把该任务移到回收站吗？',
-                    'okText': '确定',
-                    'okType': 'danger',
-                    'cancelText': '再想想',
-                    onOk() {
-                        recycle(app.code).then((res) => {
+                });
+            },
+            getTaskLog() {
+                logs({
+                    'taskCode': this.code,
+                    'all': this.showMoreTaskLog,
+                    'pageSize': 5,
+                    'comment': this.taskLogType[0] === 'comment' ? 1 : 0
+                }).then((res) => {
+                    this.taskLogList = res.data.list;
+                    this.taskLogTotal = res.data.total;
+                    if (res.data.total > 5) {
+                        this.hasMoreTaskLog = true;
+                        // this.showMoreTaskLog = 1;
+                    }
+                });
+            },
+            taskSources() {
+                taskSources({'taskCode': this.code}).then((res) => {
+                    this.taskSourceList = res.data;
+                });
+            },
+            getMoreTaskLog() {
+                this.showMoreTaskLog = 1;
+                this.hideShowMore = true;
+                this.getTaskLog();
+            },
+            getTaskWorkTimeList() {
+                _taskWorkTimeList({'taskCode': this.code}).then(res => {
+                    this.workTimeList = res.data;
+                    let total = 0;
+                    if (res.data) {
+                        res.data.forEach(v => {
+                            total += Number(v.num);
+                        });
+                        this.workTimeTotal = total;
+                    }
+                });
+            },
+            getTaskMembers() {
+                this.clearMemberMenu();
+                getTaskMembers({'taskCode': this.code, 'pageSize': 100}).then((res) => {
+                    this.taskMemberList = res.data.list;
+                    this.loading = false;
+                });
+            },
+            doTask(action) {
+                let app = this;
+                const actionKey = action.key;
+                switch (actionKey) {
+                    case 'recycle':
+                        this.$confirm({
+                            'title': '移到回收站',
+                            'content': '您确定要把该任务移到回收站吗？',
+                            'okText': '确定',
+                            'okType': 'danger',
+                            'cancelText': '再想想',
+                            onOk() {
+                                recycle(app.code).then((res) => {
+                                    const result = checkResponse(res);
+                                    if (!result) {
+                                        return false;
+                                    }
+                                    app.task.deleted = 1;
+                                    app.getTaskLog();
+                                });
+                                return Promise.resolve();
+                            }
+                        });
+                        break;
+                    case 'star':
+                        this.task.stared ? this.task.stared = 0 : this.task.stared = 1;
+                        star(app.code, this.task.stared);
+                        return true;
+                    case 'open':
+                        window.open(window.location.href + '&full-screen');
+                        break;
+
+                    case 'private':
+                        setPrivate(app.code, Number(!this.task['private'])).then(res => {
                             const result = checkResponse(res);
                             if (!result) {
                                 return false;
                             }
-                            app.task.deleted = 1;
-                            app.getTaskLog();
+                            this.task['private'] = Number(!this.task['private']);
+                        });
+                        return true;
+                }
+                this.visibleTaskMenu = false;
+            },
+            editTitle() {
+                this.showEditName = true;
+                this.$nextTick(() => {
+                    this.$refs.inputTitle.focus();
+                });
+            },
+            doSource(action, source) {
+                let app = this;
+                const actionKey = action.key;
+                switch (actionKey) {
+                    case 'unlink':
+                        this.$confirm({
+                            'title': '取消关联',
+                            'content': '您确定永久删除这个关联？',
+                            'okText': '确定',
+                            'okType': 'danger',
+                            'cancelText': '再想想',
+                            onOk() {
+                                delSourceLink(source.code).then((res) => {
+                                    const result = checkResponse(res);
+                                    if (!result) {
+                                        return false;
+                                    }
+                                    app.taskSources();
+                                    app.getTaskLog();
+                                });
+                                return Promise.resolve();
+                            }
+                        });
+                        break;
+                    case 'copy':
+                        notice({
+                            'title': '复制链接成功',
+                            'msg': '在地址栏粘贴并打开可下载该资源'
+                        }, 'notice', 'success', 5);
+                        return true;
+                }
+            },
+            deleteTask() {
+                let app = this;
+                this.$confirm({
+                    'title': '彻底删除',
+                    'content': '彻底删除任务后，该任务及其子任务将会被永久被删除。',
+                    'okText': '删除',
+                    'okType': 'danger',
+                    'cancelText': '再想想',
+                    onOk() {
+                        del(app.code).then((res) => {
+                            app.detailClose();
                         });
                         return Promise.resolve();
                     }
                 });
-                break;
-            case 'star':
-                this.task.stared ? this.task.stared = 0 : this.task.stared = 1;
-                star(app.code, this.task.stared);
-                return true;
-            case 'open':
-                window.open(window.location.href + '&full-screen');
-                break;
-
-            case 'private':
-                setPrivate(app.code, Number(!this.task['private'])).then(res => {
+            },
+            recoveryTask() {
+                let app = this;
+                this.$confirm({
+                    'title': '恢复内容',
+                    'content': '您确定要恢复该任务吗？',
+                    'okText': '确定',
+                    'okType': 'primary',
+                    'cancelText': '再想想',
+                    onOk() {
+                        recovery(app.code).then((res) => {
+                            const result = checkResponse(res);
+                            if (!result) {
+                                return false;
+                            }
+                            app.getTaskLog();
+                        });
+                        app.task.deleted = 0;
+                        return Promise.resolve();
+                    }
+                });
+            },
+            copyLink() {
+                notice({
+                    'title': '复制链接成功',
+                    'msg': '你可以在其他标签页粘贴并快速打开任务页面'
+                }, 'notice', 'success', 5);
+            },
+            like(like) {
+                like = Number(like);
+                doLike(this.code, like);
+                if (like) {
+                    this.task.like++;
+                } else {
+                    this.task.like--;
+                }
+                this.task.liked = like;
+            },
+            taskDone(taskCode, done, index, type = 'self') {
+                done ? done = 1 : done = 0;
+                taskDone(taskCode, done).then((res) => {
                     const result = checkResponse(res);
                     if (!result) {
                         return false;
                     }
-                    this.task['private'] = Number(!this.task['private']);
+                    this.getTaskLog();
+                    if (type === 'self') {
+                        //自身完成
+                        this.task.done = done;
+                        // this.init();
+                    } else {
+                        //完成子任务
+                        this.childTaskList[index].done = done;
+                        // this.init(this.childTaskList[index].pcode);
+                    }
+                    this.getTask();
+                    this.getChildTasks();
                 });
-                return true;
-            }
-            this.visibleTaskMenu = false;
-        },
-        editTitle() {
-            this.showEditName = true;
-            this.$nextTick(() => {
-                this.$refs.inputTitle.focus();
-            });
-        },
-        doSource(action, source) {
-            let app = this;
-            const actionKey = action.key;
-            switch (actionKey) {
-            case 'unlink':
+            },
+            doBeginTime(setBeginTime = false, showBeginTime = false) {
+                this.task.setBeginTime = setBeginTime;
+                this.showBeginTime = showBeginTime;
+                let beginTime = '';
+                if (setBeginTime) {
+                    beginTime = moment(this.task.begin_time).format('YYYY-MM-DD HH:mm');
+                    this.task.begin_time_format = moment(this.task.begin_time).format('MM月DD日 HH:mm');
+                } else {
+                    beginTime = '';
+                }
+                this.editTask({'begin_time': beginTime});
+            },
+            doEndTime(setEndTime = false, showEndTime = false) {
+                this.task.setEndTime = setEndTime;
+                this.showEndTime = showEndTime;
+                let endTime = '';
+                if (setEndTime) {
+                    endTime = moment(this.task.end_time).format('YYYY-MM-DD HH:mm');
+                    this.task.end_time_format = moment(this.task.end_time).format('MM月DD日 HH:mm');
+                } else {
+                    endTime = '';
+                }
+                this.editTask({'end_time': endTime});
+            },
+            doPri(item) {
+                this.editTask({'pri': item.key});
+            },
+            doName() {
+                this.showEditName = false;
+                if (!this.task.name.trim() || this.task.name === this.taskName) {
+                    this.task.name = this.taskName;
+                    return false;
+                }
+                this.editTask({'name': this.task.name});
+            },
+            editTask(data) {
+                data.taskCode = this.code;
+                edit(data).then((res) => {
+                    const result = checkResponse(res);
+                    if (!result) {
+                        return false;
+                    }
+                    this.getTask();
+                });
+            },
+            priColor(pri) {
+                switch (pri) {
+                    case 1:
+                        return '#ff9900';
+                    case 2:
+                        return '#ed3f14';
+                    default:
+                        return '#a6a6a6';
+                }
+            },
+            showTaskDesc() {
+                if (this.task.deleted) {
+                    return false;
+                }
+                this.showTaskDescriptionEdit = true;
+                this.initContent(this.task.description);
+            },
+            initContent(value) {
+                if (value) {
+                    this.$refs.vueWangeditor.setHtml(value);
+                } else {
+                    this.$refs.vueWangeditor.setHtml('');
+                }
+                this.$nextTick(() => {
+                    this.checkShowMoreDesc(false, true);
+                });
+            },
+            doContent() {
+                let content = this.$refs.vueWangeditor.getHtml();
+                const obj = {
+                    'taskCode': this.code,
+                    'description': content
+                };
+                edit(obj).then(() => {
+                    this.task.description = content;
+                    this.showTaskDescriptionEdit = false;
+                    this.$nextTick(() => {
+                        this.checkShowMoreDesc(false, true);
+                    });
+                    this.getTaskLog();
+                });
+            },
+            createComment() {
+                let comment = this.comment.trim();
+                if (!comment) {
+                    return false;
+                }
+                comment += ' ';
+                const regx = /(@[^@]+) /g;
+                const res = comment.match(regx);
+                if (res) {
+                    res.forEach((v) => {
+                        let str = v.substring(1, v.length - 1);
+                        if (this.mentionsList.findIndex(item => item === str) === -1) {
+                            this.mentionsList.push(str);
+                        }
+                    });
+                }
+                createComment(this.code, this.comment, JSON.stringify(this.mentionsList)).then(() => {
+                    this.comment = '';
+                    this.mentionsList = [];
+                    this.getTaskLog();
+                });
+            },
+            checkShowMoreDesc(show = false, init = false) {
+                let dom = $('.description-txt');
+                if (!init) {
+                    if (show) {
+                        this.showMoreDesc = true;
+                        dom.css('max-height', () => {
+                            return '100%';
+                        });
+                    } else {
+                        this.showMoreDesc = false;
+                        dom.css('max-height', () => {
+                            return '300px';
+                        });
+                    }
+                }
+                if (init) {
+                    const height = dom.height();
+                    if (height >= 300) {
+                        this.hasMoreDesc = true;
+                        return true;
+                    } else {
+                        this.hasMoreDesc = false;
+                        return false;
+                    }
+                }
+                return false;
+            },
+            createTask() {
+                let obj = {'pcode': this.code, 'name': this.childTaskName};
+                if (this.childExecutor) {
+                    obj.assign_to = this.childExecutor.code;
+                }
+                createTask(obj).then((res) => {
+                    const result = checkResponse(res);
+                    if (!result) {
+                        return false;
+                    }
+                    this.childTaskName = '';
+                    this.getChildTasks();
+                    this.getTaskLog();
+                });
+            },
+            getChildTasks() {
+                getTasks({'pcode': this.code, 'pageSize': 100, 'deleted': 0}).then((res) => {
+                    this.childTaskList = res.data.list;
+                });
+            },
+            taskTagChange(tag) {
+                const index = this.task.tags.findIndex(item => item.tag_code === tag.code);
+                if (index !== -1) {
+                    this.task.tags.splice(index, 1);
+                } else {
+                    this.task.tags.push({
+                        'tag_code': tag.code,
+                        'tag': tag
+                    });
+                }
+            },
+            taskTagUpdate(tag) {
+                const index = this.task.tags.findIndex(item => item.tag_code === tag.code);
+                if (index !== -1) {
+                    this.task.tags[index].tag = tag;
+                }
+            },
+            taskTagDelete(tag) {
+                const index = this.task.tags.findIndex(item => item.tag_code === tag.code);
+                if (index !== -1) {
+                    this.task.tags.splice(index, 1);
+                }
+            },
+            removeTag(tag, index) {
+                setTag({'taskCode': this.task.code, 'tagCode': tag.code}).then(() => {
+                    this.task.tags.splice(index, 1);
+                });
+            },
+            doPlainWorkTime() {
+                let app = this;
+                this.plainWorkTime.modalStatus = true;
+                this.$nextTick(function () {
+                    app.plainWorkTime.form.setFieldsValue({
+                        'work_time': app.task.work_time
+                    });
+                });
+            },
+            doWorkTime(workTime = false) {
+                let app = this;
+                this.workTimeDo.modalStatus = true;
+                if (workTime) {
+                    this.workTimeDo.info = workTime;
+                    this.$nextTick(function () {
+                        app.workTimeDo.form.setFieldsValue({
+                            'num': workTime.num,
+                            'begin_time': moment(workTime.begin_time),
+                            'content': workTime.content
+                        });
+                    });
+                } else {
+                    this.workTimeDo.form.resetFields();
+                    this.workTimeDo.info = null;
+                }
+            },
+            deleteWorkTime(workTime, index) {
+                let app = this;
                 this.$confirm({
-                    'title': '取消关联',
-                    'content': '您确定永久删除这个关联？',
+                    'title': '删除工时记录',
+                    'content': '确定要删除工时记录吗？',
                     'okText': '确定',
                     'okType': 'danger',
                     'cancelText': '再想想',
                     onOk() {
-                        delSourceLink(source.code).then((res) => {
-                            const result = checkResponse(res);
-                            if (!result) {
-                                return false;
+                        delTaskWorkTime({'code': workTime.code}).then((res) => {
+                            if (checkResponse(res)) {
+                                app.workTimeList.splice(index, 1);
+                                app.workTimeTotal -= workTime.num;
                             }
-                            app.taskSources();
-                            app.getTaskLog();
                         });
                         return Promise.resolve();
                     }
                 });
-                break;
-            case 'copy':
-                notice({
-                    'title': '复制链接成功',
-                    'msg': '在地址栏粘贴并打开可下载该资源'
-                }, 'notice', 'success', 5);
-                return true;
-            }
-        },
-        deleteTask() {
-            let app = this;
-            this.$confirm({
-                'title': '彻底删除',
-                'content': '彻底删除任务后，该任务及其子任务将会被永久被删除。',
-                'okText': '删除',
-                'okType': 'danger',
-                'cancelText': '再想想',
-                onOk() {
-                    del(app.code).then((res) => {
-                        ``;
-                        app.detailClose();
-                    });
-                    return Promise.resolve();
-                }
-            });
-        },
-        recoveryTask() {
-            let app = this;
-            this.$confirm({
-                'title': '恢复内容',
-                'content': '您确定要恢复该任务吗？',
-                'okText': '确定',
-                'okType': 'primary',
-                'cancelText': '再想想',
-                onOk() {
-                    recovery(app.code).then((res) => {
-                        const result = checkResponse(res);
-                        if (!result) {
-                            return false;
-                        }
-                        app.getTaskLog();
-                    });
-                    app.task.deleted = 0;
-                    return Promise.resolve();
-                }
-            });
-        },
-        copyLink() {
-            notice({
-                'title': '复制链接成功',
-                'msg': '你可以在其他标签页粘贴并快速打开任务页面'
-            }, 'notice', 'success', 5);
-        },
-        like(like) {
-            like = Number(like);
-            doLike(this.code, like);
-            if (like) {
-                this.task.like++;
-            } else {
-                this.task.like--;
-            }
-            this.task.liked = like;
-        },
-        taskDone(taskCode, done, index, type = 'self') {
-            done ? done = 1 : done = 0;
-            taskDone(taskCode, done).then((res) => {
-                const result = checkResponse(res);
-                if (!result) {
-                    return false;
-                }
-                this.getTaskLog();
-                if (type == 'self') {
-                    //自身完成
-                    this.task.done = done;
-                    // this.init();
-                } else {
-                    //完成子任务
-                    this.childTaskList[index].done = done;
-                    // this.init(this.childTaskList[index].pcode);
-                }
-                this.getTask();
-                this.getChildTasks();
-            });
-        },
-        doBeginTime(setBeginTime = false, showBeginTime = false) {
-            this.task.setBeginTime = setBeginTime;
-            this.showBeginTime = showBeginTime;
-            let beginTime = '';
-            if (setBeginTime) {
-                beginTime = moment(this.task.begin_time).format('YYYY-MM-DD HH:mm');
-                this.task.begin_time_format = moment(this.task.begin_time).format('MM月DD日 HH:mm');
-            } else {
-                beginTime = '';
-            }
-            this.editTask({'begin_time': beginTime});
-        },
-        doEndTime(setEndTime = false, showEndTime = false) {
-            this.task.setEndTime = setEndTime;
-            this.showEndTime = showEndTime;
-            let endTime = '';
-            if (setEndTime) {
-                endTime = moment(this.task.end_time).format('YYYY-MM-DD HH:mm');
-                this.task.end_time_format = moment(this.task.end_time).format('MM月DD日 HH:mm');
-            } else {
-                endTime = '';
-            }
-            this.editTask({'end_time': endTime});
-        },
-        doPri(item) {
-            this.editTask({'pri': item.key});
-        },
-        doName() {
-            this.showEditName = false;
-            if (!this.task.name.trim() || this.task.name == this.taskName) {
-                this.task.name = this.taskName;
-                return false;
-            }
-            this.editTask({'name': this.task.name});
-        },
-        editTask(data) {
-            data.taskCode = this.code;
-            edit(data).then((res) => {
-                const result = checkResponse(res);
-                if (!result) {
-                    return false;
-                }
-                this.getTask();
-            });
-        },
-        priColor(pri) {
-            switch (pri) {
-            case 1:
-                return '#ff9900';
-            case 2:
-                return '#ed3f14';
-            default:
-                return '#a6a6a6';
-            }
-        },
-        showTaskDesc() {
-            if (this.task.deleted) {
-                return false;
-            }
-            this.showTaskDescriptionEdit = true;
-            this.initContent(this.task.description);
-        },
-        initContent(value) {
-            if (value) {
-                this.$refs.vueWangeditor.setHtml(value);
-            } else {
-                this.$refs.vueWangeditor.setHtml('');
-            }
-            this.$nextTick(() => {
-                this.checkShowMoreDesc(false, true);
-            });
-        },
-        doContent() {
-            let content = this.$refs.vueWangeditor.getHtml();
-            const obj = {
-                'taskCode': this.code,
-                'description': content
-            };
-            edit(obj).then(() => {
-                this.task.description = content;
-                this.showTaskDescriptionEdit = false;
-                this.$nextTick(() => {
-                    this.checkShowMoreDesc(false, true);
-                });
-                this.getTaskLog();
-            });
-        },
-        createComment() {
-            let comment = this.comment.trim();
-            if (!comment) {
-                return false;
-            }
-            comment += ' ';
-            const regx = /(@[^@]+) /g;
-            const res = comment.match(regx);
-            if (res) {
-                res.forEach((v) => {
-                    let str = v.substring(1, v.length - 1);
-                    if (this.mentionsList.findIndex(item => item == str) === -1) {
-                        this.mentionsList.push(str);
-                    }
-                });
-            }
-            createComment(this.code, this.comment, JSON.stringify(this.mentionsList)).then(() => {
-                this.comment = '';
-                this.mentionsList = [];
-                this.getTaskLog();
-            });
-        },
-        checkShowMoreDesc(show = false, init = false) {
-            let dom = $('.description-txt');
-            if (!init) {
-                if (show) {
-                    this.showMoreDesc = true;
-                    dom.css('max-height', () => {
-                        return '100%';
-                    });
-                } else {
-                    this.showMoreDesc = false;
-                    dom.css('max-height', () => {
-                        return '300px';
-                    });
-                }
-            }
-            if (init) {
-                const height = dom.height();
-                if (height >= 300) {
-                    this.hasMoreDesc = true;
-                    return true;
-                } else {
-                    this.hasMoreDesc = false;
-                    return false;
-                }
-            }
-            return false;
-        },
-        createTask() {
-            let obj = {'pcode': this.code, 'name': this.childTaskName};
-            if (this.childExecutor) {
-                obj.assign_to = this.childExecutor.code;
-            }
-            createTask(obj).then((res) => {
-                const result = checkResponse(res);
-                if (!result) {
-                    return false;
-                }
-                this.childTaskName = '';
-                this.getChildTasks();
-                this.getTaskLog();
-            });
-        },
-        getChildTasks() {
-            getTasks({'pcode': this.code, 'pageSize': 100, 'deleted': 0}).then((res) => {
-                this.childTaskList = res.data.list;
-            });
-        },
-        taskTagChange(tag) {
-            const index = this.task.tags.findIndex(item => item.tag_code == tag.code);
-            if (index !== -1) {
-                this.task.tags.splice(index, 1);
-            } else {
-                this.task.tags.push({
-                    'tag_code': tag.code,
-                    'tag': tag
-                });
-            }
-        },
-        taskTagUpdate(tag) {
-            const index = this.task.tags.findIndex(item => item.tag_code == tag.code);
-            if (index !== -1) {
-                this.task.tags[index].tag = tag;
-            }
-        },
-        taskTagDelete(tag) {
-            const index = this.task.tags.findIndex(item => item.tag_code == tag.code);
-            if (index !== -1) {
-                this.task.tags.splice(index, 1);
-            }
-        },
-        removeTag(tag, index) {
-            setTag({'taskCode': this.task.code, 'tagCode': tag.code}).then(() => {
-                this.task.tags.splice(index, 1);
-            });
-        },
-        doPlainWorkTime() {
-            let app = this;
-            this.plainWorkTime.modalStatus = true;
-            this.$nextTick(function () {
-                app.plainWorkTime.form.setFieldsValue({
-                    'work_time': app.task.work_time
-                });
-            });
-        },
-        doWorkTime(workTime = false) {
-            let app = this;
-            this.workTimeDo.modalStatus = true;
-            if (workTime) {
-                this.workTimeDo.info = workTime;
-                this.$nextTick(function () {
-                    app.workTimeDo.form.setFieldsValue({
-                        'num': workTime.num,
-                        'begin_time': moment(workTime.begin_time),
-                        'content': workTime.content
-                    });
-                });
-            } else {
-                this.workTimeDo.form.resetFields();
-                this.workTimeDo.info = null;
-            }
-        },
-        deleteWorkTime(workTime, index) {
-            let app = this;
-            this.$confirm({
-                'title': '删除工时记录',
-                'content': '确定要删除工时记录吗？',
-                'okText': '确定',
-                'okType': 'danger',
-                'cancelText': '再想想',
-                onOk() {
-                    delTaskWorkTime({'code': workTime.code}).then((res) => {
-                        if (checkResponse(res)) {
-                            app.workTimeList.splice(index, 1);
-                            app.workTimeTotal -= workTime.num;
-                        }
-                    });
-                    return Promise.resolve();
-                }
-            });
-        },
-        workTimePlainHandleSubmit() {
-            let app = this;
-            this.plainWorkTime.form.validateFields(
-                (err, values) => {
-                    if (!err) {
-                        app.editTask({'work_time': values.work_time});
-                        app.plainWorkTime.modalStatus = false;
-                    }
-                }
-            );
-        },
-        workTimeHandleSubmit() {
-            let app = this;
-            this.workTimeDo.form.validateFields(
-                (err, values) => {
-                    if (!err) {
-                        app.workTimeDo.confirmLoading = true;
-                        let data = {
-                            'beginTime': values.begin_time.format('YYYY-MM-DD HH:mm'),
-                            'num': values.num,
-                            'content': values.content,
-                            'taskCode': app.code
-                        };
-                        if (app.workTimeDo.info) {
-                            data.code = app.workTimeDo.info.code;
-                            editTaskWorkTime(data).then(res => {
-                                app.workTimeDo.confirmLoading = false;
-                                if (checkResponse(res)) {
-                                    app.workTimeDo.modalStatus = false;
-                                    app.getTaskWorkTimeList();
-                                }
-                            });
-                        } else {
-                            saveTaskWorkTime(data).then(res => {
-                                app.workTimeDo.confirmLoading = false;
-                                if (checkResponse(res)) {
-                                    app.workTimeDo.modalStatus = false;
-                                    app.getTaskWorkTimeList();
-                                }
-                            });
+            },
+            workTimePlainHandleSubmit() {
+                let app = this;
+                this.plainWorkTime.form.validateFields(
+                    (err, values) => {
+                        if (!err) {
+                            app.editTask({'work_time': values.work_time});
+                            app.plainWorkTime.modalStatus = false;
                         }
                     }
+                );
+            },
+            workTimeHandleSubmit() {
+                let app = this;
+                this.workTimeDo.form.validateFields(
+                    (err, values) => {
+                        if (!err) {
+                            app.workTimeDo.confirmLoading = true;
+                            let data = {
+                                'beginTime': values.begin_time.format('YYYY-MM-DD HH:mm'),
+                                'num': values.num,
+                                'content': values.content,
+                                'taskCode': app.code
+                            };
+                            if (app.workTimeDo.info) {
+                                data.code = app.workTimeDo.info.code;
+                                editTaskWorkTime(data).then(res => {
+                                    app.workTimeDo.confirmLoading = false;
+                                    if (checkResponse(res)) {
+                                        app.workTimeDo.modalStatus = false;
+                                        app.getTaskWorkTimeList();
+                                    }
+                                });
+                            } else {
+                                saveTaskWorkTime(data).then(res => {
+                                    app.workTimeDo.confirmLoading = false;
+                                    if (checkResponse(res)) {
+                                        app.workTimeDo.modalStatus = false;
+                                        app.getTaskWorkTimeList();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                );
+            },
+            checkLink(text) {
+                let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+                if (!reg.exec(text)) {
+                    return text;
+                } else {
+                    text = text.replace(reg, '<a target=\'_blank\' href=\'$1$2\'>$1$2</a>');
                 }
-            );
-        },
-        checkLink(text) {
-            let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
-            if (!reg.exec(text)) {
                 return text;
-            } else {
-                text = text.replace(reg, "<a target='_blank' href='$1$2'>$1$2</a>");
-            }
-            return text;
-        },
-        updateChildExecutor(member) {
-            this.visibleChildTaskMemberMenu = false;
-            this.childExecutor = member;
-        },
-        getPopup() {
-            return document.getElementById('footer');
-        },
-        selectMentionMember(member) {
-            this.showMentions = false;
-            this.comment += member.name + ' ';
-            this.$nextTick(() => {
-                this.$refs.commentText.focus();
-            });
-        },
-        changeModalHeight() {
-            const defaultWidth = this.width;
-            let width = $(window).width() - 100;
-            let height = $(window).height() - 150;
-            let logHeight = $(window).height() - 315;
-            if (defaultWidth === 'full-screen' || this.$route.query['full-screen'] !== undefined) {
-                //全屏显示
-                $('.task-detail-modal').css('width', $(window).width());
-                $('.task-detail').css('width', $(window).width());
-                $('.ant-modal').css('top', 0);
-                height += 85;
-                logHeight += 85;
-                $('.content-left').css('height', height + 'px');
-                $('.log-wrap').css('height', logHeight + 'px');
-            } else {
-                if (width > defaultWidth) {
-                    width = defaultWidth;
+            },
+            updateChildExecutor(member) {
+                this.visibleChildTaskMemberMenu = false;
+                this.childExecutor = member;
+            },
+            getPopup() {
+                return document.getElementById('footer');
+            },
+            selectMentionMember(member) {
+                this.showMentions = false;
+                this.comment += member.name + ' ';
+                this.$nextTick(() => {
+                    this.$refs.commentText.focus();
+                });
+            },
+            changeModalHeight() {
+                const defaultWidth = this.width;
+                let width = $(window).width() - 100;
+                let height = $(window).height() - 150;
+                let logHeight = $(window).height() - 315;
+                if (defaultWidth === 'full-screen' || this.$route.query['full-screen'] !== undefined) {
+                    //全屏显示
+                    $('.task-detail-modal').css('width', $(window).width());
+                    $('.task-detail').css('width', $(window).width());
+                    $('.ant-modal').css('top', 0);
+                    height += 85;
+                    logHeight += 85;
+                    $('.content-left').css('height', height + 'px');
+                    $('.log-wrap').css('height', logHeight + 'px');
+                } else {
+                    if (width > defaultWidth) {
+                        width = defaultWidth;
+                    }
+                    $('.task-detail').css('width', width);
+                    $('.content-left').css('height', height + 'px');
+                    $('.log-wrap').css('height', logHeight + 'px');
                 }
-                $('.task-detail').css('width', width);
-                $('.content-left').css('height', height + 'px');
-                $('.log-wrap').css('height', logHeight + 'px');
             }
         }
-    }
-};
+    };
 </script>
 
 
@@ -1962,7 +1983,8 @@ export default {
                         &:hover {
                             background: #f5f5f5;
                         }
-                        &.hover-none{
+
+                        &.hover-none {
                             background: initial;
                         }
 
@@ -2227,6 +2249,7 @@ export default {
                                 align-items: baseline;
                                 vertical-align: middle;
                                 width: 100%;
+
                                 .log-item {
                                     margin-right: 12px;
                                     margin-bottom: 24px;
@@ -2281,18 +2304,22 @@ export default {
             }
         }
     }
-    .footer{
-        .ant-popover-inner-content{
+
+    .footer {
+        .ant-popover-inner-content {
             padding: 0;
+
             .mentions-content {
                 width: 200px;
                 padding: 12px 0;
+
                 .mentions-wrapper {
                     width: 100%;
                     display: flex;
                     align-items: center;
                     padding: 6px 12px;
-                    &:hover{
+
+                    &:hover {
                         cursor: pointer;
                         background: rgba(51, 143, 229, 0.1);
                     }

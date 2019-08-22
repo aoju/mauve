@@ -1,8 +1,8 @@
 <template>
-    <a-popover v-model="showNotice" overlayClassName="header-notice" trigger="click" placement="bottomRight">
+    <a-popover overlayClassName="header-notice" placement="bottomRight" trigger="click" v-model="showNotice">
         <template slot="content">
             <a-spin :spinning="loading">
-                <a-tabs class="header-notice-content" :tabBarGutter="25">
+                <a-tabs :tabBarGutter="25" class="header-notice-content">
                     <a-tab-pane key="1">
                         <span slot="tab">消息<span
                                 v-if="total && totalSum['message']">({{totalSum['message']}})</span></span>
@@ -15,20 +15,20 @@
                                                     <p>{{item.title}}</p>
                                                     <p class="ant-list-item-meta-description" v-html="item.content"></p>
                                              </span>
-                                            <a-avatar slot="avatar"
-                                                      :src="item.avatar"/>
+                                            <a-avatar :src="item.avatar"
+                                                      slot="avatar"/>
                                         </a-list-item-meta>
                                     </a-list-item>
                                 </template>
                             </a-list>
                             <div class="footer-action">
-                                <a class="item muted" @click="setRead('message')">清空消息</a>
-                                <a class="item muted" @click="showMore('1')">查看更多</a>
+                                <a @click="setRead('message')" class="item muted">清空消息</a>
+                                <a @click="showMore('1')" class="item muted">查看更多</a>
                             </div>
                         </template>
                         <template v-else>
                             <div class="notFound">
-                                <img src="../../../../assets/image/notify/laba.svg" alt="not found">
+                                <img alt="not found" src="../../../../assets/image/notify/laba.svg">
                                 <div>你已读完所有消息</div>
                             </div>
                         </template>
@@ -46,20 +46,21 @@
                                                  <p class="ant-list-item-meta-description" v-html="item.content"></p>
 
                                              </span>
-                                            <a-avatar style="background-color: white" slot="avatar"
-                                                      src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/>
+                                            <a-avatar slot="avatar"
+                                                      src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"
+                                                      style="background-color: white"/>
                                         </a-list-item-meta>
                                     </a-list-item>
                                 </template>
                             </a-list>
                             <div class="footer-action">
-                                <a class="item muted" @click="setRead('notice')">清空通知</a>
-                                <a class="item muted" @click="()=>{$router.push('/notify/notice')}">查看更多</a>
+                                <a @click="setRead('notice')" class="item muted">清空通知</a>
+                                <a @click="()=>{$router.push('/notify/notice')}" class="item muted">查看更多</a>
                             </div>
                         </template>
                         <template v-else>
                             <div class="notFound">
-                                <img src="../../../../assets/image/notify/bell.svg" alt="not found">
+                                <img alt="not found" src="../../../../assets/image/notify/bell.svg">
                                 <div>你已查看所有通知</div>
                             </div>
                         </template>
@@ -72,14 +73,14 @@
                                 <template v-for="item in task.list">
                                     <a-list-item :key="item.id">
                                         <a-list-item-meta>
-                                            <a-avatar slot="avatar"
-                                                      :src="item.executor.avatar"/>
+                                            <a-avatar :src="item.executor.avatar"
+                                                      slot="avatar"/>
                                             <span slot="title">
                                                     <p>
                                                         {{item.name}}
-                                                         <a-tag style="position: absolute;right: 0" color="red"
+                                                         <a-tag color="red" style="position: absolute;right: 0"
                                                                 v-if="item.end_time">还剩{{showDiff(item.end_time,new Date())}}</a-tag>
-                                                         <a-tag style="position: absolute;right: 0" color="gold" v-else>已耗时{{showDiff(new Date(),item.create_time)}}</a-tag>
+                                                         <a-tag color="gold" style="position: absolute;right: 0" v-else>已耗时{{showDiff(new Date(),item.create_time)}}</a-tag>
                                                     </p>
                                              </span>
                                             <span slot="description">
@@ -91,13 +92,13 @@
                                 </template>
                             </a-list>
                             <div class="footer-action">
-                                <a class="item muted" @click="setRead('task')">清空待办</a>
+                                <a @click="setRead('task')" class="item muted">清空待办</a>
                                 <a class="item muted">查看更多</a>
                             </div>
                         </template>
                         <template v-else>
                             <div class="notFound">
-                                <img src="../../../../assets/image/notify/ticket.svg" alt="not found">
+                                <img alt="not found" src="../../../../assets/image/notify/ticket.svg">
                                 <div>你已完成所有待办</div>
                             </div>
                         </template>
@@ -114,106 +115,105 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
-import moment from 'moment';
-import {_clearAll, noReads} from '../../../frames/restapi/notify';
-import {notice} from '../../../../assets/js/notice';
-import {showMsgNotification} from '../../../../assets/js/notify';
-import {selfList} from '../../../frames/restapi/task';
-import {relativelyTime} from '../../../../assets/js/dateTime';
+    import {mapState} from 'vuex';
+    import moment from 'moment';
+    import {_clearAll, noReads} from '../../../frames/restapi/notify';
+    import {notice} from '../../../../assets/js/notice';
+    import {showMsgNotification} from '../../../../assets/js/notify';
+    import {selfList} from '../../../frames/restapi/task';
 
-export default {
-    'name': 'HeaderNotice',
-    data() {
-        return {
-            'showNotice': false,
-            'loading': false,
-            'total': 0,
-            'messageTotal': 0,
-            'totalSum': 0,
-            'list': [],
-            'task': {
-                'page': 1,
-                'pageSize': 5,
+    export default {
+        'name': 'HeaderNotice',
+        data() {
+            return {
+                'showNotice': false,
+                'loading': false,
                 'total': 0,
-                'list': []
-            }
-        };
-    },
-    'computed': {
-        ...mapState({
-            'socketAction': state => state.socketAction,
-            'currentOrganization': state => state.currentOrganization
-        })
-    },
-    'watch': {
-        socketAction(val) {
-            if (val.action === 'notice') {
-                this.init();
-            } else if (val.action === 'task') {
-                this.init();
-                const permission = showMsgNotification(val.title, val.msg, {'icon': val.data.notify.avatar});
-                if (permission === false) {
-                    notice(val, 'notice', 'info', 10);
+                'messageTotal': 0,
+                'totalSum': 0,
+                'list': [],
+                'task': {
+                    'page': 1,
+                    'pageSize': 5,
+                    'total': 0,
+                    'list': []
+                }
+            };
+        },
+        'computed': {
+            ...mapState({
+                'socketAction': state => state.socketAction,
+                'currentOrganization': state => state.currentOrganization
+            })
+        },
+        'watch': {
+            socketAction(val) {
+                if (val.action === 'notice') {
+                    this.init();
+                } else if (val.action === 'task') {
+                    this.init();
+                    const permission = showMsgNotification(val.title, val.msg, {'icon': val.data.notify.avatar});
+                    if (permission === false) {
+                        notice(val, 'notice', 'info', 10);
+                    }
                 }
             }
+        },
+        created() {
+            this.init();
+        },
+        'methods': {
+            init() {
+                this.fetchNotice();
+                this.getTasks();
+            },
+            fetchNotice() {
+                let app = this;
+                noReads().then(res => {
+                    app.list = res.data.list;
+                    app.messageTotal = res.data.total;
+                    app.total = app.messageTotal + app.task.total;
+                    app.totalSum = res.data.totalSum;
+                });
+            },
+            setRead(type) {
+                this.total -= this.list[type].length;
+                this.list[type] = [];
+                switch (type) {
+                    case 'message':
+                        this.totalSum.message = 0;
+                        _clearAll();
+                }
+            },
+            showMore(key) {
+                switch (key) {
+                    default:
+                        this.showNotice = false;
+                        this.$router.push('/notify/notice');
+                }
+            },
+            getTasks() {
+                selfList({'page': this.task.page, 'pageSize': this.task.pageSize}).then(res => {
+                    this.task.list = res.data.list;
+                    this.task.total = res.data.total;
+                    this.total = this.messageTotal + this.task.total;
+                });
+            },
+            formatTime(time) {
+                return moment(time).format('YY年MM月DD日 HH:mm');
+            },
+            showDiff(time, time2) {
+                let diff = moment(time).diff(moment(time2), 'days');
+                if (diff <= 0) {
+                    diff = moment(time).diff(moment(time2), 'hours');
+                    diff += '小时';
+                } else {
+                    diff += '天';
+                }
+                return diff;
+            }
         }
-    },
-    created() {
-        this.init();
-    },
-    'methods': {
-        init() {
-            this.fetchNotice();
-            this.getTasks();
-        },
-        fetchNotice() {
-            let app = this;
-            noReads().then(res => {
-                app.list = res.data.list;
-                app.messageTotal = res.data.total;
-                app.total = app.messageTotal + app.task.total;
-                app.totalSum = res.data.totalSum;
-            });
-        },
-        setRead(type) {
-            this.total -= this.list[type].length;
-            this.list[type] = [];
-            switch (type) {
-            case 'message':
-                this.totalSum.message = 0;
-                _clearAll();
-            }
-        },
-        showMore(key) {
-            switch (key) {
-            default:
-                this.showNotice = false;
-                this.$router.push('/notify/notice');
-            }
-        },
-        getTasks() {
-            selfList({'page': this.task.page, 'pageSize': this.task.pageSize}).then(res => {
-                this.task.list = res.data.list;
-                this.task.total = res.data.total;
-                this.total = this.messageTotal + this.task.total;
-            });
-        },
-        formatTime(time) {
-            return moment(time).format('YY年MM月DD日 HH:mm');
-        },
-        showDiff(time, time2) {
-            let diff = moment(time).diff(moment(time2), 'days');
-            if (diff <= 0) {
-                diff = moment(time).diff(moment(time2), 'hours');
-                diff += '小时';
-            } else {
-                diff += '天';
-            }
-            return diff;
-        }
-    }
-};
+    };
 </script>
 
 <style lang="less">

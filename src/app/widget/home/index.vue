@@ -1,7 +1,7 @@
 <template>
     <div class="home-index">
         <div class="page-header">
-            <p class="day-text muted">『 {{ yiyan.hitokoto }}』 —— 《{{ yiyan.from }}》 <a class="muted" @click="getYiYan">
+            <p class="day-text muted">『 {{ yiyan.hitokoto }}』 —— 《{{ yiyan.from }}》 <a @click="getYiYan" class="muted">
                 <a-icon type="reload"/>
             </a>
             </p>
@@ -48,25 +48,26 @@
         <!--<wrapper-content :showHeader="false">-->
         <div class="page-wrapper">
             <a-row :gutter="24">
-                <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
+                <a-col :lg="24" :md="24" :sm="24" :xl="16" :xs="24">
                     <a-card
-                            class="project-list"
-                            :loading="loading"
-                            style="margin-bottom: 24px;"
+                            :body-style="{ padding: 0 }"
                             :bordered="false"
-                            title="进行中的项目"
-                            :body-style="{ padding: 0 }">
-                        <router-link to="/project/list/my" slot="extra">全部项目</router-link>
+                            :loading="loading"
+                            class="project-list"
+                            style="margin-bottom: 24px;"
+                            title="进行中的项目">
+                        <router-link slot="extra" to="/project/list/my">全部项目</router-link>
                         <div>
-                            <a-card-grid class="project-card-grid" :key="i" v-for="(item, i) in projectList">
-                                <a-card :bordered="false" :body-style="{ padding: 0 }" @click="routerLink('/project/space/task/' + item.code)">
+                            <a-card-grid :key="i" class="project-card-grid" v-for="(item, i) in projectList">
+                                <a-card :body-style="{ padding: 0 }" :bordered="false"
+                                        @click="routerLink('/project/space/task/' + item.code)">
                                     <a-card-meta>
-                                        <div slot="title" class="card-title">
-                                            <a-avatar size="small" :src="item.cover"/>
+                                        <div class="card-title" slot="title">
+                                            <a-avatar :src="item.cover" size="small"/>
                                             <router-link :to="'/project/space/task/' + item.code">{{ item.name }}
                                             </router-link>
                                         </div>
-                                        <div slot="description" class="card-description">
+                                        <div class="card-description" slot="description">
                                             <a-tooltip :mouseEnterDelay="0.3"
                                                        :title="item.description">
                                             <span class="description-text">
@@ -74,10 +75,10 @@
                                                 <span v-else>暂无介绍</span>
                                             </span>
                                             </a-tooltip>
-                                            <a-tooltip placement="right" :mouseEnterDelay="0.3"
-                                                       :title="`当前进度：${item.schedule}%`">
-                                                <a-progress :strokeWidth="2" :showInfo="false"
-                                                            :percent="item.schedule"/>
+                                            <a-tooltip :mouseEnterDelay="0.3" :title="`当前进度：${item.schedule}%`"
+                                                       placement="right">
+                                                <a-progress :percent="item.schedule" :showInfo="false"
+                                                            :strokeWidth="2"/>
                                             </a-tooltip>
                                         </div>
                                     </a-card-meta>
@@ -90,26 +91,27 @@
                             <p class="muted text-center m-t-md m-b-md" v-if="!projectList.length">暂无项目</p>
                         </div>
                     </a-card>
-                    <a-card class="activities-list" :loading="loading" title="动态"  :bordered="false">
+                    <a-card :bordered="false" :loading="loading" class="activities-list" title="动态">
                         <a-list>
                             <a-list-item :key="index" v-for="(item, index) in activities">
                                 <a-list-item-meta>
-                                    <a-avatar slot="avatar" :src="item.member_avatar"/>
+                                    <a-avatar :src="item.member_avatar" slot="avatar"/>
                                     <div slot="title">
                                         <span>{{ item.member_name }}</span>
                                         <span v-if="item.is_comment == 0">  <span v-html="item.remark "></span></span>&nbsp;
                                         <template v-if="item.is_comment == 1">发表了评论
                                             <p class="comment-text">{{ item.content }}</p>
                                         </template>
-                                        <router-link target="_blank"
-                                                :to="`/project/space/task/${item.project_code}/detail/${item.source_code}`"
-                                                class="right-item">「 {{ item.task_name }} 」
+                                        <router-link :to="`/project/space/task/${item.project_code}/detail/${item.source_code}`"
+                                                     class="right-item"
+                                                     target="_blank">「 {{ item.task_name }} 」
                                         </router-link>
                                     </div>
                                     <div slot="description">
                                         <!--<a-tooltip :mouseEnterDelay="0.3" :title="item.create_time">-->
                                         {{ formatTime(item.create_time) }} -
-                                        <router-link target="_blank" :to="`/project/space/task/${item.project_code}`" class="muted">
+                                        <router-link :to="`/project/space/task/${item.project_code}`" class="muted"
+                                                     target="_blank">
                                             {{item.project_name}}
                                         </router-link>
                                         <!--</a-tooltip>-->
@@ -120,27 +122,30 @@
                     </a-card>
                 </a-col>
                 <a-col
-                        style="padding: 0 12px"
-                        :xl="8"
                         :lg="24"
                         :md="24"
                         :sm="24"
-                        :xs="24">
-                    <a-card class="tasks-list" :title="`我的任务 · ${tasks.length}`" style="margin-bottom: 24px"
-                            :bordered="false"
-                            :loading="loading">
+                        :xl="8"
+                        :xs="24"
+                        style="padding: 0 12px">
+                    <a-card :bordered="false" :loading="loading" :title="`我的任务 · ${tasks.length}`"
+                            class="tasks-list"
+                            style="margin-bottom: 24px">
                         <a-list>
                             <a-list-item :key="index" v-for="(item, index) in tasks">
                                 <a-list-item-meta>
                                     <div slot="title">
-                                        <router-link target="_blank"
-                                                :to="`/project/space/task/${item.projectInfo.code}/detail/${item.code}`">
+                                        <router-link :to="`/project/space/task/${item.projectInfo.code}/detail/${item.code}`"
+                                                     target="_blank">
                                             {{ item.name }}
                                         </router-link>
                                     </div>
                                     <div slot="description">
-                                        <span class="label m-r-xs" :class="showTimeLabel(item.end_time)" v-if="item.end_time">{{showTaskTime(item.begin_time, item.end_time)}}</span>
-                                        <router-link target="_blank" class="muted" :to="'/project/space/task/' + item.projectInfo.code">{{ item.projectInfo.name }}
+                                        <span :class="showTimeLabel(item.end_time)" class="label m-r-xs"
+                                              v-if="item.end_time">{{showTaskTime(item.begin_time, item.end_time)}}</span>
+                                        <router-link :to="'/project/space/task/' + item.projectInfo.code" class="muted"
+                                                     target="_blank">{{
+                                            item.projectInfo.name }}
                                         </router-link>
                                     </div>
                                 </a-list-item-meta>
@@ -172,12 +177,12 @@
                                 <radar :data="radarData" />
                             </div>
                         </a-card>-->
-                    <a-card :loading="loading" title="团队" :bordered="false">
+                    <a-card :bordered="false" :loading="loading" title="团队">
                         <div class="members">
                             <a-row>
-                                <a-col :span="12" v-for="(item, index) in accounts" :key="index">
+                                <a-col :key="index" :span="12" v-for="(item, index) in accounts">
                                     <a>
-                                        <a-avatar size="small" :src="item.avatar"/>
+                                        <a-avatar :src="item.avatar" size="small"/>
                                         <span class="member">{{ item.name }}</span>
                                     </a>
                                 </a-col>
@@ -191,118 +196,118 @@
     </div>
 </template>
 <script>
-import {mapState} from 'vuex';
-import moment from 'moment';
-import {getYiYan} from '../../frames/restapi/other';
-import {formatTaskTime, relativelyTime, showHelloTime} from '../../../assets/js/dateTime';
-import {selfList as getProjectList} from '../../frames/restapi/project';
-import {list as accountList} from '../../frames/restapi/user';
-import pagination from '../../shared/pagination';
-import {getLogBySelfProject, selfList} from '../../frames/restapi/task';
+    import {mapState} from 'vuex';
+    import moment from 'moment';
+    import {getYiYan} from '../../frames/restapi/other';
+    import {formatTaskTime, relativelyTime, showHelloTime} from '../../../assets/js/dateTime';
+    import {selfList as getProjectList} from '../../frames/restapi/project';
+    import {list as accountList} from '../../frames/restapi/user';
+    import pagination from '../../shared/pagination';
+    import {getLogBySelfProject, selfList} from '../../frames/restapi/task';
 
-export default {
-    'components': {},
-    'mixins': [pagination],
-    data() {
-        return {
-            'loading': false,
-            'yiyan': {},
-            'projectList': [],
-            'projectTotal': 0,
-            'activities': [],
-            'tasks': [],
-            'tasksTotal': 0,
-            'accounts': []
-        };
-    },
-    'computed': {
-        ...mapState({
-            'userInfo': state => state.userInfo,
-            'socketAction': state => state.socketAction
-        }),
-        helloTime() {
-            return showHelloTime();
-        }
-    },
-    created() {
-        this.getYiYan();
-        this.init();
-    },
-    'watch': {
-        socketAction(val) {
-            console.log(val);
-            if (val.action === 'organization:task') {
-                this.init(false, false);
+    export default {
+        'components': {},
+        'mixins': [pagination],
+        data() {
+            return {
+                'loading': false,
+                'yiyan': {},
+                'projectList': [],
+                'projectTotal': 0,
+                'activities': [],
+                'tasks': [],
+                'tasksTotal': 0,
+                'accounts': []
+            };
+        },
+        'computed': {
+            ...mapState({
+                'userInfo': state => state.userInfo,
+                'socketAction': state => state.socketAction
+            }),
+            helloTime() {
+                return showHelloTime();
             }
-        }
-    },
-    'methods': {
-        init(reset = true, loading = true) {
-            if (reset) {
-                this.projectList = [];
-                this.pagination.page = 1;
-                this.pagination.pageSize = 9;
+        },
+        created() {
+            this.getYiYan();
+            this.init();
+        },
+        'watch': {
+            socketAction(val) {
+                console.log(val);
+                if (val.action === 'organization:task') {
+                    this.init(false, false);
+                }
             }
-            this.getProjectList(loading);
-            this.getTasks();
-            this.getTaskLog();
-            this.getAccountList();
         },
-        getProjectList(loading) {
-            if (loading) {
-                this.loading = true;
-            }
-            getProjectList(this.requestData).then(res => {
-                this.projectList = res.data.list;
-                this.projectTotal = res.data.total;
-                this.loading = false;
-            });
-        },
-        getTasks() {
-            selfList({'page': 1, 'pageSize': 10}).then(res => {
-                this.tasks = res.data.list;
-                this.tasksTotal = res.data.total;
-            });
-        },
-        getTaskLog() {
-            getLogBySelfProject().then(res => {
-                this.activities = res.data;
-            });
-        },
-        getAccountList() {
-            accountList().then(res => {
-                this.accounts = res.data.list;
-            });
-        },
-        getYiYan() {
-            let app = this;
-            getYiYan(function (data) {
-                app.yiyan = data;
-            }, 'd');
-        },
-        formatTime(time) {
-            return relativelyTime(time);
-        },
-        showTaskTime(time, timeEnd) {
-            return formatTaskTime(time, timeEnd);
-        },
-        showTimeLabel(time) {
-            let str = 'label-primary';
-            if (time == null) {
+        'methods': {
+            init(reset = true, loading = true) {
+                if (reset) {
+                    this.projectList = [];
+                    this.pagination.page = 1;
+                    this.pagination.pageSize = 9;
+                }
+                this.getProjectList(loading);
+                this.getTasks();
+                this.getTaskLog();
+                this.getAccountList();
+            },
+            getProjectList(loading) {
+                if (loading) {
+                    this.loading = true;
+                }
+                getProjectList(this.requestData).then(res => {
+                    this.projectList = res.data.list;
+                    this.projectTotal = res.data.total;
+                    this.loading = false;
+                });
+            },
+            getTasks() {
+                selfList({'page': 1, 'pageSize': 10}).then(res => {
+                    this.tasks = res.data.list;
+                    this.tasksTotal = res.data.total;
+                });
+            },
+            getTaskLog() {
+                getLogBySelfProject().then(res => {
+                    this.activities = res.data;
+                });
+            },
+            getAccountList() {
+                accountList().then(res => {
+                    this.accounts = res.data.list;
+                });
+            },
+            getYiYan() {
+                let app = this;
+                getYiYan(function (data) {
+                    app.yiyan = data;
+                }, 'd');
+            },
+            formatTime(time) {
+                return relativelyTime(time);
+            },
+            showTaskTime(time, timeEnd) {
+                return formatTaskTime(time, timeEnd);
+            },
+            showTimeLabel(time) {
+                let str = 'label-primary';
+                if (time === null) {
+                    return str;
+                }
+                let cha = moment(moment(time).format('YYYY-MM-DD')).diff(moment().format('YYYY-MM-DD'), 'days');
+                if (cha < 0) {
+                    str = 'label-danger';
+                } else if (cha === 0) {
+                    str = 'label-warning';
+                } else if (cha > 7) {
+                    str = 'label-normal';
+                }
                 return str;
             }
-            let cha = moment(moment(time).format('YYYY-MM-DD')).diff(moment().format('YYYY-MM-DD'), 'days');
-            if (cha < 0) {
-                str = 'label-danger';
-            } else if (cha == 0) {
-                str = 'label-warning';
-            } else if (cha > 7) {
-                str = 'label-normal';
-            }
-            return str;
         }
-    }
-};
+    };
 </script>
 <style lang="less">
     .home-index {
@@ -393,7 +398,8 @@ export default {
                     height: 44px;
                     line-height: 22px;
                     overflow: hidden;
-                    .description-text{
+
+                    .description-text {
                         height: 22px;
                     }
                 }

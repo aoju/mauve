@@ -5,13 +5,13 @@
                 <a-avatar :src="userInfo.avatar" alt="">{{userInfo.name}}</a-avatar>
                 <span>{{userInfo.name}}</span>
             </div>
-            <a-menu slot="overlay" class="middle-menu" :selectable="false" @click="userAction">
+            <a-menu :selectable="false" @click="userAction" class="middle-menu" slot="overlay">
                 <a-menu-item key="setting">
                     <a href="javascript:;">
                         <a-icon type="user"></a-icon>
                         个人设置</a>
                 </a-menu-item>
-                <a-menu-item key="edit" disabled>
+                <a-menu-item disabled key="edit">
                     <a href="javascript:;">
                         <a-icon type="setting"></a-icon>
                         偏好设置</a>
@@ -34,39 +34,38 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
-import {_out} from '../../../frames/restapi/user';
+    import {mapState} from 'vuex';
+    import {_out} from '../../../frames/restapi/user';
 
-export default {
-    'name': 'HeaderAvatar',
-    data() {
-        return {};
-    },
-    'computed': {
-        ...mapState({
-            'userInfo': state => state.userInfo,
-            'theme': state => state.theme
-        })
-    },
-    'methods': {
-        userAction(action) {
-            let app = this;
-            if (action.key == 'logout') {
-                _out();
-                app.$store.dispatch('SET_LOGOUT');
-            } else if (action.key == 'setting') {
-                app.$router.push('/account/setting/base');
-            } else if (action.key == 'theme') {
-                let theme = 'dark';
-                if (this.theme == theme) {
-                    theme = 'light';
+    export default {
+        'name': 'HeaderAvatar',
+        data() {
+            return {};
+        },
+        'computed': {
+            ...mapState({
+                'userInfo': state => state.userInfo,
+                'theme': state => state.theme
+            })
+        },
+        'methods': {
+            userAction(action) {
+                let app = this;
+                if (action.key === 'logout') {
+                    _out();
+                    app.$store.dispatch('SET_LOGOUT');
+                } else if (action.key === 'setting') {
+                    app.$router.push('/account/setting/base');
+                } else if (action.key === 'theme') {
+                    let theme = 'dark';
+                    if (this.theme === theme) {
+                        theme = 'light';
+                    }
+                    this.$store.dispatch('setTheme', theme);
                 }
-                this.$store.dispatch('setTheme', theme);
-            } else {
             }
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

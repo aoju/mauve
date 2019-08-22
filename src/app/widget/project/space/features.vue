@@ -1,5 +1,5 @@
 <template>
-    <div class="project-space-features" :class="project.task_board_theme">
+    <div :class="project.task_board_theme" class="project-space-features">
         <div class="project-navigation">
             <div class="project-nav-header">
                 <a-breadcrumb>
@@ -10,8 +10,8 @@
                         <span class="actions">
                              <a-tooltip :mouseEnterDelay="0.3" :title="project.collected ? '取消收藏' : '加入收藏'"
                                         @click="collectProject">
-                            <a-icon type="star" theme="filled" style="color: grey;" v-show="!project.collected"/>
-                            <a-icon type="star" theme="filled" style="color: #ffaf38;" v-show="project.collected"/>
+                            <a-icon style="color: grey;" theme="filled" type="star" v-show="!project.collected"/>
+                            <a-icon style="color: #ffaf38;" theme="filled" type="star" v-show="project.collected"/>
                         </a-tooltip>
                         </span>
                         <span class="label label-normal" v-if="project.private === 0"><a-icon
@@ -21,17 +21,17 @@
             </div>
             <section class="nav-body">
                 <ul class="nav-wrapper nav nav-underscore pull-left">
-                    <li><a class="app" data-app="tasks"
-                           @click="$router.push('/project/space/task/' + project.code)">任务</a></li>
-                    <li class=""><a class="app" data-app="works"
-                                    @click="$router.push('/project/space/files/' + project.code)">
+                    <li><a @click="$router.push('/project/space/task/' + project.code)" class="app"
+                           data-app="tasks">任务</a></li>
+                    <li class=""><a @click="$router.push('/project/space/files/' + project.code)" class="app"
+                                    data-app="works">
                         文件</a>
-                    <li><a class="app" data-app="build"
-                           @click="$router.push('/project/space/overview/' + project.code)">
+                    <li><a @click="$router.push('/project/space/overview/' + project.code)" class="app"
+                           data-app="build">
                         概览</a>
                     </li>
-                    <li class="actives"><a class="app" data-app="build"
-                                           @click="$router.push('/project/space/features/' + project.code)">
+                    <li class="actives"><a @click="$router.push('/project/space/features/' + project.code)" class="app"
+                                           data-app="build">
                         版本</a>
                     </li>
                 </ul>
@@ -41,14 +41,14 @@
             <div class="content-wrapper">
                 <div class="content-item features-content">
                     <div class="actions m-t">
-                        <a-dropdown placement="bottomCenter" :trigger="['click']" v-if="currentProjectFeatures">
+                        <a-dropdown :trigger="['click']" placement="bottomCenter" v-if="currentProjectFeatures">
                             <a class="m-r text-default features-list-dropdown">
                                 <span class="m-r-xs">{{currentProjectFeatures.name}}</span>
                                 <a-icon type="down"/>
                             </a>
-                            <a-menu class="field-right-menu" slot="overlay"
-                                    :selectable="false"
-                                    @click="changeProjectFeatures">
+                            <a-menu :selectable="false" @click="changeProjectFeatures"
+                                    class="field-right-menu"
+                                    slot="overlay">
                                 <a-menu-item :key="projectFeatures.code" v-for="projectFeatures in projectFeaturesList">
                                     <div class="menu-item-content">
                                         <div>
@@ -58,71 +58,73 @@
                                         </div>
                                         <div>
                                             <a class="muted">
-                                                <a-icon type="edit"
-                                                        @click.stop="editFeatures(projectFeatures)"></a-icon>
+                                                <a-icon @click.stop="editFeatures(projectFeatures)"
+                                                        type="edit"></a-icon>
                                             </a>
                                             <a class="muted">
-                                                <a-icon type="delete" class="m-l"
-                                                        @click.stop="deleteFeatures(projectFeatures)"></a-icon>
+                                                <a-icon @click.stop="deleteFeatures(projectFeatures)" class="m-l"
+                                                        type="delete"></a-icon>
                                             </a>
                                         </div>
                                     </div>
                                 </a-menu-item>
                             </a-menu>
                         </a-dropdown>
-                        <a-button icon="plus" type="primary" @click="createFeatures">创建版本库</a-button>
+                        <a-button @click="createFeatures" icon="plus" type="primary">创建版本库</a-button>
                         <a-divider class="m-b-lg m-t-lg"></a-divider>
                     </div>
                     <a-spin :spinning="loading" v-if="currentProjectFeatures">
                         <template v-if="versionTotal">
                             <div :key="versionType" v-for="(versionItem,versionType) in versionList">
-                                <a style="cursor: pointer;display: block" class="muted m-l-sm m-b-sm"
-                                   v-if="versionType == 'published' && versionItem.length"
-                                   @click="showPublished = !showPublished">
+                                <a @click="showPublished = !showPublished" class="muted m-l-sm m-b-sm"
+                                   style="cursor: pointer;display: block"
+                                   v-if="versionType == 'published' && versionItem.length">
                                     <span class="m-r-sm">已发布版本</span>
                                     <a-icon type="up" v-show="showPublished"/>
                                     <a-icon type="ellipsis" v-show="!showPublished"/>
                                 </a>
-                                <div class="version-content" :class="{'published':versionType == 'published'}">
+                                <div :class="{'published':versionType == 'published'}" class="version-content">
                                     <template v-for="(version,versionIndex) in versionItem">
-                                        <a-card class="version-item" :key="versionIndex" hoverable
-                                                v-show="versionType != 'published' || (versionType == 'published' && showPublished)" @click="showVersionDetail(version.code)">
+                                        <a-card :key="versionIndex" @click="showVersionDetail(version.code)" class="version-item"
+                                                hoverable
+                                                v-show="versionType != 'published' || (versionType == 'published' && showPublished)">
                                             <template slot="title">
                                                 <strong :class="{'muted':versionType == 'published'}">{{version.name}}</strong>
-                                                <a-dropdown  placement="bottomCenter" :trigger="['click']"
+                                                <a-dropdown :trigger="['click']" placement="bottomCenter"
                                                             v-show="versionType == 'normal'">
-                                             <span class="version-status" :class="`status-${version.status}`" @click.stop="()=>{}">
+                                             <span :class="`status-${version.status}`" @click.stop="()=>{}"
+                                                   class="version-status">
                                                  <a-icon type="schedule"/> <span
                                                      class="m-l-xs">{{version.statusText}}</span>
                                             </span>
-                                                    <a-menu class="field-right-menu" slot="overlay"
-                                                            :selectable="false"
-                                                            @click="changeVersionStatus($event,versionType,version,versionIndex)">
+                                                    <a-menu :selectable="false" @click="changeVersionStatus($event,versionType,version,versionIndex)"
+                                                            class="field-right-menu"
+                                                            slot="overlay">
                                                         <a-menu-item key="0">
                                                             <div class="menu-item-content">
                                                                 <a-tag>未开始</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="version.status == 0"></a-icon>
                                                             </div>
                                                         </a-menu-item>
                                                         <a-menu-item key="1">
                                                             <div class="menu-item-content">
                                                                 <a-tag color="blue">进行中</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="version.status == 1"></a-icon>
                                                             </div>
                                                         </a-menu-item>
                                                         <a-menu-item key="2">
                                                             <div class="menu-item-content">
                                                                 <a-tag color="red">延期发布</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="version.status == 2"></a-icon>
                                                             </div>
                                                         </a-menu-item>
                                                         <a-menu-item key="3">
                                                             <div class="menu-item-content">
                                                                 <a-tag color="green">已发布</a-tag>
-                                                                <a-icon type="check" class="check muted"
+                                                                <a-icon class="check muted" type="check"
                                                                         v-show="version.status == 3"></a-icon>
                                                             </div>
                                                         </a-menu-item>
@@ -135,16 +137,16 @@
                                                     <span v-else>发布时间：{{version.publish_time}}</span>
                                                 </template>
                                             </div>
-                                            <a-tooltip v-show="versionType == 'normal'" placement="top"
-                                                       :mouseEnterDelay="0.3"
-                                                       :title="`当前进度：${version.schedule}%`">
-                                                <a-progress :strokeWidth="4" :showInfo="false"
-                                                            :percent="parseInt(version.schedule)"/>
+                                            <a-tooltip :mouseEnterDelay="0.3" :title="`当前进度：${version.schedule}%`"
+                                                       placement="top"
+                                                       v-show="versionType == 'normal'">
+                                                <a-progress :percent="parseInt(version.schedule)" :showInfo="false"
+                                                            :strokeWidth="4"/>
                                             </a-tooltip>
                                         </a-card>
                                     </template>
-                                    <a-card class="version-item version-create" hoverable
-                                            v-show="versionType == 'normal'" @click="createVersion">
+                                    <a-card @click="createVersion" class="version-item version-create"
+                                            hoverable v-show="versionType == 'normal'">
                                         <a class="muted">
                                             <div>
                                                 <a-icon type="plus"></a-icon>
@@ -157,23 +159,23 @@
                         </template>
                         <div class="text-center" v-else>
                             <p class="muted">暂无可用版本</p>
-                            <a-button type="primary" @click="createVersion">创建版本</a-button>
+                            <a-button @click="createVersion" type="primary">创建版本</a-button>
                         </div>
                     </a-spin>
                 </div>
             </div>
         </wrapper-content>
         <a-modal
-                destroyOnClose
-                :width="360"
-                v-model="projectFeatures.modalStatus"
-                :title="projectFeatures.modalTitle"
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
+                :title="projectFeatures.modalTitle"
+                :width="360"
+                destroyOnClose
+                v-model="projectFeatures.modalStatus"
         >
             <a-form
-                    @submit.prevent="handleSubmit"
                     :form="form"
+                    @submit.prevent="handleSubmit"
             >
                 <a-form-item
                 >
@@ -185,35 +187,35 @@
                 </a-form-item>
                 <a-form-item
                 >
-                    <a-textarea placeholder='版本库简介'
-                                :rows="2"
+                    <a-textarea :rows="2"
+                                placeholder='版本库简介'
                                 v-decorator="['description']"
                     />
                 </a-form-item>
                 <a-form-item
                 >
                     <div class="action-btn">
-                        <a-button type="primary" htmlType='submit'
-                                  block
+                        <a-button :loading="projectFeatures.confirmLoading" block
+                                  class="middle-btn"
+                                  htmlType='submit'
                                   size="large"
-                                  :loading="projectFeatures.confirmLoading"
-                                  class="middle-btn">{{projectFeatures.modalTitle}}
+                                  type="primary">{{projectFeatures.modalTitle}}
                         </a-button>
                     </div>
                 </a-form-item>
             </a-form>
         </a-modal>
         <a-modal
-                destroyOnClose
-                :width="500"
-                v-model="projectVersion.modalStatus"
-                :title="projectVersion.modalTitle"
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
+                :title="projectVersion.modalTitle"
+                :width="500"
+                destroyOnClose
+                v-model="projectVersion.modalStatus"
         >
             <a-form
-                    @submit.prevent="handleSubmitProjectVersion"
                     :form="projectVersionForm"
+                    @submit.prevent="handleSubmitProjectVersion"
             >
                 <a-form-item
                 >
@@ -225,8 +227,8 @@
                 </a-form-item>
                 <a-form-item
                 >
-                    <a-textarea placeholder='版本备注'
-                                :rows="2"
+                    <a-textarea :rows="2"
+                                placeholder='版本备注'
                                 v-decorator="['description']"
                     />
                 </a-form-item>
@@ -234,67 +236,67 @@
                 >
                     <a-row :gutter="16">
                         <a-col :span="12">
-                            <a-date-picker showTime format="YYYY年MM月DD日 HH:mm" style="width: 100%"
-                                           placeholder="选择开始时间" v-decorator="['startTime']"></a-date-picker>
+                            <a-date-picker format="YYYY年MM月DD日 HH:mm" placeholder="选择开始时间" showTime
+                                           style="width: 100%" v-decorator="['startTime']"></a-date-picker>
                         </a-col>
                         <a-col :span="12">
-                            <a-date-picker showTime format="YYYY年MM月DD日 HH:mm" style="width: 100%"
-                                           placeholder="选择预计发布时间" v-decorator="['planPublishTime']"></a-date-picker>
+                            <a-date-picker format="YYYY年MM月DD日 HH:mm" placeholder="选择预计发布时间" showTime
+                                           style="width: 100%" v-decorator="['planPublishTime']"></a-date-picker>
                         </a-col>
                     </a-row>
                 </a-form-item>
                 <a-form-item
                 >
                     <div class="action-btn">
-                        <a-button type="primary" htmlType='submit'
-                                  block
+                        <a-button :loading="projectVersion.confirmLoading" block
+                                  class="middle-btn"
+                                  htmlType='submit'
                                   size="large"
-                                  :loading="projectVersion.confirmLoading"
-                                  class="middle-btn">创建版本
+                                  type="primary">创建版本
                         </a-button>
                     </div>
                 </a-form-item>
             </a-form>
         </a-modal>
         <a-modal
-                destroyOnClose
-                :width="360"
-                v-model="publishVersion.modalStatus"
-                title="实际发布时间"
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
+                :width="360"
+                destroyOnClose
+                title="实际发布时间"
+                v-model="publishVersion.modalStatus"
         >
             <a-form
-                    @submit.prevent="handleSubmitPublishVersion"
                     :form="publishVersionForm"
+                    @submit.prevent="handleSubmitPublishVersion"
             >
                 <a-form-item
                 >
-                    <a-date-picker showTime format="YYYY年MM月DD日 HH:mm" style="width: 100%"
-                                   placeholder="选择实际发布时间" v-decorator="['publishTime']"></a-date-picker>
+                    <a-date-picker format="YYYY年MM月DD日 HH:mm" placeholder="选择实际发布时间" showTime
+                                   style="width: 100%" v-decorator="['publishTime']"></a-date-picker>
                 </a-form-item>
                 <a-form-item
                 >
                     <div class="action-btn">
-                        <a-button type="primary" htmlType='submit'
-                                  block
+                        <a-button :loading="publishVersion.confirmLoading" block
+                                  class="middle-btn"
+                                  htmlType='submit'
                                   size="large"
-                                  :loading="publishVersion.confirmLoading"
-                                  class="middle-btn">确认发布
+                                  type="primary">确认发布
                         </a-button>
                     </div>
                 </a-form-item>
             </a-form>
         </a-modal>
         <a-modal
-                destroyOnClose
-                class="task-detail-modal"
-                width="min-content"
                 :closable="false"
-                title=""
                 :footer="null"
-                v-model="versionDetail.modalStatus"
                 @cancel="versionDetailClose"
+                class="task-detail-modal"
+                destroyOnClose
+                title=""
+                v-model="versionDetail.modalStatus"
+                width="min-content"
         >
             <version-detail :versionCode="versionDetail.code" @close="versionDetailClose"></version-detail>
 
@@ -303,291 +305,295 @@
 </template>
 
 <script>
-import moment from 'moment';
-import {read as getProject} from '../../../frames/restapi/project';
-import {collect} from '../../../frames/restapi/projectCollect';
-import {checkResponse} from '../../../../assets/js/utils';
-import {relativelyTime} from '../../../../assets/js/dateTime';
-import pagination from '../../../shared/pagination';
-import {save, list as getProjectFeatureList, edit, del} from '../../../frames/restapi/projectFeatures';
-import {save as saveProjectVersion, list as getProjectVersionList, changeStatus} from '../../../frames/restapi/projectVersion';
-import versionDetail from '../../../exports/project/versionDetail';
+    import moment from 'moment';
+    import {read as getProject} from '../../../frames/restapi/project';
+    import {collect} from '../../../frames/restapi/projectCollect';
+    import {checkResponse} from '../../../../assets/js/utils';
+    import {relativelyTime} from '../../../../assets/js/dateTime';
+    import pagination from '../../../shared/pagination';
+    import {del, edit, list as getProjectFeatureList, save} from '../../../frames/restapi/projectFeatures';
+    import {
+        changeStatus,
+        list as getProjectVersionList,
+        save as saveProjectVersion
+    } from '../../../frames/restapi/projectVersion';
+    import versionDetail from '../../../exports/project/versionDetail';
 
-export default {
-    'name': 'project-space-features',
-    'components': {versionDetail},
-    'mixins': [pagination],
-    data() {
-        return {
-            'code': this.$route.params.code,
-            'project': {'task_board_theme': 'simple'},
-            'loading': true,
-            'form': this.$form.createForm(this),
-            'projectVersionForm': this.$form.createForm(this),
-            'publishVersionForm': this.$form.createForm(this),
-            'projectFeaturesList': [],
-            'currentProjectFeatures': null,
-            'currentProjectVersion': null,
-            'versionTotal': 1,
-            'versionList': {
-                'normal': [],
-                'published': []
-            },
-            'showPublished': false,
-            'projectFeatures': {
-                'modalStatus': false,
-                'confirmLoading': false,
-                'modalTitle': '编辑版本库',
-                'info': null
-            },
-            'projectVersion': {
-                'modalStatus': false,
-                'confirmLoading': false,
-                'modalTitle': '编辑版本',
-                'info': null
-            },
-            'publishVersion': {
-                'modalStatus': false,
-                'confirmLoading': false,
-                'info': null,
-                'status': -1
-            },
-            'versionDetail': {
-                'modalStatus': false,
-                'code': ''
-            }
-        };
-    },
-    created() {
-        this.getProject();
-        this.init();
-    },
-    'methods': {
-        init() {
-            this.getProjectFeaturesList();
-        },
-        getProject() {
-            this.loading = true;
-            getProject(this.code).then((res) => {
-                this.loading = false;
-                this.project = res.data;
-            });
-        },
-        getProjectFeaturesList() {
-            getProjectFeatureList({'projectCode': this.code}).then(res => {
-                this.projectFeaturesList = res.data;
-                if (res.data.length && !this.currentProjectFeature) {
-                    this.currentProjectFeatures = res.data[0];
-                    this.getProjectVersionList();
+    export default {
+        'name': 'project-space-features',
+        'components': {versionDetail},
+        'mixins': [pagination],
+        data() {
+            return {
+                'code': this.$route.params.code,
+                'project': {'task_board_theme': 'simple'},
+                'loading': true,
+                'form': this.$form.createForm(this),
+                'projectVersionForm': this.$form.createForm(this),
+                'publishVersionForm': this.$form.createForm(this),
+                'projectFeaturesList': [],
+                'currentProjectFeatures': null,
+                'currentProjectVersion': null,
+                'versionTotal': 1,
+                'versionList': {
+                    'normal': [],
+                    'published': []
+                },
+                'showPublished': false,
+                'projectFeatures': {
+                    'modalStatus': false,
+                    'confirmLoading': false,
+                    'modalTitle': '编辑版本库',
+                    'info': null
+                },
+                'projectVersion': {
+                    'modalStatus': false,
+                    'confirmLoading': false,
+                    'modalTitle': '编辑版本',
+                    'info': null
+                },
+                'publishVersion': {
+                    'modalStatus': false,
+                    'confirmLoading': false,
+                    'info': null,
+                    'status': -1
+                },
+                'versionDetail': {
+                    'modalStatus': false,
+                    'code': ''
                 }
-            });
+            };
         },
-        getProjectVersionList() {
-            let app = this;
-            app.loading = true;
-            getProjectVersionList({'projectFeaturesCode': this.currentProjectFeatures.code}).then(res => {
-                let versionTotal = 0;
-                let normal = [];
-                let published = [];
-                res.data.forEach(v => {
-                    versionTotal++;
-                    if (v.status == 3) {
-                        published.push(v);
-                    } else {
-                        normal.push(v);
+        created() {
+            this.getProject();
+            this.init();
+        },
+        'methods': {
+            init() {
+                this.getProjectFeaturesList();
+            },
+            getProject() {
+                this.loading = true;
+                getProject(this.code).then((res) => {
+                    this.loading = false;
+                    this.project = res.data;
+                });
+            },
+            getProjectFeaturesList() {
+                getProjectFeatureList({'projectCode': this.code}).then(res => {
+                    this.projectFeaturesList = res.data;
+                    if (res.data.length && !this.currentProjectFeature) {
+                        this.currentProjectFeatures = res.data[0];
+                        this.getProjectVersionList();
                     }
                 });
-                app.versionTotal = versionTotal;
-                app.versionList.normal = normal;
-                app.versionList.published = published;
-                app.loading = false;
-            });
-        },
-        createFeatures() {
-            let app = this;
-            app.projectFeatures.modalStatus = true;
-            app.projectFeatures.info = null;
-            app.projectFeatures.modalTitle = '创建版本库';
-        },
-        editFeatures(features) {
-            let app = this;
-            app.projectFeatures.modalStatus = true;
-            app.projectFeatures.modalTitle = '编辑版本库';
-            app.projectFeatures.info = features;
-            this.$nextTick(function () {
-                app.form.setFieldsValue({
-                    'name': features.name,
-                    'description': features.description
-                });
-            });
-        },
-        deleteFeatures(features) {
-            let app = this;
-            this.$confirm({
-                'title': '删除版本库',
-                'content': `若将『${features.name}』 删除，所有与版本库相关的信息将会被彻底删除，删除后不可恢复。`,
-                'okText': '删除',
-                'okType': 'danger',
-                'cancelText': '再想想',
-                onOk() {
-                    del({'featuresCode': features.code}).then(res => {
-                        const result = checkResponse(res);
-                        if (!result) {
-                            return false;
+            },
+            getProjectVersionList() {
+                let app = this;
+                app.loading = true;
+                getProjectVersionList({'projectFeaturesCode': this.currentProjectFeatures.code}).then(res => {
+                    let versionTotal = 0;
+                    let normal = [];
+                    let published = [];
+                    res.data.forEach(v => {
+                        versionTotal++;
+                        if (v.status === 3) {
+                            published.push(v);
+                        } else {
+                            normal.push(v);
                         }
-                        if (app.currentProjectFeatures.code == features.code) {
-                            app.currentProjectFeatures = null;
-                        }
-                        app.init();
                     });
-                    return Promise.resolve();
-                }
-            });
-        },
-        createVersion() {
-            let app = this;
-            app.projectVersion.modalStatus = true;
-            app.projectVersion.info = null;
-            app.projectVersion.modalTitle = '创建版本';
-        },
-        changeVersionStatus(e, versionType, version, index) {
-            let app = this;
-            if (e.key == version.code) {
-                return false;
-            }
-            if (e.key == 3) {
-                //请确认当前版本发布内容已全部完成后再发布。
+                    app.versionTotal = versionTotal;
+                    app.versionList.normal = normal;
+                    app.versionList.published = published;
+                    app.loading = false;
+                });
+            },
+            createFeatures() {
+                let app = this;
+                app.projectFeatures.modalStatus = true;
+                app.projectFeatures.info = null;
+                app.projectFeatures.modalTitle = '创建版本库';
+            },
+            editFeatures(features) {
+                let app = this;
+                app.projectFeatures.modalStatus = true;
+                app.projectFeatures.modalTitle = '编辑版本库';
+                app.projectFeatures.info = features;
+                this.$nextTick(function () {
+                    app.form.setFieldsValue({
+                        'name': features.name,
+                        'description': features.description
+                    });
+                });
+            },
+            deleteFeatures(features) {
+                let app = this;
                 this.$confirm({
-                    'title': '发布提示',
-                    'content': '请确认当前版本发布内容已全部完成后再发布。',
-                    'okText': '确认发布',
-                    'okType': 'primary',
+                    'title': '删除版本库',
+                    'content': `若将『${features.name}』 删除，所有与版本库相关的信息将会被彻底删除，删除后不可恢复。`,
+                    'okText': '删除',
+                    'okType': 'danger',
+                    'cancelText': '再想想',
                     onOk() {
-                        app.publishVersion.info = version;
-                        app.publishVersion.status = e.key;
-                        app.publishVersion.modalStatus = true;
-                        app.$nextTick(function () {
-                            app.publishVersionForm.setFieldsValue({
-                                'publishTime': moment()
-                            });
+                        del({'featuresCode': features.code}).then(res => {
+                            const result = checkResponse(res);
+                            if (!result) {
+                                return false;
+                            }
+                            if (app.currentProjectFeatures.code === features.code) {
+                                app.currentProjectFeatures = null;
+                            }
+                            app.init();
                         });
                         return Promise.resolve();
                     }
                 });
-            } else {
-                changeStatus({'versionCode': version.code, 'status': e.key}).then(res => {
-                    this.getProjectVersionList();
-                });
-            }
-        },
-        showVersionDetail(code) {
-            this.versionDetail.modalStatus = true;
-            this.versionDetail.code = code;
-        },
-        versionDetailClose() {
-            this.versionDetail.modalStatus = false;
-            this.versionDetail.code = '';
-            this.getProjectVersionList();
-        },
-        handleSubmitPublishVersion() {
-            let app = this;
-            app.publishVersionForm.validateFields(
-                (err) => {
-                    if (!err) {
-                        let obj = app.publishVersionForm.getFieldsValue();
-                        obj.publishTime = moment(obj.publishTime).format('YYYY-MM-DD HH:mm');
-                        changeStatus({
-                            'versionCode': this.publishVersion.info.code,
-                            'status': this.publishVersion.status,
-                            'publishTime': obj.publishTime
-                        }).then(res => {
-                            app.publishVersion.modalStatus = false;
-                            app.getProjectVersionList();
-                        });
-                    }
-                });
-        },
-        handleSubmit() {
-            let app = this;
-            app.form.validateFields(
-                (err) => {
-                    if (!err) {
-                        app.handleOk();
-                    }
-                });
-        },
-        handleOk() {
-            let app = this;
-            app.projectFeatures.confirmLoading = true;
-            let obj = app.form.getFieldsValue();
-            obj.projectCode = this.code;
-            if (app.projectFeatures.info) {
-                obj.featuresCode = app.projectFeatures.info.code;
-                edit(obj).then(res => {
-                    app.projectFeatures.confirmLoading = false;
+            },
+            createVersion() {
+                let app = this;
+                app.projectVersion.modalStatus = true;
+                app.projectVersion.info = null;
+                app.projectVersion.modalTitle = '创建版本';
+            },
+            changeVersionStatus(e, versionType, version, index) {
+                let app = this;
+                if (e.key === version.code) {
+                    return false;
+                }
+                if (e.key === 3) {
+                    //请确认当前版本发布内容已全部完成后再发布。
+                    this.$confirm({
+                        'title': '发布提示',
+                        'content': '请确认当前版本发布内容已全部完成后再发布。',
+                        'okText': '确认发布',
+                        'okType': 'primary',
+                        onOk() {
+                            app.publishVersion.info = version;
+                            app.publishVersion.status = e.key;
+                            app.publishVersion.modalStatus = true;
+                            app.$nextTick(function () {
+                                app.publishVersionForm.setFieldsValue({
+                                    'publishTime': moment()
+                                });
+                            });
+                            return Promise.resolve();
+                        }
+                    });
+                } else {
+                    changeStatus({'versionCode': version.code, 'status': e.key}).then(res => {
+                        this.getProjectVersionList();
+                    });
+                }
+            },
+            showVersionDetail(code) {
+                this.versionDetail.modalStatus = true;
+                this.versionDetail.code = code;
+            },
+            versionDetailClose() {
+                this.versionDetail.modalStatus = false;
+                this.versionDetail.code = '';
+                this.getProjectVersionList();
+            },
+            handleSubmitPublishVersion() {
+                let app = this;
+                app.publishVersionForm.validateFields(
+                    (err) => {
+                        if (!err) {
+                            let obj = app.publishVersionForm.getFieldsValue();
+                            obj.publishTime = moment(obj.publishTime).format('YYYY-MM-DD HH:mm');
+                            changeStatus({
+                                'versionCode': this.publishVersion.info.code,
+                                'status': this.publishVersion.status,
+                                'publishTime': obj.publishTime
+                            }).then(res => {
+                                app.publishVersion.modalStatus = false;
+                                app.getProjectVersionList();
+                            });
+                        }
+                    });
+            },
+            handleSubmit() {
+                let app = this;
+                app.form.validateFields(
+                    (err) => {
+                        if (!err) {
+                            app.handleOk();
+                        }
+                    });
+            },
+            handleOk() {
+                let app = this;
+                app.projectFeatures.confirmLoading = true;
+                let obj = app.form.getFieldsValue();
+                obj.projectCode = this.code;
+                if (app.projectFeatures.info) {
+                    obj.featuresCode = app.projectFeatures.info.code;
+                    edit(obj).then(res => {
+                        app.projectFeatures.confirmLoading = false;
+                        if (!checkResponse(res)) {
+                            return;
+                        }
+                        app.form.resetFields();
+                        this.getProjectFeaturesList();
+                        app.projectFeatures.modalStatus = false;
+                    });
+                } else {
+                    save(obj).then(res => {
+                        app.projectFeatures.confirmLoading = false;
+                        if (!checkResponse(res)) {
+                            return;
+                        }
+                        app.form.resetFields();
+                        app.projectFeatures.modalStatus = false;
+                        app.init();
+                    });
+                }
+            },
+            handleSubmitProjectVersion() {
+                let app = this;
+                app.projectVersionForm.validateFields(
+                    (err) => {
+                        if (!err) {
+                            app.handleOkProjectVersion();
+                        }
+                    });
+            },
+            handleOkProjectVersion() {
+                let app = this;
+                app.projectVersion.confirmLoading = true;
+                let obj = app.projectVersionForm.getFieldsValue();
+                obj.featuresCode = this.currentProjectFeatures.code;
+                obj.startTime = moment(obj.startTime).format('YYYY-MM-DD HH:mm');
+                obj.planPublishTime = moment(obj.planPublishTime).format('YYYY-MM-DD HH:mm');
+                saveProjectVersion(obj).then(res => {
+                    app.projectVersion.confirmLoading = false;
                     if (!checkResponse(res)) {
                         return;
                     }
-                    app.form.resetFields();
-                    this.getProjectFeaturesList();
-                    app.projectFeatures.modalStatus = false;
+                    app.projectVersionForm.resetFields();
+                    app.projectVersion.modalStatus = false;
+                    app.getProjectVersionList();
                 });
-            } else {
-                save(obj).then(res => {
-                    app.projectFeatures.confirmLoading = false;
+            },
+            changeProjectFeatures(e) {
+                this.currentProjectFeatures = this.projectFeaturesList.find(item => item.code === e.key);
+                this.getProjectVersionList();
+            },
+            collectProject() {
+                const type = this.project.collected ? 'cancel' : 'collect';
+                collect(this.project.code, type).then((res) => {
                     if (!checkResponse(res)) {
                         return;
                     }
-                    app.form.resetFields();
-                    app.projectFeatures.modalStatus = false;
-                    app.init();
+                    this.project.collected = !this.project.collected;
                 });
+            },
+            formatTime(time) {
+                return relativelyTime(time);
             }
-        },
-        handleSubmitProjectVersion() {
-            let app = this;
-            app.projectVersionForm.validateFields(
-                (err) => {
-                    if (!err) {
-                        app.handleOkProjectVersion();
-                    }
-                });
-        },
-        handleOkProjectVersion() {
-            let app = this;
-            app.projectVersion.confirmLoading = true;
-            let obj = app.projectVersionForm.getFieldsValue();
-            obj.featuresCode = this.currentProjectFeatures.code;
-            obj.startTime = moment(obj.startTime).format('YYYY-MM-DD HH:mm');
-            obj.planPublishTime = moment(obj.planPublishTime).format('YYYY-MM-DD HH:mm');
-            saveProjectVersion(obj).then(res => {
-                app.projectVersion.confirmLoading = false;
-                if (!checkResponse(res)) {
-                    return;
-                }
-                app.projectVersionForm.resetFields();
-                app.projectVersion.modalStatus = false;
-                app.getProjectVersionList();
-            });
-        },
-        changeProjectFeatures(e) {
-            this.currentProjectFeatures = this.projectFeaturesList.find(item => item.code == e.key);
-            this.getProjectVersionList();
-        },
-        collectProject() {
-            const type = this.project.collected ? 'cancel' : 'collect';
-            collect(this.project.code, type).then((res) => {
-                if (!checkResponse(res)) {
-                    return;
-                }
-                this.project.collected = !this.project.collected;
-            });
-        },
-        formatTime(time) {
-            return relativelyTime(time);
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

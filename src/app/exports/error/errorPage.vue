@@ -19,30 +19,30 @@
     </div>
 </template>
 <script>
-import {Button} from 'ant-design-vue';
+    import {Button} from 'ant-design-vue';
 
-export default {
-    'components': {
-        Button
-    },
-    'props': {
-        'code': {
-            'default': '500'
+    export default {
+        'components': {
+            Button
         },
-        'desc': {
-            'default': '抱歉，服务器出错了'
+        'props': {
+            'code': {
+                'default': '500'
+            },
+            'desc': {
+                'default': '抱歉，服务器出错了'
+            },
+            'url': {
+                'default': '/home'
+            },
+            'urlText': {
+                'default': '返回首页'
+            }
         },
-        'url': {
-            'default': '/home'
-        },
-        'urlText': {
-            'default': '返回首页'
+        data() {
+            return {};
         }
-    },
-    data() {
-        return {};
-    }
-};
+    };
 </script>
 <style lang="less">
     .error-page {

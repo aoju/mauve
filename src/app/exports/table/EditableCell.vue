@@ -1,60 +1,60 @@
 <template>
     <div class='editable-cell'>
-        <div v-if="editable" class='editable-cell-input-wrapper'>
+        <div class='editable-cell-input-wrapper' v-if="editable">
             <a-input
                     :value="value"
                     @change="handleChange"
                     @pressEnter="check"
             />
             <a-icon
-                    type='check'
-                    class='editable-cell-icon-check'
                     @click="check"
+                    class='editable-cell-icon-check'
+                    type='check'
             />
         </div>
-        <div v-else class='editable-cell-text-wrapper'>
+        <div class='editable-cell-text-wrapper' v-else>
             <span v-if="value">{{value}}</span>
             <span v-else-if="value == 0">{{value}}</span>
             <span v-else> </span>
-            <a-icon type='edit' class='editable-cell-icon' @click="edit"/>
+            <a-icon @click="edit" class='editable-cell-icon' type='edit'/>
         </div>
     </div>
 </template>
 <script>
-import {Input, Icon} from 'ant-design-vue';
+    import {Icon, Input} from 'ant-design-vue';
 
-export default {
-    'name': 'EditableCell',
-    'components': {
-        'a-input': Input,
-        'a-icon': Icon
-    },
-    'props': {
-        'text': [String,Number],
-        'showEdit': {
-            'type': [Boolean]
-        }
-    },
-    data() {
-        return {
-            'value': this.text,
-            'editable': false
-        };
-    },
-    'methods': {
-        handleChange(e) {
-            const value = e.target.value;
-            this.value = value;
+    export default {
+        'name': 'EditableCell',
+        'components': {
+            'a-input': Input,
+            'a-icon': Icon
         },
-        check() {
-            this.editable = false;
-            this.$emit('change', this.value);
+        'props': {
+            'text': [String, Number],
+            'showEdit': {
+                'type': [Boolean]
+            }
         },
-        edit() {
-            this.editable = true;
+        data() {
+            return {
+                'value': this.text,
+                'editable': false
+            };
+        },
+        'methods': {
+            handleChange(e) {
+                const value = e.target.value;
+                this.value = value;
+            },
+            check() {
+                this.editable = false;
+                this.$emit('change', this.value);
+            },
+            edit() {
+                this.editable = true;
+            }
         }
-    }
-};
+    };
 </script>
 <style>
     .editable-cell {
@@ -84,7 +84,8 @@ export default {
         line-height: 18px;
         display: none;
     }
-    .editable-cell-icon.anticon{
+
+    .editable-cell-icon.anticon {
         display: none;
     }
 

@@ -1,4 +1,4 @@
-import {setStore, removeStore} from '@/assets/js/storage';
+import {removeStore, setStore} from '@/assets/js/storage';
 import {_checkLogin, _currentMember} from '../restapi/user';
 
 export default {

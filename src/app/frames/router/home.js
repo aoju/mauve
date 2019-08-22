@@ -1,7 +1,7 @@
 /**
  * Home
  */
-export default [ {
+export default [{
     //任务看板
     'name': 'task',
     'path': '/project/space/task/:code',

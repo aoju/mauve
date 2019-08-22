@@ -4,15 +4,16 @@
                 code="404"
                 desc="抱歉，你访问的页面不存在"
         >
-            <img slot="img" src="../../../assets/image/error/404.svg" alt="">
+            <img alt="" slot="img" src="../../../assets/image/error/404.svg">
         </ErrorPage>
     </div>
 </template>
 <script>
-import ErrorPage from '../../exports/error/errorPage';
-export default {
-    'components': {
-        ErrorPage
-    }
-};
+    import ErrorPage from '../../exports/error/errorPage';
+
+    export default {
+        'components': {
+            ErrorPage
+        }
+    };
 </script>

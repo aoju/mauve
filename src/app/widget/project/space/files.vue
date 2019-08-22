@@ -1,5 +1,5 @@
 <template>
-    <div class="project-space-files" :class="project.task_board_theme">
+    <div :class="project.task_board_theme" class="project-space-files">
         <div class="project-navigation">
             <div class="project-nav-header">
                 <a-breadcrumb>
@@ -10,8 +10,8 @@
                         <span class="actions">
                              <a-tooltip :mouseEnterDelay="0.3" :title="project.collected ? '取消收藏' : '加入收藏'"
                                         @click="collectProject">
-                            <a-icon type="star" theme="filled" style="color: grey;" v-show="!project.collected"/>
-                            <a-icon type="star" theme="filled" style="color: #ffaf38;" v-show="project.collected"/>
+                            <a-icon style="color: grey;" theme="filled" type="star" v-show="!project.collected"/>
+                            <a-icon style="color: #ffaf38;" theme="filled" type="star" v-show="project.collected"/>
                         </a-tooltip>
                         </span>
                         <span class="label label-normal" v-if="project.private === 0"><a-icon
@@ -21,17 +21,17 @@
             </div>
             <section class="nav-body">
                 <ul class="nav-wrapper nav nav-underscore pull-left">
-                    <li><a class="app" data-app="tasks"
-                           @click="$router.push('/project/space/task/' + project.code)">任务</a></li>
-                    <li class="actives"><a class="app" data-app="works"
-                                           @click="$router.push('/project/space/files/' + project.code)">
+                    <li><a @click="$router.push('/project/space/task/' + project.code)" class="app"
+                           data-app="tasks">任务</a></li>
+                    <li class="actives"><a @click="$router.push('/project/space/files/' + project.code)" class="app"
+                                           data-app="works">
                         文件</a>
-                    <li><a class="app" data-app="build"
-                           @click="$router.push('/project/space/overview/' + project.code)">
+                    <li><a @click="$router.push('/project/space/overview/' + project.code)" class="app"
+                           data-app="build">
                         概览</a>
                     </li>
-                    <li class=""><a class="app" data-app="build"
-                                    @click="$router.push('/project/space/features/' + project.code)">
+                    <li class=""><a @click="$router.push('/project/space/features/' + project.code)" class="app"
+                                    data-app="build">
                         版本</a>
                     </li>
                 </ul>
@@ -44,7 +44,7 @@
                         <span class="title">我的文件</span>
                         <div class="header-actions">
                             <!--<a><a-icon type="upload"></a-icon> 上传文件</a>-->
-                            <a-button id="upload-file" icon="up-circle" type="dashed">上传</a-button>
+                            <a-button icon="up-circle" id="upload-file" type="dashed">上传</a-button>
                         </div>
                     </div>
                     <div class="list-content">
@@ -68,26 +68,26 @@
                                         <span>创建人</span>
                                     </div>
                                 </div>
-                                <span slot="actions" :key="item" v-for="item in 3">
+                                <span :key="item" slot="actions" v-for="item in 3">
                                     <span>位</span>
                                 </span>
                             </a-list-item>
-                            <a-list-item class="list-item" :key="index" v-for="(item, index) in files">
+                            <a-list-item :key="index" class="list-item" v-for="(item, index) in files">
                                 <a-list-item-meta>
-                                    <a-avatar slot="avatar" shape="square" icon="link" :src="item.file_url"/>
+                                    <a-avatar :src="item.file_url" icon="link" shape="square" slot="avatar"/>
                                     <div slot="title">
                                         <a-tooltip :mouseEnterDelay="0.3">
                                             <template slot="title">
                                                 <span>{{item.fullName}}</span>
                                             </template>
                                             <a-input
-                                                    :ref="`inputTitle${index}`"
                                                     :auto-focus="true"
-                                                    v-model="item.title"
-                                                    v-show="item.editing"
+                                                    :ref="`inputTitle${index}`"
+                                                    @blur="onCellChange(item)"
                                                     @pressEnter="onCellChange(item)"
-                                                    @blur="onCellChange(item)"></a-input>
-                                            <a class="text-default" target="_blank" :href="item | showPreviewUrl"
+                                                    v-model="item.title"
+                                                    v-show="item.editing"></a-input>
+                                            <a :href="item | showPreviewUrl" class="text-default" target="_blank"
                                                v-show="!item.editing">{{item.fullName}}</a>
                                         </a-tooltip>
                                     </div>
@@ -107,7 +107,7 @@
                                 </div>
                                 <span slot="actions">
                                     <a-tooltip title="下载">
-                                        <a class="muted" target="_blank" :href="item.file_url"><a-icon type="download"/></a>
+                                        <a :href="item.file_url" class="muted" target="_blank"><a-icon type="download"/></a>
                                     </a-tooltip>
                                 </span>
                                 <!-- <span slot="actions">
@@ -115,7 +115,7 @@
                                          <a-icon type="upload"/>
                                      </a-tooltip>
                                  </span>-->
-                                <span slot="actions" @click="editFile(item,index)">
+                                <span @click="editFile(item,index)" slot="actions">
                                     <a-tooltip title="编辑">
                                         <a-icon type="edit"/>
                                     </a-tooltip>
@@ -130,10 +130,10 @@
                                                 <a-icon type="down"/>
                                             </a>
                                         </a-tooltip>
-                                        <a-menu class="field-right-menu"
-                                                v-clipboard="item.file_url"
-                                                @click="doFile($event,item.code)"
-                                                slot="overlay">
+                                        <a-menu @click="doFile($event,item.code)"
+                                                class="field-right-menu"
+                                                slot="overlay"
+                                                v-clipboard="item.file_url">
                                             <a-menu-item key="copy">
                                                 <a-icon type="link"/>
                                                 <span>复制链接</span>
@@ -146,10 +146,10 @@
                                     </a-dropdown>
                                 </a>
                             </a-list-item>
-                            <div v-if="showLoadingMore" slot="loadMore"
-                                 :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }">
+                            <div :style="{ textAlign: 'center', marginTop: '12px', height: '32px', lineHeight: '32px' }" slot="loadMore"
+                                 v-if="showLoadingMore">
                                 <a-spin v-if="loadingMore"/>
-                                <a-button v-else @click="onLoadMore">查看更多文件</a-button>
+                                <a-button @click="onLoadMore" v-else>查看更多文件</a-button>
                             </div>
                         </a-list>
                     </div>
@@ -160,186 +160,186 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
-import {read as getProject} from '../../../frames/restapi/project';
-import {collect} from '../../../frames/restapi/projectCollect';
-import {checkResponse} from '../../../../assets/js/utils';
-import {relativelyTime} from '../../../../assets/js/dateTime';
-import {edit, list, recycle} from '../../../frames/restapi/file';
-import pagination from '@/app/shared/pagination';
-import {notice} from '../../../../assets/js/notice';
+    import {mapState} from 'vuex';
+    import {read as getProject} from '../../../frames/restapi/project';
+    import {collect} from '../../../frames/restapi/projectCollect';
+    import {checkResponse} from '../../../../assets/js/utils';
+    import {relativelyTime} from '../../../../assets/js/dateTime';
+    import {edit, list, recycle} from '../../../frames/restapi/file';
+    import pagination from '@/app/shared/pagination';
+    import {notice} from '../../../../assets/js/notice';
 
 
-export default {
-    'name': 'project-space-files',
-    'mixins': [pagination],
-    data() {
-        return {
-            'code': this.$route.params.code,
-            'loading': true,
-            'showLoadingMore': false,
-            'loadingMore': false,
-            'project': {'task_board_theme': 'simple'},
-            'currentFileIndex': {},
-            'files': []
-        };
-    },
-    'computed': {
-        ...mapState({
-            'uploader': state => state.common.uploader
-
-        })
-    },
-    'watch': {
-        'uploader': {
-            handler(newVal, oldVal) {
-                //监听是否有上传文件行为
-                const files = newVal.fileList;
-                const index = files.findIndex(item => item.projectName == this.project.name);
-                if (index !== -1) {
-                    this.getFiles();
-                }
-            },
-            'deep': true
-        }
-    },
-    created() {
-        this.getProject();
-        this.getFiles();
-    },
-    mounted() {
-        setTimeout(() => {
-            this.uploader.assignBrowse(document.getElementById('upload-file'));
-        }, 500);
-    },
-    'methods': {
-        getProject() {
-            this.loading = true;
-            getProject(this.code).then((res) => {
-                this.loading = false;
-                this.project = res.data;
-                this.$store.dispatch('setTempData', {
-                    'projectCode': this.project.code
-                });
-            });
+    export default {
+        'name': 'project-space-files',
+        'mixins': [pagination],
+        data() {
+            return {
+                'code': this.$route.params.code,
+                'loading': true,
+                'showLoadingMore': false,
+                'loadingMore': false,
+                'project': {'task_board_theme': 'simple'},
+                'currentFileIndex': {},
+                'files': []
+            };
         },
-        getFiles(reset = true) {
-            let app = this;
-            if (reset) {
-                this.pagination.page = 1;
-                this.pagination.pageSize = 50;
-                this.showLoadingMore = false;
+        'computed': {
+            ...mapState({
+                'uploader': state => state.common.uploader
+
+            })
+        },
+        'watch': {
+            'uploader': {
+                handler(newVal, oldVal) {
+                    //监听是否有上传文件行为
+                    const files = newVal.fileList;
+                    const index = files.findIndex(item => item.projectName === this.project.name);
+                    if (index !== -1) {
+                        this.getFiles();
+                    }
+                },
+                'deep': true
             }
-            app.requestData.projectCode = this.code;
-            app.requestData.deleted = 0;
-            list(app.requestData).then(res => {
+        },
+        created() {
+            this.getProject();
+            this.getFiles();
+        },
+        mounted() {
+            setTimeout(() => {
+                this.uploader.assignBrowse(document.getElementById('upload-file'));
+            }, 500);
+        },
+        'methods': {
+            getProject() {
+                this.loading = true;
+                getProject(this.code).then((res) => {
+                    this.loading = false;
+                    this.project = res.data;
+                    this.$store.dispatch('setTempData', {
+                        'projectCode': this.project.code
+                    });
+                });
+            },
+            getFiles(reset = true) {
+                let app = this;
                 if (reset) {
-                    this.files = [];
+                    this.pagination.page = 1;
+                    this.pagination.pageSize = 50;
+                    this.showLoadingMore = false;
                 }
-                res.data.list.forEach((v) => {
+                app.requestData.projectCode = this.code;
+                app.requestData.deleted = 0;
+                list(app.requestData).then(res => {
+                    if (reset) {
+                        this.files = [];
+                    }
+                    res.data.list.forEach((v) => {
+                        v.editing = false;
+                    });
+                    app.files = app.files.concat(res.data.list);
+                    app.pagination.total = res.data.total;
+                    app.showLoadingMore = app.pagination.total > app.files.length;
+                    app.loading = false;
+                    app.loadingMore = false;
+                });
+            },
+            onLoadMore() {
+                this.loadingMore = true;
+                this.pagination.page++;
+                this.getFiles(false);
+            },
+            collectProject() {
+                const type = this.project.collected ? 'cancel' : 'collect';
+                collect(this.project.code, type).then((res) => {
+                    if (!checkResponse(res)) {
+                        return;
+                    }
+                    this.project.collected = !this.project.collected;
+                });
+            },
+            editFile(file, index) {
+                let app = this;
+                this.files.forEach((v) => {
                     v.editing = false;
                 });
-                app.files = app.files.concat(res.data.list);
-                app.pagination.total = res.data.total;
-                app.showLoadingMore = app.pagination.total > app.files.length;
-                app.loading = false;
-                app.loadingMore = false;
-            });
-        },
-        onLoadMore() {
-            this.loadingMore = true;
-            this.pagination.page++;
-            this.getFiles(false);
-        },
-        collectProject() {
-            const type = this.project.collected ? 'cancel' : 'collect';
-            collect(this.project.code, type).then((res) => {
-                if (!checkResponse(res)) {
-                    return;
-                }
-                this.project.collected = !this.project.collected;
-            });
-        },
-        editFile(file, index) {
-            let app = this;
-            this.files.forEach((v) => {
-                v.editing = false;
-            });
-            this.files[index].editing = true;
-            this.$nextTick(() => {
-                app.$refs[`inputTitle${index}`][0].focus();
-            });
-            this.currentFileIndex = index;
-        },
-        onCellChange(file) {
-            let currentFile = this.files[this.currentFileIndex];
-            this.files.forEach((v) => {
-                v.editing = false;
-            });
-            const fullName = `${file.title}.${file.extension}`;
-            if (fullName != currentFile.fullName) {
-                edit({'title': currentFile.title, 'fileCode': currentFile.code}).then(res => {
-                    const result = checkResponse(res);
-                    if (!result) {
-                        return false;
-                    }
-                    currentFile.title = file.title;
-                    currentFile.fullName = fullName;
-                    notice({
-                        'title': '重命名成功'
-                    }, 'notice', 'success');
+                this.files[index].editing = true;
+                this.$nextTick(() => {
+                    app.$refs[`inputTitle${index}`][0].focus();
                 });
-            }
-        },
-        doFile(action, fileCode) {
-            let app = this;
-            const actionKey = action.key;
-            switch (actionKey) {
-            case 'delete':
-                this.$confirm({
-                    'title': '移到回收站',
-                    'content': '您确定要把该文件移到回收站吗？',
-                    'okText': '移到回收站',
-                    'okType': 'danger',
-                    'cancelText': '再想想',
-                    onOk() {
-                        recycle(fileCode).then((res) => {
-                            const result = checkResponse(res);
-                            if (!result) {
-                                return false;
-                            }
-                            app.getFiles();
-                        });
+                this.currentFileIndex = index;
+            },
+            onCellChange(file) {
+                let currentFile = this.files[this.currentFileIndex];
+                this.files.forEach((v) => {
+                    v.editing = false;
+                });
+                const fullName = `${file.title}.${file.extension}`;
+                if (fullName !== currentFile.fullName) {
+                    edit({'title': currentFile.title, 'fileCode': currentFile.code}).then(res => {
+                        const result = checkResponse(res);
+                        if (!result) {
+                            return false;
+                        }
+                        currentFile.title = file.title;
+                        currentFile.fullName = fullName;
                         notice({
-                            'title': '成功移到回收站',
-                            'msg': '可在 菜单－查看回收站－文件 中查看'
+                            'title': '重命名成功'
+                        }, 'notice', 'success');
+                    });
+                }
+            },
+            doFile(action, fileCode) {
+                let app = this;
+                const actionKey = action.key;
+                switch (actionKey) {
+                    case 'delete':
+                        this.$confirm({
+                            'title': '移到回收站',
+                            'content': '您确定要把该文件移到回收站吗？',
+                            'okText': '移到回收站',
+                            'okType': 'danger',
+                            'cancelText': '再想想',
+                            onOk() {
+                                recycle(fileCode).then((res) => {
+                                    const result = checkResponse(res);
+                                    if (!result) {
+                                        return false;
+                                    }
+                                    app.getFiles();
+                                });
+                                notice({
+                                    'title': '成功移到回收站',
+                                    'msg': '可在 菜单－查看回收站－文件 中查看'
+                                }, 'notice', 'success', 5);
+                                return Promise.resolve();
+                            }
+                        });
+                        break;
+                    case 'copy':
+                        notice({
+                            'title': '复制链接成功',
+                            'msg': '在地址栏粘贴并打开可下载该资源'
                         }, 'notice', 'success', 5);
-                        return Promise.resolve();
-                    }
-                });
-                break;
-            case 'copy':
-                notice({
-                    'title': '复制链接成功',
-                    'msg': '在地址栏粘贴并打开可下载该资源'
-                }, 'notice', 'success', 5);
-                return true;
+                        return true;
+                }
+            },
+            formatTime(time) {
+                return relativelyTime(time);
+            },
+            formatSize(size) {
+                let type = 'KB';
+                size = size / 1024;
+                if (size >= 1024) {
+                    size /= 1024;
+                    type = 'MB';
+                }
+                return `${size.toFixed(2)} ${type}`;
             }
-        },
-        formatTime(time) {
-            return relativelyTime(time);
-        },
-        formatSize(size) {
-            let type = 'KB';
-            size = size / 1024;
-            if (size >= 1024) {
-                size /= 1024;
-                type = 'MB';
-            }
-            return `${size.toFixed(2)} ${type}`;
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

@@ -8,62 +8,62 @@
     </div>
 </template>
 <script>
-import {mapState} from 'vuex';
-import {checkResponse} from '@/assets/js/utils';
-import {inviteInfo} from '../../frames/restapi/common';
-import {_joinByInviteLink} from '../../frames/restapi/projectMember';
-import {_joinByInviteLink as joinOrganation} from '../../frames/restapi/user';
+    import {mapState} from 'vuex';
+    import {checkResponse} from '@/assets/js/utils';
+    import {inviteInfo} from '../../frames/restapi/common';
+    import {_joinByInviteLink} from '../../frames/restapi/projectMember';
+    import {_joinByInviteLink as joinOrganation} from '../../frames/restapi/user';
 
-export default {
-    data() {
-        return {
-            'loading': false,
-            'inviteLink': undefined
-        };
-    },
-    'computed': {
-        ...mapState({
-            'userInfo': state => state.userInfo
-        })
-    },
-    created() {
-        this.getInviteInfo();
-    },
-    'methods': {
-        getInviteInfo() {
-            this.loading = true;
-            inviteInfo(this.$route.params.code).then(res => {
-                this.inviteLink = res.data;
-                this.loading = false;
-            });
+    export default {
+        data() {
+            return {
+                'loading': false,
+                'inviteLink': undefined
+            };
         },
-        acceptInvite() {
-            let app = this;
-            if (this.inviteLink.invite_type == 'project') {
-                _joinByInviteLink(this.$route.params.code).then(res => {
-                    const result = checkResponse(res);
-                    if (!result) {
-                        return false;
-                    }
-                    this.$store.dispatch('setOrganizationList', res.data.organizationList);
-                    this.$store.dispatch('setCurrentOrganization', res.data.currentOrganization);
-                    setTimeout(function () {
-                        app.$router.replace({'name': 'task', 'params': {'code': app.inviteLink.source_code}});
-                    }, 500);
+        'computed': {
+            ...mapState({
+                'userInfo': state => state.userInfo
+            })
+        },
+        created() {
+            this.getInviteInfo();
+        },
+        'methods': {
+            getInviteInfo() {
+                this.loading = true;
+                inviteInfo(this.$route.params.code).then(res => {
+                    this.inviteLink = res.data;
+                    this.loading = false;
                 });
-            } else if (this.inviteLink.invite_type == 'organization') {
-                joinOrganation(this.$route.params.code).then(res => {
-                    this.$store.dispatch('setOrganizationList', res.data.organizationList);
-                    this.$store.dispatch('setCurrentOrganization', res.data.currentOrganization);
-                    this.$notice({'title': '你已成功加入组织', 'msg': '你可以在右上方切换当前组织'}, 'notice', 'success');
-                    setTimeout(function () {
-                        app.$router.replace('/');
-                    }, 500);
-                });
+            },
+            acceptInvite() {
+                let app = this;
+                if (this.inviteLink.invite_type === 'project') {
+                    _joinByInviteLink(this.$route.params.code).then(res => {
+                        const result = checkResponse(res);
+                        if (!result) {
+                            return false;
+                        }
+                        this.$store.dispatch('setOrganizationList', res.data.organizationList);
+                        this.$store.dispatch('setCurrentOrganization', res.data.currentOrganization);
+                        setTimeout(function () {
+                            app.$router.replace({'name': 'task', 'params': {'code': app.inviteLink.source_code}});
+                        }, 500);
+                    });
+                } else if (this.inviteLink.invite_type === 'organization') {
+                    joinOrganation(this.$route.params.code).then(res => {
+                        this.$store.dispatch('setOrganizationList', res.data.organizationList);
+                        this.$store.dispatch('setCurrentOrganization', res.data.currentOrganization);
+                        this.$notice({'title': '你已成功加入组织', 'msg': '你可以在右上方切换当前组织'}, 'notice', 'success');
+                        setTimeout(function () {
+                            app.$router.replace('/');
+                        }, 500);
+                    });
+                }
             }
         }
-    }
-};
+    };
 </script>
 <style lang="less">
     .forgot {

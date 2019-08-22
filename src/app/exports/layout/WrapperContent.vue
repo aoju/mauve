@@ -15,17 +15,17 @@
             <div class="detail">
                 <div class="main">
                     <div class="row">
-                        <h1 v-if="pageTitle.trim() != '' && showTitle" class="title">{{ pageTitle }}</h1>
-                        <h1 v-else-if="showTitle" class="title">{{ defaultPageTitle }}</h1>
+                        <h1 class="title" v-if="pageTitle.trim() != '' && showTitle">{{ pageTitle }}</h1>
+                        <h1 class="title" v-else-if="showTitle">{{ defaultPageTitle }}</h1>
                         <div class="action">
                             <slot name="action"></slot>
                         </div>
                     </div>
                     <div class="row">
-                        <div v-if="this.$slots.content" class="content">
+                        <div class="content" v-if="this.$slots.content">
                             <slot name="content"></slot>
                         </div>
-                        <div v-if="this.$slots.extra" class="extra">
+                        <div class="extra" v-if="this.$slots.extra">
                             <slot name="extra"></slot>
                         </div>
                     </div>
@@ -37,8 +37,8 @@
         <div class="page-header page-header-none"></div>
 
         <div class="wrapper-main">
-            <div class="wrapper-content"
-                 :class="{ 'hidden':pageLoading}">
+            <div :class="{ 'hidden':pageLoading}"
+                 class="wrapper-content">
                 <div class="layout-content">
                     <div class="content-title" v-if="this.$slots.contentTitle || this.$slots.contentAction">
                         <slot name="contentTitle"></slot>
@@ -54,90 +54,90 @@
 
 </template>
 <script>
-import {mapState} from 'vuex';
-import {getStore} from '@/assets/js/storage';
-import {getClassObj} from '@/assets/js/utils';
-import $ from 'jquery';
-import ABreadcrumb from 'ant-design-vue/es/breadcrumb';
+    import {mapState} from 'vuex';
+    import {getStore} from '@/assets/js/storage';
+    import {getClassObj} from '@/assets/js/utils';
+    import $ from 'jquery';
+    import ABreadcrumb from 'ant-design-vue/es/breadcrumb';
 
-const ABreadcrumbItem = ABreadcrumb.Item;
+    const ABreadcrumbItem = ABreadcrumb.Item;
 
 
-export default {
-    'components': {
-        ABreadcrumb,
-        ABreadcrumbItem
-    },
-    'props': {
-        'pageTitle': {
-            'default': ''
+    export default {
+        'components': {
+            ABreadcrumb,
+            ABreadcrumbItem
         },
-        'showTitle': {
-            'default': true
+        'props': {
+            'pageTitle': {
+                'default': ''
+            },
+            'showTitle': {
+                'default': true
+            },
+            'showHeader': {
+                'default': true
+            },
+            'breadCrumb': {
+                'default': true
+            }
         },
-        'showHeader': {
-            'default': true
-        },
-        'breadCrumb': {
-            'default': true
-        }
-    },
-    mounted() {
-        //用户权限资源检测
-        function TraversalObject(obj, value) {
-            for (let a in obj) {
-                if (typeof (obj[a]) === 'object') {
-                    TraversalObject(obj[a], value); //递归遍历
-                } else {
-                    if (a === 'name' && obj[a] === value) {
-                        window.permission = true;
+        mounted() {
+            //用户权限资源检测
+            function TraversalObject(obj, value) {
+                for (let a in obj) {
+                    if (typeof (obj[a]) === 'object') {
+                        TraversalObject(obj[a], value); //递归遍历
+                    } else {
+                        if (a === 'name' && obj[a] === value) {
+                            window.permission = true;
+                        }
                     }
                 }
             }
-        }
 
-        const auth_list = getStore('auth_list', true);
-        const permissions = $('a[permission]');
-        if (permissions) {
-            $.each(permissions, function (k, v) {
-                let permission = $(v).attr('permission');
-                window.permission = false;
-                TraversalObject(auth_list, permission);
-                if (!window.permission) {
-                    $(v).remove();
+            const auth_list = getStore('auth_list', true);
+            const permissions = $('a[permission]');
+            if (permissions) {
+                $.each(permissions, function (k, v) {
+                    let permission = $(v).attr('permission');
+                    window.permission = false;
+                    TraversalObject(auth_list, permission);
+                    if (!window.permission) {
+                        $(v).remove();
+                    }
+                });
+            }
+            this.$nextTick(function () {
+                // 挂载时隐藏所有父级页面的内容区
+                const ClassElements = getClassObj('wrapper-main');
+                if (ClassElements.length > 1) {
+                    for (let i = 0; i < ClassElements.length - 1; i++) {
+                        ClassElements[i].style.display = 'none';
+                    }
+                }
+            });
+        },
+        'computed': {
+            ...mapState({
+                'pageLoading': state => state.pageLoading,
+                'breadCrumbInfo': state => state.menu.breadCrumbInfo
+            }),
+            'defaultPageTitle': {
+                get() {
+                    return this.$route.meta.info.title;
+                }
+            },
+            'wrapper_content_class': function () {
+            }
+        },
+        'destroyed': function () {
+            this.$nextTick(function () {
+                const ClassElements = getClassObj('wrapper-main');
+                for (let i = 0; i < ClassElements.length; i++) {
+                    ClassElements[i].removeAttribute('style');
                 }
             });
         }
-        this.$nextTick(function () {
-            // 挂载时隐藏所有父级页面的内容区
-            const ClassElements = getClassObj('wrapper-main');
-            if (ClassElements.length > 1) {
-                for (let i = 0; i < ClassElements.length - 1; i++) {
-                    ClassElements[i].style.display = 'none';
-                }
-            }
-        });
-    },
-    'computed': {
-        ...mapState({
-            'pageLoading': state => state.pageLoading,
-            'breadCrumbInfo': state => state.menu.breadCrumbInfo
-        }),
-        'defaultPageTitle': {
-            get() {
-                return this.$route.meta.info.title;
-            }
-        },
-        'wrapper_content_class': function () {
-        }
-    },
-    'destroyed': function () {
-        this.$nextTick(function () {
-            const ClassElements = getClassObj('wrapper-main');
-            for (let i = 0; i < ClassElements.length; i++) {
-                ClassElements[i].removeAttribute('style');
-            }
-        });
-    }
-};
+    };
 </script>

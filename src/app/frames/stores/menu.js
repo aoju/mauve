@@ -21,7 +21,7 @@ const common = {
                 commit('SET_MENU', res.data);
             });
         },
-        SET_MENU({commit},data) {
+        SET_MENU({commit}, data) {
             setStore('menu', data);
             commit('SET_MENU', data);
         },

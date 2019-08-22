@@ -1,25 +1,25 @@
 <template>
-    <div class="v-uploader" :class="{'hidden-files': !showFiles,'hidden-uploader': !showUploader}">
+    <div :class="{'hidden-files': !showFiles,'hidden-uploader': !showUploader}" class="v-uploader">
         <a-card :title="uploaderTitle">
             <div class="actions" slot="extra">
-                <a class="muted action-item" @click="showFiles = !showFiles">
+                <a @click="showFiles = !showFiles" class="muted action-item">
                     <a-icon type="shrink" v-show="showFiles"/>
                     <a-icon type="arrows-alt" v-show="!showFiles"/>
                 </a>
-                <a class="muted action-item" @click="closeUploader">
+                <a @click="closeUploader" class="muted action-item">
                     <a-icon type="close"/>
                 </a>
             </div>
-            <uploader ref="uploader"
+            <uploader :autoStart="autoStart"
                       :options="options"
-                      :autoStart="autoStart"
-                      @files-submitted="filesSubmitted"
+                      @complete="complete"
+                      @file-complete="fileComplete"
+                      @file-error="fileError"
                       @file-progress="fileProgress"
                       @file-success="fileSuccess"
-                      @file-error="fileError"
-                      @file-complete="fileComplete"
-                      @complete="complete"
-                      class="uploader-workplace">
+                      @files-submitted="filesSubmitted"
+                      class="uploader-workplace"
+                      ref="uploader">
                 <vue-scroll>
                     <!--<a-button @click="testSomeThing">测试</a-button>-->
                     <!--<uploader-unsupport></uploader-unsupport>-->
@@ -33,7 +33,7 @@
                     <uploader-list>
                         <template slot-scope="files">
                             <ul class="uploader-wrapper">
-                                <uploader-file :key="file.id" :file="file" :list="true"
+                                <uploader-file :file="file" :key="file.id" :list="true"
                                                v-for="file in files.fileList">
                                     <template slot-scope="file">
                                         <li class="uploader-item">
@@ -41,14 +41,15 @@
                                                 <div class="item-info">
                                                     <div class="file-item">
                                                         <div class="file-icon">
-                                                            <a-avatar icon="link" shape="square"
-                                                                      :src="file.file.fileUrl"/>
+                                                            <a-avatar :src="file.file.fileUrl" icon="link"
+                                                                      shape="square"/>
                                                         </div>
                                                         <div class="file-info">
                                                             <div class="file-content">
                                                                 <div class="file-title">
-                                                                    <a-tooltip placement="top" :mouseEnterDelay="0.3"
-                                                                               :title="file.file.name">
+                                                                    <a-tooltip :mouseEnterDelay="0.3"
+                                                                               :title="file.file.name"
+                                                                               placement="top">
                                                                         {{file.file.name}}
                                                                     </a-tooltip>
                                                                 </div>
@@ -60,14 +61,15 @@
                                                             </div>
                                                             <div class="uploader-progress"
                                                                  v-show="file.status != 'success'">
-                                                                <a-progress :strokeWidth="2" :showInfo="false"
-                                                                            :percent="file.progress * 100"/>
+                                                                <a-progress :percent="file.progress * 100"
+                                                                            :showInfo="false"
+                                                                            :strokeWidth="2"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="item-status">
-                                                    <a class="muted" @click="cancelUpload(file)">
+                                                    <a @click="cancelUpload(file)" class="muted">
                                                         <a-icon type="close" v-show="file.status != 'success'"/>
                                                     </a>
                                                     <a-icon class="text-success" type="check"
@@ -89,137 +91,137 @@
 </template>
 
 <script>
-import {checkResponse, getApiUrl, getAuthorization} from '../../../assets/js/utils';
-import {mapState} from 'vuex';
-import {getStore} from '../../../assets/js/storage';
-import {notice} from '../../../assets/js/notice';
-import {uploadFiles} from '../../frames/restapi/file';
+    import {checkResponse, getAuthorization} from '../../../assets/js/utils';
+    import {mapState} from 'vuex';
+    import {getStore} from '../../../assets/js/storage';
+    import {notice} from '../../../assets/js/notice';
+    import {uploadFiles} from '../../frames/restapi/file';
 
-export default {
-    'name': 'v-uploader',
-    'props': {
-        'code': {
-            'type': [String],
-            default() {
-                return '';
-            }
-        }
-    },
-    data() {
-        return {
-            'loading': false,
-            'showFiles': false, //显示上传文件
-            'showUploader': false,//显示上传窗口
-            'progressTotal': 0, //上传中的文件数
-            'completeTotal': 0, //已完成的文件数
-            'options': {
-                'target': uploadFiles,
-                'testChunks': false,
-                'query': function () {
-                    return getStore('tempData', true);//query暂时无法动态响应
-                },
-                'headers': function () {
-                    let organization = getStore('currentOrganization', true);
-                    const auth = getAuthorization();
-                    auth.organizationcode = organization.code;
-                    return auth;
+    export default {
+        'name': 'v-uploader',
+        'props': {
+            'code': {
+                'type': [String],
+                default() {
+                    return '';
                 }
-            },
-            'attrs': {
-                'accept': 'image/*'
-            },
-            'autoStart': true
-        };
-    },
-    'computed': {
-        ...mapState({
-            'uploader': state => state.common.uploader,
-            'tempData': state => state.common.tempData
-        }),
-        uploaderTitle() {
-            if (!this.progressTotal) {
-                return '上传完成';
             }
-            let current = this.completeTotal + 1;
-            if (current > this.progressTotal) {
-                current = this.progressTotal;
+        },
+        data() {
+            return {
+                'loading': false,
+                'showFiles': false, //显示上传文件
+                'showUploader': false,//显示上传窗口
+                'progressTotal': 0, //上传中的文件数
+                'completeTotal': 0, //已完成的文件数
+                'options': {
+                    'target': uploadFiles,
+                    'testChunks': false,
+                    'query': function () {
+                        return getStore('tempData', true);//query暂时无法动态响应
+                    },
+                    'headers': function () {
+                        let organization = getStore('currentOrganization', true);
+                        const auth = getAuthorization();
+                        auth.organizationcode = organization.code;
+                        return auth;
+                    }
+                },
+                'attrs': {
+                    'accept': 'image/*'
+                },
+                'autoStart': true
+            };
+        },
+        'computed': {
+            ...mapState({
+                'uploader': state => state.common.uploader,
+                'tempData': state => state.common.tempData
+            }),
+            uploaderTitle() {
+                if (!this.progressTotal) {
+                    return '上传完成';
+                }
+                let current = this.completeTotal + 1;
+                if (current > this.progressTotal) {
+                    current = this.progressTotal;
+                }
+                return `正在上传 ${current}/${this.progressTotal}`;
             }
-            return `正在上传 ${current}/${this.progressTotal}`;
-        }
-    },
-    'watch': {
-        code() {
+        },
+        'watch': {
+            code() {
+                this.init();
+            }
+        },
+        created() {
             this.init();
-        }
-    },
-    created() {
-        this.init();
-    },
-    mounted() {
-        this.$nextTick(() => {
-            window.uploader = this.$refs.uploader.uploader;
-            this.$store.dispatch('setUploader', window.uploader);
-        });
-    },
-    'methods': {
-        init() {
+        },
+        mounted() {
+            this.$nextTick(() => {
+                window.uploader = this.$refs.uploader.uploader;
+                this.$store.dispatch('setUploader', window.uploader);
+            });
+        },
+        'methods': {
+            init() {
 
-        },
-        closeUploader() {//关闭上传窗口
-            this.showUploader = false;
-            this.uploader.cancel();
-        },
-        filesSubmitted(files) { //添加上传文件
-            // this.$refs.uploader.uploader.opts.query = this.tempData;
-            this.showUploader = true;
-            this.showFiles = true;
-            this.progressTotal += files.length;
-        },
-        fileProgress(rootFile, file, chunk) { //有文件上传中
-            this.showUploader = true;
-            this.showFiles = true;
-        },
-        fileSuccess(rootFile, file, message, chunk) { //一个文件上传成功
-            const response = JSON.parse(message);
-            if (!checkResponse(response)) {
+            },
+            closeUploader() {//关闭上传窗口
+                this.showUploader = false;
+                this.uploader.cancel();
+            },
+            filesSubmitted(files) { //添加上传文件
+                // this.$refs.uploader.uploader.opts.query = this.tempData;
+                this.showUploader = true;
+                this.showFiles = true;
+                this.progressTotal += files.length;
+            },
+            fileProgress(rootFile, file, chunk) { //有文件上传中
+                this.showUploader = true;
+                this.showFiles = true;
+            },
+            fileSuccess(rootFile, file, message, chunk) { //一个文件上传成功
+                const response = JSON.parse(message);
+                if (!checkResponse(response)) {
+                    notice({'title': response.msg}, 'notice', 'error');
+                    return false;
+                }
+                rootFile.projectName = response.data.projectName;
+                rootFile.fileUrl = response.data.url;
+                this.completeTotal++;
+            },
+            fileError(rootFile, file, message, chunk) { //一个文件上传失败                this.progressTotal--;
+                this.completeTotal--;
+                const response = JSON.parse(message);
+                file.cancel();
+                rootFile.projectName = response.data.projectName;
                 notice({'title': response.msg}, 'notice', 'error');
-                return false;
+            },
+            fileComplete(rootFile) { //一个文件上传完成
+                // console.log('file complete', rootFile);
+            },
+            complete() { //所有文件上传完成
+                this.progressTotal = this.completeTotal = 0;
+                notice({'title': '关联文件成功'}, 'notice', 'success');
+                setTimeout(() => {
+                    this.showFiles = false;
+                }, 3000);
+            },
+            cancelUpload(file) {
+                this.progressTotal--;
+                this.completeTotal--;
+                file.file.cancel();
+            },
+            filterList(list) {
+                //return list;
+                return list.reverse();
+            },
+            testSomeThing() {
+                this.uploader.fileList[0].resume();
             }
-            rootFile.projectName = response.data.projectName;
-            rootFile.fileUrl = response.data.url;
-            this.completeTotal++;
-        },
-        fileError(rootFile, file, message, chunk) { //一个文件上传失败                this.progressTotal--;
-            this.completeTotal--;
-            const response = JSON.parse(message);
-            file.cancel();
-            rootFile.projectName = response.data.projectName;
-            notice({'title': response.msg}, 'notice', 'error');
-        },
-        fileComplete(rootFile) { //一个文件上传完成
-            // console.log('file complete', rootFile);
-        },
-        complete() { //所有文件上传完成
-            this.progressTotal = this.completeTotal = 0;
-            notice({'title': '关联文件成功'}, 'notice', 'success');
-            setTimeout(() => {
-                this.showFiles = false;
-            }, 3000);
-        },
-        cancelUpload(file) {
-            this.progressTotal--;
-            this.completeTotal--;
-            file.file.cancel();
-        },
-        filterList(list) {
-            return list;
-            return list.reverse();
-        },
-        testSomeThing() {
-            this.uploader.fileList[0].resume();
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">

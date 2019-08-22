@@ -14,7 +14,7 @@ Vue.filter('showPreviewUrl', function (file) {
     const docUrl = 'https://view.officeapps.live.com/op/view.aspx?src=';
     let docArr = ['doc', 'docx', 'docm', 'dotm', 'dotx', 'xlsx', 'xlsb', 'xls', 'xlsm', 'pptx', 'ppsx', 'ppt', 'pps', 'pptm', 'potm', 'ppam', 'potx', 'ppsm'];
     const extension = file.extension;
-    const index = docArr.findIndex(item => item == extension);
+    const index = docArr.findIndex(item => item === extension);
     if (index !== -1) {
         url = docUrl + url;
     }

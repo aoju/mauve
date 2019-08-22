@@ -4,100 +4,103 @@
             {{actionType}}{{actionTitle}}
         </div>
         <div class="search-content">
-            <a-input v-model="name" size="large" :placeholder="`${actionTitle}名称`">
-                <a-icon slot="prefix" type="bulb" class="muted"/>
+            <a-input :placeholder="`${actionTitle}名称`" size="large" v-model="name">
+                <a-icon class="muted" slot="prefix" type="bulb"/>
             </a-input>
             <div class="info" v-if="parentDepartmentCode">
                 <span class="muted">隶属于：{{parentDepartment.name}}</span>
             </div>
         </div>
         <div class="actions">
-            <a-button type="primary" class="middle-btn" size="large" block :loading="loading"
-                      :disabled="disabled || loading" @click="doAction" @pressEnter="doAction">{{actionType}}
+            <a-button :disabled="disabled || loading" :loading="loading" @click="doAction" @pressEnter="doAction" block
+                      class="middle-btn" size="large" type="primary">{{actionType}}
             </a-button>
         </div>
     </div>
 </template>
 
 <script>
-import _ from 'lodash';
-import {doData, read} from '../../frames/restapi/department';
-import {checkResponse} from '../../../assets/js/utils';
-import {notice} from '../../../assets/js/notice';
+    import {doData, read} from '../../frames/restapi/department';
+    import {checkResponse} from '../../../assets/js/utils';
+    import {notice} from '../../../assets/js/notice';
 
-export default {
-    'name': 'createDepartment',
-    'props': {
-        'departmentCode': {
-            'type': [String, Boolean],
-            default() {
-                return '';
+    export default {
+        'name': 'createDepartment',
+        'props': {
+            'departmentCode': {
+                'type': [String, Boolean],
+                default() {
+                    return '';
+                }
+            },
+            'parentDepartmentCode': {
+                'type': [String, Boolean],
+                default() {
+                    return '';
+                }
             }
         },
-        'parentDepartmentCode': {
-            'type': [String, Boolean],
-            default() {
-                return '';
-            }
-        }
-    },
-    data() {
-        return {
-            'name': '',
-            'loading': false,
-            'department': {},
-            'parentDepartment': {}
-        };
-    },
-    'computed': {
-        actionType() {
-            return this.departmentCode ? '编辑' : '创建';
+        data() {
+            return {
+                'name': '',
+                'loading': false,
+                'department': {},
+                'parentDepartment': {}
+            };
         },
-        actionTitle() {
-            return this.parentDepartmentCode ? '子部门' : '部门';
-        },
-        disabled() {
-            return !this.name.trim();
-        }
-    },
-    created() {
-        this.init();
-    },
-    'methods': {
-        init() {
-            if (this.departmentCode) {
-                read(this.departmentCode).then(res => {
-                    this.department = res.data;
-                    this.name = res.data.name;
-                });
-            }
-            if (this.parentDepartmentCode) {
-                read(this.parentDepartmentCode).then(res => {
-                    this.parentDepartment = res.data;
-                });
+        'computed': {
+            actionType() {
+                return this.departmentCode ? '编辑' : '创建';
+            },
+            actionTitle() {
+                return this.parentDepartmentCode ? '子部门' : '部门';
+            },
+            disabled() {
+                return !this.name.trim();
             }
         },
-        doAction() {
-            this.name = this.name.trim();
-            if (!this.name) {
-                return false;
-            }
-            const obj = {'departmentCode': this.departmentCode,'parentDepartmentCode': this.parentDepartmentCode, 'name': this.name};
-            this.loading = true;
-            doData(obj).then(res => {
-                this.loading = false;
-                if (!checkResponse(res)) {
+        created() {
+            this.init();
+        },
+        'methods': {
+            init() {
+                if (this.departmentCode) {
+                    read(this.departmentCode).then(res => {
+                        this.department = res.data;
+                        this.name = res.data.name;
+                    });
+                }
+                if (this.parentDepartmentCode) {
+                    read(this.parentDepartmentCode).then(res => {
+                        this.parentDepartment = res.data;
+                    });
+                }
+            },
+            doAction() {
+                this.name = this.name.trim();
+                if (!this.name) {
                     return false;
                 }
-                notice({'title': `${this.actionType}部门成功`}, 'notice', 'success');
-                this.$emit('update', res.data);
-                if (this.departmentCode) {
-                    this.$emit('edit', this.name);
-                }
-            });
+                const obj = {
+                    'departmentCode': this.departmentCode,
+                    'parentDepartmentCode': this.parentDepartmentCode,
+                    'name': this.name
+                };
+                this.loading = true;
+                doData(obj).then(res => {
+                    this.loading = false;
+                    if (!checkResponse(res)) {
+                        return false;
+                    }
+                    notice({'title': `${this.actionType}部门成功`}, 'notice', 'success');
+                    this.$emit('update', res.data);
+                    if (this.departmentCode) {
+                        this.$emit('edit', this.name);
+                    }
+                });
+            }
         }
-    }
-};
+    };
 </script>
 <style lang="less">
     .create-department {

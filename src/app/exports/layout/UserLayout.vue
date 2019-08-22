@@ -5,7 +5,7 @@
                 <div class="header">
                     <a-badge :count="'v2.0'">
                         <a href="/">
-                            <img src="../../../assets/image/common/logo.png" class="logo" alt="logo">
+                            <img alt="logo" class="logo" src="../../../assets/image/common/logo.png">
                             <span class="title">Pear Project</span>
                         </a>
                     </a-badge>
@@ -31,17 +31,17 @@
 
 <script>
 
-export default {
-    'name': 'UserLayout',
-    'props': {
-        'desc': {
-            'type': [String],
-            default() {
-                return '欢迎使用Pear Project项目管理系统';
+    export default {
+        'name': 'UserLayout',
+        'props': {
+            'desc': {
+                'type': [String],
+                default() {
+                    return '欢迎使用Pear Project项目管理系统';
+                }
             }
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">
