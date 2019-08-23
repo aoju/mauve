@@ -239,7 +239,7 @@
 
                 function getArray(data, id) {
                     data.forEach(function (v) {
-                        if (v.id === id) {
+                        if (v.id.toString() === id.toString()) {
                             openKey = v;
                         }
                         if (v.children) {
@@ -270,10 +270,10 @@
                     return false;
                 }
                 that.menus.forEach(function (v) {
-                    if (v.pid === that.selectedModelKeys) {
+                    if (v.pid.toString() === that.selectedModelKeys.toString()) {
                         if (v.children) {
                             v.children.forEach(function (v2) {
-                                if ('/' + v2.fullUrl === path) {
+                                if ('/' + v2.fullUrl.toString() === path.toString()) {
                                     that.selectedKeys.push(v2.id.toString());
                                     if (!that.collapsed) {
                                         that.openKeys.push(v2.pid.toString());
@@ -299,11 +299,11 @@
                     openKeys = JSON.parse(JSON.stringify(that.openKeys));
                 }
                 that.menus.forEach(function (v) {
-                    if (v.id === openKeys) {
+                    if (v.id.toString() === openKeys.toString()) {
                         let turnPath = '/';
                         if (v.children) {
                             v.children.forEach(function (v2) {
-                                if (v2.id === event.key) {
+                                if (v2.id.toString() === event.key.toString()) {
                                     turnPath += v2.fullUrl;
                                 }
                             });
@@ -328,7 +328,7 @@
                         } else {
                             turnPath += v.children[0].children[0].fullUrl;
                         }
-                        if (turnPath !== '/#') {
+                        if (turnPath.toString() !== '/#') {
                             that.$router.push(turnPath);
                         }
                     }
@@ -341,7 +341,7 @@
                 const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1);
                 let hasOpenKey = false;
                 this.menus.forEach(function (v, k) {
-                    if (v.id === latestOpenKey) {
+                    if (v.id.toString() === latestOpenKey.toString()) {
                         that.openKeys = latestOpenKey ? [latestOpenKey] : [];
                         hasOpenKey = true;
                     }
