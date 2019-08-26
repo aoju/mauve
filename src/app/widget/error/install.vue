@@ -1,6 +1,6 @@
 <template>
     <div class="install" style="height: 100%;">
-        <user-layout desc="正在安装Pear Project项目管理系统">
+        <user-layout desc="正在安装项目管理系统">
             <div class="main">
                 <a-form
                         :form="form"

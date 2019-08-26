@@ -6,7 +6,7 @@
                     <a-badge :count="'v2.0'">
                         <a href="/">
                             <img alt="logo" class="logo" src="../../../assets/image/common/logo.png">
-                            <span class="title">Pear Project</span>
+                            <span class="title">Team Work</span>
                         </a>
                     </a-badge>
                 </div>
@@ -22,7 +22,7 @@
                       <a href="_self">条款</a>
                   </div>-->
                 <div class="copyright">
-                    Copyright &copy; 2019 Pear Project
+                    Copyright &copy; 2019 Team Work.
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
             'desc': {
                 'type': [String],
                 default() {
-                    return '欢迎使用Pear Project项目管理系统';
+                    return '欢迎使用项目管理系统';
                 }
             }
         }

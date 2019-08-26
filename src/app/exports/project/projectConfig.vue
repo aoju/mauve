@@ -118,7 +118,7 @@
                         <p class="item-title">项目ID</p>
                         <div class="item-tips muted">设置项目编号，编号将作为 ID 前缀，用以区别项目。支持 2-6 位字母。</div>
                         <a-input :disabled="!project.open_prefix" class="prefix-input"
-                                 placeholder="如 Pear Project 可以设置为 EP"
+                                 placeholder="如可以设置为 EP"
                                  size="large"
                                  v-model="project.prefix"></a-input>
                         <a-button :disabled="!project.open_prefix" @click="saveProject" class="middle-btn"

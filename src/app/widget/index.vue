@@ -105,7 +105,7 @@
                         </a-layout-content>
                         <!-- <a-footer style="text-align: center">
                              <template v-if="system">
-                                 <span @click="footerClick">  Copyright © 2018 Pear Project技术部出品 </span>
+                                 <span @click="footerClick">  Copyright © 2018 Team Work.</span>
                              </template>
                          </a-footer>-->
                         <!--</vue-scroll>-->

@@ -28,7 +28,7 @@ module.exports = {
             'entry': 'src/main.js',
             'template': 'src/index.html',
             'filename': 'index.html',
-            'title': 'Pear项目管理',
+            'title': 'Team Work',
             'favicon': 'src/favicon.ico',
             'inject': true,
             'chunks': ['vendors', 'common', 'index']
@@ -129,7 +129,7 @@ module.exports = {
         'hotOnly': false,
         'proxy': {
             '/': {
-                'target': 'http://pear.hidoctor.wiki',
+                'target': 'https://localhost:443',
                 'ws': true,
                 'changOrigin': true,
                 'pathRewrite': {
