@@ -32,6 +32,7 @@ if (menu) {
     });
 }
 const router = new Router({
+    'mode': 'history',
     'routes': [
         {
             'path': '/',

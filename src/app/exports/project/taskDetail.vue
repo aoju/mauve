@@ -1223,8 +1223,6 @@
             'uploader': {
                 handler(newVal, oldVal) {
                     //监听是否有上传文件行为
-                    console.log(newVal);
-                    console.log(newVal.fileList);
                     const files = newVal.fileList;
                     const index = files.findIndex(item => item.projectName === this.task.projectName);
                     if (index !== -1) {
@@ -1246,7 +1244,6 @@
                 })();
             };
             document.onkeydown = (event) => {
-                console.log(event);
                 let e = event || window.event || arguments.callee.caller.arguments[0];
                 if (e.keyCode === 13 && e.ctrlKey) {
                     //处理的部分

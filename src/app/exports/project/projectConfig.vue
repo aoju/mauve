@@ -774,8 +774,6 @@
                 });
             },
             workflowRuleChange(value, name) {
-                console.log(value);
-                console.log(name);
                 if (name === 'firstAction.action') {
                     this.currentTaskWorkflowRule.firstAction.value = '';
                 }

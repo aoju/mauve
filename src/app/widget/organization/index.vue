@@ -180,7 +180,6 @@
                 app.actionInfo.confirmLoading = true;
                 let obj = app.form.getFieldsValue();
                 obj.areas = JSON.stringify(obj.areas);
-                console.log(app.newData);
                 if (app.newData.code) {
                     app.newData.organizationCode = app.newData.code;
                     //编辑

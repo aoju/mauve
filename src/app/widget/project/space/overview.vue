@@ -430,10 +430,8 @@
                 });
             },
             ondateChange(e) {
-                console.log(e);
-                const project = this.project;
                 doData({
-                    'projectCode': project.code,
+                    'projectCode': this.project.code,
                     'begin_time': e.length ? e[0].format('YYYY-MM-DD') : '',
                     'end_time': e.length ? e[1].format('YYYY-MM-DD') : ''
                 });

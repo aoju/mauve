@@ -198,9 +198,6 @@
                 rootFile.projectName = response.data.projectName;
                 notice({'title': response.msg}, 'notice', 'error');
             },
-            fileComplete(rootFile) { //一个文件上传完成
-                // console.log('file complete', rootFile);
-            },
             complete() { //所有文件上传完成
                 this.progressTotal = this.completeTotal = 0;
                 notice({'title': '关联文件成功'}, 'notice', 'success');

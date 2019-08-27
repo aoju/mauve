@@ -227,7 +227,6 @@ export const snail = (arr) => {
         } else {
             if (a === 'path') {
                 if (obj[a] === value) {
-                    console.log(a + '=' + obj[a]);
                     return true;
                 }
             }

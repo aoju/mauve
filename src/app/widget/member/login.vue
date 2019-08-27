@@ -1,14 +1,14 @@
 <template>
     <div class="main">
-        <a-spin :spinning="oauthLoading" class="text-center">
+        <a-spin class="text-center" :spinning="oauthLoading">
             <span v-show="oauthLoading">正在登陆，请稍后...</span>
         </a-spin>
         <a-form
-                :form="form"
-                class="user-layout-login"
-                id="formLogin"
-                ref="formLogin"
                 v-show="!oauthLoading"
+                class="user-layout-login"
+                ref="formLogin"
+                id="formLogin"
+                :form="form"
         >
             <a-tabs
                     :activeKey="customActiveKey"
@@ -17,57 +17,57 @@
             >
                 <a-tab-pane key="tab1" tab="账号密码登录">
                     <a-form-item>
-                        <a-input placeholder="帐户名或邮箱地址" size="large" type="text"
+                        <a-input size="large" type="text" placeholder="帐户名或邮箱地址"
                                  v-decorator="[
                                 'account',
                                 {rules: [{ required: true, message: '请输入帐户名或邮箱地址' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'blur'}
                             ]">
-                            <a-icon :style="{ color: 'rgba(0,0,0,.25)' }" slot="prefix" type="user"/>
+                            <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
                         </a-input>
                     </a-form-item>
 
                     <a-form-item
                     >
-                        <a-input autocomplete="false" placeholder="密码" size="large" type="password"
+                        <a-input size="large" type="password" autocomplete="false" placeholder="密码"
                                  v-decorator="[
                                 'password',
                                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
                             ]">
-                            <a-icon :style="{ color: 'rgba(0,0,0,.25)' }" slot="prefix" type="lock"/>
+                            <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
                         </a-input>
                     </a-form-item>
                 </a-tab-pane>
                 <a-tab-pane key="tab2" tab="手机号登录">
                     <a-form-item
                     >
-                        <a-input placeholder="手机号" size="large" type="text"
+                        <a-input size="large" type="text" placeholder="手机号"
                                  v-decorator="[
                                 'mobile',
                                 {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'change'}
                             ]">
-                            <a-icon :style="{ color: 'rgba(0,0,0,.25)' }" slot="prefix" type="mobile"/>
+                            <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
                         </a-input>
                     </a-form-item>
 
                     <a-row :gutter="16">
-                        <a-col :span="16" class="gutter-row">
+                        <a-col class="gutter-row" :span="16">
                             <a-form-item
                             >
-                                <a-input placeholder="验证码" size="large" type="text"
+                                <a-input size="large" type="text" placeholder="验证码"
                                          v-decorator="[
                                 'captcha',
                                 {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}
                             ]">
-                                    <a-icon :style="{ color: 'rgba(0,0,0,.25)' }" slot="prefix" type="mail"/>
+                                    <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
                                 </a-input>
                             </a-form-item>
                         </a-col>
-                        <a-col :span="8" class="gutter-row">
+                        <a-col class="gutter-row" :span="8">
                             <a-button
-                                    :disabled="state.smsSendBtn"
-                                    @click.stop.prevent="getCaptcha"
                                     class="getCaptcha"
                                     tabindex="-1"
+                                    :disabled="state.smsSendBtn"
+                                    @click.stop.prevent="getCaptcha"
                                     v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
                             ></a-button>
                         </a-col>
@@ -78,25 +78,45 @@
             <a-form-item>
                 <a-checkbox v-model="formLogin.rememberMe">自动登录</a-checkbox>
                 <a
-                        @click="routerLink('/member/forgot')"
                         class="forge-password"
                         style="float: right;"
+                        @click="routerLink('/member/forgot')"
                 >忘记密码
                 </a>
             </a-form-item>
 
             <a-form-item style="margin-top:24px">
                 <a-button
-                        :disabled="loginBtn"
-                        :loading="loginBtn"
-                        @click.stop.prevent="handleSubmit"
-                        class="login-button"
-                        htmlType="submit"
                         size="large"
                         type="primary"
+                        htmlType="submit"
+                        class="login-button"
+                        :loading="loginBtn"
+                        @click.stop.prevent="handleSubmit"
+                        :disabled="loginBtn"
                 >登录
                 </a-button>
             </a-form-item>
+
+            <div class="user-login-other">
+                <span>其他登录方式</span>
+                <a-tooltip :mouseEnterDelay="0.3"
+                           title="现已支持">
+                    <a @click="dingTalkOauth">
+                        <a-icon class="item-icon" type="dingding"/>
+                    </a>
+                </a-tooltip>
+                <!--<a>
+                    <a-icon class="item-icon" type="alipay-circle"></a-icon>
+                </a>
+                <a>
+                    <a-icon class="item-icon" type="taobao-circle"></a-icon>
+                </a>
+                <a>
+                    <a-icon class="item-icon" type="weibo-circle"></a-icon>
+                </a>-->
+                <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
+            </div>
         </a-form>
     </div>
 </template>

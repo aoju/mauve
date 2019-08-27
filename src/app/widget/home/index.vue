@@ -235,7 +235,6 @@
         },
         'watch': {
             socketAction(val) {
-                console.log(val);
                 if (val.action === 'organization:task') {
                     this.init(false, false);
                 }

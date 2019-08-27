@@ -48,7 +48,6 @@
             websocketOnMessage(e) { //数据接收
                 const data = JSON.parse(e.data);
                 if (data.action !== 'ping') {
-                    console.log(data);
                     this.$store.commit('catchSocketAction', data);
                 }
                 if (data.action === 'connect') {
