@@ -1,6 +1,6 @@
 <template>
     <div class="project-template-index">
-        <wrapper-content :showHeader="false">
+        <wrapper :showHeader="false">
             <div class="action">
                 <a-button @click="doAction(null,'new')" icon="plus" type="primary">添加任务</a-button>
             </div>
@@ -34,7 +34,7 @@
                     </a-list-item-meta>
                 </a-list-item>
             </a-list>
-        </wrapper-content>
+        </wrapper>
         <a-modal
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
@@ -78,9 +78,9 @@
     </div>
 </template>
 <script>
-    import {del, doData, list} from '@/app/frames/restapi/taskStagesTemplate';
-    import {checkResponse, getBase64} from '@/assets/js/utils';
-    import pagination from '@/app/shared/pagination';
+    import {del, doData, list} from '../../../feature/restapi/taskStagesTemplate';
+    import {checkResponse, getBase64} from '../../../../assets/js/utils';
+    import pagination from '../../../shared/pagination';
 
     export default {
         'components': {},

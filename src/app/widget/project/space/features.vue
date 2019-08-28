@@ -37,7 +37,7 @@
                 </ul>
             </section>
         </div>
-        <wrapper-content :showHeader="false">
+        <wrapper :showHeader="false">
             <div class="content-wrapper">
                 <div class="content-item features-content">
                     <div class="actions m-t">
@@ -164,7 +164,7 @@
                     </a-spin>
                 </div>
             </div>
-        </wrapper-content>
+        </wrapper>
         <a-modal
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
@@ -306,18 +306,18 @@
 
 <script>
     import moment from 'moment';
-    import {read as getProject} from '../../../frames/restapi/project';
-    import {collect} from '../../../frames/restapi/projectCollect';
+    import {read as getProject} from '../../../feature/restapi/project';
+    import {collect} from '../../../feature/restapi/projectCollect';
     import {checkResponse} from '../../../../assets/js/utils';
     import {relativelyTime} from '../../../../assets/js/dateTime';
     import pagination from '../../../shared/pagination';
-    import {del, edit, list as getProjectFeatureList, save} from '../../../frames/restapi/projectFeatures';
+    import {del, edit, list as getProjectFeatureList, save} from '../../../feature/restapi/projectFeatures';
     import {
         changeStatus,
         list as getProjectVersionList,
         save as saveProjectVersion
-    } from '../../../frames/restapi/projectVersion';
-    import versionDetail from '../../../exports/project/versionDetail';
+    } from '../../../feature/restapi/projectVersion';
+    import versionDetail from '../../../exports/props/VersionDetail';
 
     export default {
         'name': 'project-space-features',

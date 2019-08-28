@@ -100,7 +100,7 @@
     import md5 from 'md5';
     import {checkResponse} from '../../../assets/js/utils';
     import {notice} from '../../../assets/js/notice';
-    import {_getMailCaptcha, _resetPasswordByMail} from '../../frames/restapi/user';
+    import {_getMailCaptcha, _resetPasswordByMail} from '../../feature/restapi/user';
 
     const levelNames = {
         '0': '低',
@@ -250,37 +250,12 @@
     };
 </script>
 <style lang="less">
-    .user-register {
-
-        &.error {
-            color: #ff0000;
-        }
-
-        &.warning {
-            color: #ff7e05;
-        }
-
-        &.success {
-            color: #52c41a;
-        }
-
-
-    }
-
-    .user-layout-register {
-        .ant-input-group-addon:first-child {
-            background-color: #fff;
-        }
-    }
-</style>
-<style lang="less">
     .user-layout-forgot {
 
         & > h3 {
             font-size: 16px;
             margin-bottom: 20px;
         }
-
 
         .getCaptcha {
             display: block;

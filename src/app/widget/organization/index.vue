@@ -1,6 +1,6 @@
 <template>
     <div class="house-index">
-        <wrapper-content>
+        <wrapper>
             <!-- <div class="action">
                  <a-button type="primary" icon="plus" @click="rowClick(null,'new')">添加</a-button>
              </div>-->
@@ -10,7 +10,7 @@
                     <a @click="rowClick(record,'edit')">编辑</a>
                 </template>
             </a-table>
-        </wrapper-content>
+        </wrapper>
         <a-modal
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
@@ -72,9 +72,9 @@
     </div>
 </template>
 <script>
-    import {del, doData, list} from '@/app/frames/restapi/organization';
-    import {checkResponse} from '@/assets/js/utils';
-    import pagination from '@/app/shared/pagination';
+    import {del, doData, list} from '../../feature/restapi/organization';
+    import {checkResponse} from '../../../assets/js/utils';
+    import pagination from '../../shared/pagination';
     import moment from 'moment';
 
     const columns = [{

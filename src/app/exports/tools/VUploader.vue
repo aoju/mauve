@@ -13,7 +13,6 @@
             <uploader :autoStart="autoStart"
                       :options="options"
                       @complete="complete"
-                      @file-complete="fileComplete"
                       @file-error="fileError"
                       @file-progress="fileProgress"
                       @file-success="fileSuccess"
@@ -95,7 +94,7 @@
     import {mapState} from 'vuex';
     import {getStore} from '../../../assets/js/storage';
     import {notice} from '../../../assets/js/notice';
-    import {uploadFiles} from '../../frames/restapi/file';
+    import {uploadFiles} from '../../feature/restapi/file';
 
     export default {
         'name': 'v-uploader',

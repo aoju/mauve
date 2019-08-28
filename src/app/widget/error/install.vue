@@ -128,13 +128,13 @@
     </div>
 </template>
 <script>
-    import {checkInstall, install} from '../../frames/restapi/common';
+    import {checkInstall, install} from '../../feature/restapi/common';
     import {checkResponse} from '../../../assets/js/utils';
-    import UserLayout from '../../exports/layout/UserLayout';
+    import Index from '../../frames/home/index';
 
     export default {
         'components': {
-            UserLayout
+            Index
         },
         data() {
             return {

@@ -45,7 +45,7 @@
                 </a>
             </div>
         </div>
-        <wrapper-content :showHeader="false">
+        <wrapper :showHeader="false">
             <draggable :move="stageMove"
                        :options="{group:'stages',filter:'.undraggables',handle:'.ui-sortable-handle',ghostClass:'stage-ghost',animation: 200,forceFallback:false}"
                        @update="stageSort" class="board-scrum-stages" id="board-scrum-stages" v-model="taskStages">
@@ -337,7 +337,7 @@
                 </div>
             </draggable>
             <router-view></router-view>
-        </wrapper-content>
+        </wrapper>
         <!--编辑任务列表-->
         <a-modal
                 :bodyStyle="{paddingBottom:'1px'}"
@@ -562,10 +562,10 @@
     import _ from 'lodash';
     import moment from 'moment';
     import draggable from 'vuedraggable';
-    import inviteProjectMember from '@/app/exports/project/inviteProjectMember';
-    import projectConfig from '@/app/exports/project/projectConfig';
-    import RecycleBin from '@/app/exports/project/recycleBin';
-    import TaskTag from '@/app/exports/project/taskTag';
+    import inviteProjectMember from '../../../exports/props/InviteProjectMember';
+    import projectConfig from '../../../exports/props/ProjectConfig';
+    import RecycleBin from '../../../exports/props/RecycleBin';
+    import TaskTag from '../../../exports/props/TaskTag';
 
     import {
         del as delStage,
@@ -574,19 +574,19 @@
         save as createState,
         sort,
         tasks as getTasks
-    } from '../../../frames/restapi/taskStages';
-    import {read as getProject} from '../../../frames/restapi/project';
-    import {inviteMember, list as getProjectMembers, removeMember} from '../../../frames/restapi/projectMember';
+    } from '../../../feature/restapi/taskStages';
+    import {read as getProject} from '../../../feature/restapi/project';
+    import {inviteMember, list as getProjectMembers, removeMember} from '../../../feature/restapi/projectMember';
     import {
         batchAssignTask,
         recycleBatch,
         save as createTask,
         sort as sortTask,
         taskDone
-    } from '../../../frames/restapi/task';
+    } from '../../../feature/restapi/task';
     import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../../assets/js/utils';
     import {formatTaskTime} from '../../../../assets/js/dateTime';
-    import {collect} from '../../../frames/restapi/projectCollect';
+    import {collect} from '../../../feature/restapi/projectCollect';
     import {notice} from '../../../../assets/js/notice';
 
     export default {

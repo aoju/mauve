@@ -1,6 +1,6 @@
 <template>
     <div class="admin-menu">
-        <wrapper-content>
+        <wrapper>
             <div class="action">
                 <Button @click="clearNode" icon="delete" type="primary">清理无效记录</Button>
             </div>
@@ -26,13 +26,13 @@
                     </div>
                 </template>
             </Table>
-        </wrapper-content>
+        </wrapper>
     </div>
 </template>
 <script>
     import {Button, Checkbox, Divider, Form, Input, Modal, Table} from 'ant-design-vue';
-    import EditableCell from '@/app/exports/table/EditableCell';
-    import {clear, getNodeList, save} from '@/app/frames/restapi/node';
+    import EditableCell from '../../../exports/table/EditableCell';
+    import {clear, getNodeList, save} from '../../../feature/restapi/node';
 
     const FormItem = Form.Item;
 

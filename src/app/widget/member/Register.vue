@@ -1,5 +1,5 @@
 <template>
-    <div class="main user-layout-register">
+    <div class="user-layout-register">
         <h3><span>注册</span></h3>
         <a-form :autoFormCreate="(form)=>{this.form = form}" id="formRegister" ref="formRegister">
             <a-form-item
@@ -90,7 +90,7 @@
 
 <script>
     import md5 from 'md5';
-    import {getCaptcha, register} from '@/app/frames/restapi/user';
+    import {getCaptcha, register} from '../../feature/restapi/user';
     import {checkResponse} from '../../../assets/js/utils';
     import {notice} from '../../../assets/js/notice';
 
@@ -286,8 +286,6 @@
         &.success {
             color: #52c41a;
         }
-
-
     }
 
     .user-layout-register {
@@ -295,15 +293,13 @@
             background-color: #fff;
         }
     }
-</style>
-<style lang="less">
+
     .user-layout-register {
 
         & > h3 {
             font-size: 16px;
             margin-bottom: 20px;
         }
-
 
         .getCaptcha {
             display: block;

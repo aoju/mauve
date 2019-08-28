@@ -28,7 +28,7 @@ module.exports = {
             'entry': 'src/main.js',
             'template': 'src/index.html',
             'filename': 'index.html',
-            'title': 'Team Work',
+            'title': 'Team Work | 团队高效协作',
             'favicon': 'src/favicon.ico',
             'inject': true,
             'chunks': ['vendors', 'common', 'index']
@@ -72,8 +72,6 @@ module.exports = {
                 '@': resolve('src'),
                 'assets': resolve('src/assets'),
                 'components': resolve('src/app/exports')
-                //'assets': '@/assets',
-                //'components': '@/components'
             }
         }
     },

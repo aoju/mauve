@@ -1,6 +1,6 @@
 <template>
     <div class="admin-menu">
-        <wrapper-content>
+        <wrapper>
             <div class="action">
                 <Button @click="rowClick(null,'new')" icon="plus" type="primary">添加</Button>
             </div>
@@ -24,7 +24,7 @@
                     <a @click="rowClick(record,'del')">删除</a>
                 </template>
             </Table>
-        </wrapper-content>
+        </wrapper>
         <Modal
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
@@ -198,9 +198,9 @@
 </template>
 <script>
     import {Button, Checkbox, Divider, Form, Input, Modal, Table} from 'ant-design-vue';
-    import {delMenu, doMenu, forbid, getMenu, resume} from '@/app/frames/restapi/menu';
-    import {checkResponse} from '@/assets/js/utils';
-    import {allList} from '@/app/frames/restapi/node';
+    import {delMenu, doMenu, forbid, getMenu, resume} from '../../../feature/restapi/menu';
+    import {checkResponse} from '../../../../assets/js/utils';
+    import {allList} from '../../../feature/restapi/node';
     import debounce from 'lodash/debounce';
 
     const FormItem = Form.Item;

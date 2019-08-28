@@ -177,7 +177,7 @@
     //不允许不必要的嵌套代码块
     "no-loop-func": 2,
     //不允许在循环语句中进行函数声明
-    "no-multi-spaces": 2,
+    "no-multi-spaces": 0,
     //不允许出现多余的空格
     "no-multi-str": 2,
     //不允许用\来让字符串换行
@@ -266,6 +266,7 @@
     //不允许把undefined当做标识符使用
     "vue/no-unused-vars": 0,
     "vue/no-use-v-if-with-v-for": 0,
+    "vue/valid-v-for":0,
     "no-unused-vars": [
       0,
       {

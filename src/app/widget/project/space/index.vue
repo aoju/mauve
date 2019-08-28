@@ -1,8 +1,7 @@
 <template>
     <div class="project-space-index">
-        <wrapper-content>
-            555
-        </wrapper-content>
+        <wrapper>
+        </wrapper>
     </div>
 </template>
 

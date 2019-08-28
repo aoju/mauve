@@ -37,7 +37,7 @@
                 </ul>
             </section>
         </div>
-        <wrapper-content :showHeader="false">
+        <wrapper :showHeader="false">
             <div class="overview-item m-b">
                 <div class="content-item">
                     <h3 class="m-sm m-b text-center">任务燃尽图*</h3>
@@ -156,17 +156,17 @@
                     </div>
                 </div>
             </div>
-        </wrapper-content>
+        </wrapper>
     </div>
 </template>
 
 <script>
     import moment from 'moment';
     import VeLine from 'v-charts/lib/line.common';
-    import {_projectStats, doData, read as getProject} from '../../../frames/restapi/project';
-    import {collect} from '../../../frames/restapi/projectCollect';
+    import {_projectStats, doData, read as getProject} from '../../../feature/restapi/project';
+    import {collect} from '../../../feature/restapi/projectCollect';
     import {checkResponse} from '../../../../assets/js/utils';
-    import {dateTotalForProject, getLogBySelfProject} from '../../../frames/restapi/task';
+    import {dateTotalForProject, getLogBySelfProject} from '../../../feature/restapi/task';
     import {relativelyTime} from '../../../../assets/js/dateTime';
     import pagination from '../../../shared/pagination';
 

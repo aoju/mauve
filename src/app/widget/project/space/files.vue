@@ -37,7 +37,7 @@
                 </ul>
             </section>
         </div>
-        <wrapper-content :showHeader="false">
+        <wrapper :showHeader="false">
             <div class="content-wrapper">
                 <div class="content-item log-list">
                     <div class="header">
@@ -155,20 +155,19 @@
                     </div>
                 </div>
             </div>
-        </wrapper-content>
+        </wrapper>
     </div>
 </template>
 
 <script>
     import {mapState} from 'vuex';
-    import {read as getProject} from '../../../frames/restapi/project';
-    import {collect} from '../../../frames/restapi/projectCollect';
+    import {read as getProject} from '../../../feature/restapi/project';
+    import {collect} from '../../../feature/restapi/projectCollect';
     import {checkResponse} from '../../../../assets/js/utils';
     import {relativelyTime} from '../../../../assets/js/dateTime';
-    import {edit, list, recycle} from '../../../frames/restapi/file';
-    import pagination from '@/app/shared/pagination';
+    import {edit, list, recycle} from '../../../feature/restapi/file';
+    import pagination from '../../../shared/pagination';
     import {notice} from '../../../../assets/js/notice';
-
 
     export default {
         'name': 'project-space-files',
@@ -343,7 +342,6 @@
 </script>
 
 <style lang="less">
-    /*@import "../../../../assets/css/exports/task";*/
 
     .project-space-files {
         .project-navigation {

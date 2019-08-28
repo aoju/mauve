@@ -1,138 +1,119 @@
 <template>
-    <div class="main">
-        <a-spin class="text-center" :spinning="oauthLoading">
-            <span v-show="oauthLoading">正在登陆，请稍后...</span>
-        </a-spin>
-        <a-form
-                v-show="!oauthLoading"
-                class="user-layout-login"
-                ref="formLogin"
-                id="formLogin"
-                :form="form"
-        >
-            <a-tabs
-                    :activeKey="customActiveKey"
-                    :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-                    @change="handleTabClick"
-            >
-                <a-tab-pane key="tab1" tab="账号密码登录">
-                    <a-form-item>
-                        <a-input size="large" type="text" placeholder="帐户名或邮箱地址"
-                                 v-decorator="[
-                                'account',
-                                {rules: [{ required: true, message: '请输入帐户名或邮箱地址' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'blur'}
-                            ]">
-                            <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                        </a-input>
-                    </a-form-item>
-
-                    <a-form-item
-                    >
-                        <a-input size="large" type="password" autocomplete="false" placeholder="密码"
-                                 v-decorator="[
-                                'password',
-                                {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
-                            ]">
-                            <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                        </a-input>
-                    </a-form-item>
-                </a-tab-pane>
-                <a-tab-pane key="tab2" tab="手机号登录">
-                    <a-form-item
-                    >
-                        <a-input size="large" type="text" placeholder="手机号"
-                                 v-decorator="[
-                                'mobile',
-                                {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'change'}
-                            ]">
-                            <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                        </a-input>
-                    </a-form-item>
-
-                    <a-row :gutter="16">
-                        <a-col class="gutter-row" :span="16">
-                            <a-form-item
-                            >
-                                <a-input size="large" type="text" placeholder="验证码"
-                                         v-decorator="[
-                                'captcha',
-                                {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}
-                            ]">
-                                    <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                                </a-input>
-                            </a-form-item>
-                        </a-col>
-                        <a-col class="gutter-row" :span="8">
-                            <a-button
-                                    class="getCaptcha"
-                                    tabindex="-1"
-                                    :disabled="state.smsSendBtn"
-                                    @click.stop.prevent="getCaptcha"
-                                    v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
-                            ></a-button>
-                        </a-col>
-                    </a-row>
-                </a-tab-pane>
-            </a-tabs>
-
+<a-form
+        v-show="!oauthLoading"
+        class="user-layout-login"
+        ref="formLogin"
+        id="formLogin"
+        :form="form"
+>
+    <a-tabs
+            :activeKey="customActiveKey"
+            :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
+            @change="handleTabClick"
+    >
+        <a-tab-pane key="tab1" tab="账号密码登录" class="ant-tabs-taba">
             <a-form-item>
-                <a-checkbox v-model="formLogin.rememberMe">自动登录</a-checkbox>
-                <a
-                        class="forge-password"
-                        style="float: right;"
-                        @click="routerLink('/member/forgot')"
-                >忘记密码
-                </a>
+                <a-input size="large" type="text" placeholder="帐户名或邮箱地址"
+                         v-decorator="[
+        'account',
+        {rules: [{ required: true, message: '请输入帐户名或邮箱地址' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'blur'}
+    ]">
+                    <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                </a-input>
             </a-form-item>
 
-            <a-form-item style="margin-top:24px">
-                <a-button
-                        size="large"
-                        type="primary"
-                        htmlType="submit"
-                        class="login-button"
-                        :loading="loginBtn"
-                        @click.stop.prevent="handleSubmit"
-                        :disabled="loginBtn"
-                >登录
-                </a-button>
+            <a-form-item
+            >
+                <a-input size="large" type="password" autocomplete="false" placeholder="密码"
+                         v-decorator="[
+        'password',
+        {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
+    ]">
+                    <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                </a-input>
+            </a-form-item>
+        </a-tab-pane>
+        <a-tab-pane key="tab2" tab="手机号登录">
+            <a-form-item
+            >
+                <a-input size="large" type="text" placeholder="手机号"
+                         v-decorator="[
+        'mobile',
+        {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'change'}
+    ]">
+                    <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                </a-input>
             </a-form-item>
 
-            <div class="user-login-other">
-                <span>其他登录方式</span>
-                <a-tooltip :mouseEnterDelay="0.3"
-                           title="现已支持">
-                    <a @click="dingTalkOauth">
-                        <a-icon class="item-icon" type="dingding"/>
-                    </a>
-                </a-tooltip>
-                <!--<a>
-                    <a-icon class="item-icon" type="alipay-circle"></a-icon>
-                </a>
-                <a>
-                    <a-icon class="item-icon" type="taobao-circle"></a-icon>
-                </a>
-                <a>
-                    <a-icon class="item-icon" type="weibo-circle"></a-icon>
-                </a>-->
-                <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
-            </div>
-        </a-form>
+            <a-row :gutter="16">
+                <a-col class="gutter-row" :span="16">
+                    <a-form-item
+                    >
+                        <a-input size="large" type="text" placeholder="验证码"
+                                 v-decorator="[
+        'captcha',
+        {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}
+    ]">
+                            <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                        </a-input>
+                    </a-form-item>
+                </a-col>
+                <a-col class="gutter-row" :span="8">
+                    <a-button
+                            class="getCaptcha"
+                            tabindex="-1"
+                            :disabled="state.smsSendBtn"
+                            @click.stop.prevent="getCaptcha"
+                            v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
+                    ></a-button>
+                </a-col>
+            </a-row>
+        </a-tab-pane>
+    </a-tabs>
+
+    <a-form-item style="margin-top:24px">
+        <a-button
+                size="large"
+                type="primary"
+                htmlType="submit"
+                class="login-button"
+                :loading="loginBtn"
+                @click.stop.prevent="handleSubmit"
+                :disabled="loginBtn"
+        >登录
+        </a-button>
+    </a-form-item>
+
+    <div class="user-login-other">
+        <span>其他登录方式</span>
+        <a-tooltip :mouseEnterDelay="0.3"
+                   title="现已支持">
+            <a @click="dingTalkOauth">
+                <a-icon class="item-icon" type="dingding"/>
+            </a>
+        </a-tooltip>
+            <a class="forge-password"
+                  @click="routerLink('/member/forgot')"
+        >忘记密码</a>
+            <a class="separator" href="#"> | </a>
+         <a class="register"
+            @click="routerLink('/member/register')"
+         >注册账户</a>
     </div>
+</a-form>
 </template>
-
 <script>
     import md5 from 'md5';
     import * as dd from 'dingtalk-jsapi';
     import {mapActions, mapState} from 'vuex';
-    import {getCaptcha, Login} from '@/app/frames/restapi/user';
-    import {info} from '@/app/frames/restapi/system';
-    import config from '@/app/frames/config';
-    import {checkResponse, createRoute, timeFix} from '@/assets/js/utils';
-    import {getStore} from '@/assets/js/storage';
-    import {checkInstall} from '../../frames/restapi/common';
-    import {_checkLogin} from '../../frames/restapi/user';
-    import {dingTalkLoginByCode, dingTalkOauth} from '../../frames/restapi/oauth';
+    import {getCaptcha, Login} from '../../feature/restapi/user';
+    import {info} from '../../feature/restapi/system';
+    import config from '../../feature/config/config';
+    import {checkResponse, createRoute, timeFix} from '../../../assets/js/utils';
+    import {getStore} from '../../../assets/js/storage';
+    import {checkInstall} from '../../feature/restapi/common';
+    import {_checkLogin} from '../../feature/restapi/user';
+    import {dingTalkLoginByCode, dingTalkOauth} from '../../feature/restapi/oauth';
     import {notice} from '../../../assets/js/notice';
 
     export default {
@@ -187,7 +168,7 @@
                     info().then(res => {
                         if (checkResponse(res)) {
                             this.$store.dispatch('setSystem', res.data);
-                            this.dingTalkLogin();
+                            // this.dingTalkLogin();
                         }
                     });
                 });
@@ -395,7 +376,6 @@
         }
     };
 </script>
-
 <style lang="less">
     .user-layout-login {
         label {
@@ -406,6 +386,7 @@
             display: block;
             width: 100%;
             height: 40px;
+            margin: 2px 0;
         }
 
         .forge-password {
@@ -413,16 +394,23 @@
         }
 
         button.login-button {
-            padding: 0 15px;
-            font-size: 16px;
-            height: 40px;
-            width: 100%;
+                padding: 0 15px;
+                font-size: 16px;
+                height: 40px;
+                width: 100%;
         }
 
         .user-login-other {
+            color: #fff;
             text-align: left;
             margin-top: 24px;
             line-height: 22px;
+            font-size: 14px;
+            color: #fff;
+
+            &:hover {
+                color: #fff;
+            }
 
             .item-icon {
                 font-size: 24px;
@@ -431,13 +419,22 @@
                 vertical-align: middle;
                 cursor: pointer;
                 transition: color 0.3s;
-
-                &:hover {
-                    color: #1890ff;
-                }
             }
 
             .register {
+                color: #fff;
+                float: right;
+            }
+
+            .separator {
+                color: #fff;
+                float: right;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            .forge-password {
+                color: #fff;
                 float: right;
             }
         }

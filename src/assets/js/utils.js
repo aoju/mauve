@@ -1,5 +1,5 @@
 import {notice} from './notice';
-import config from '../../app/frames/config';
+import config from '../../app/feature/config/config';
 import {getStore} from './storage';
 
 const crossDomain = config.crossDomain;
@@ -39,7 +39,7 @@ export const createRoute = (data) => {
     return {
         'name': data.id,
         'path': path,
-        'component': resolve => require(['@/app/widget/' + filePath], resolve),
+        'component': resolve => require(['../../app/widget/' + filePath], resolve),
         'meta': {'model': data.pid, 'info': data}
     };
 };

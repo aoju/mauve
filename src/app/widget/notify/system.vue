@@ -1,6 +1,6 @@
 <template>
     <div class="house-index">
-        <wrapper-content>
+        <wrapper>
             <div class="page-search">
                 <a-form
                         :autoFormCreate="(form)=>{this.searchForm = form}"
@@ -49,14 +49,14 @@
                     <a @click="rowClick(record,'del')">删除</a>
                 </template>
             </a-table>
-        </wrapper-content>
+        </wrapper>
     </div>
 </template>
 <script>
-    import {del, list} from '@/app/frames/restapi/notify';
-    import {checkResponse} from '@/assets/js/utils';
-    import {batchDel, setReadied} from '../../frames/restapi/notify';
-    import pagination from '@/app/shared/pagination';
+    import {del, list} from '../../feature/restapi/notify';
+    import {checkResponse} from '../../../assets/js/utils';
+    import {batchDel, setReadied} from '../../feature/restapi/notify';
+    import pagination from '../../shared/pagination';
 
     const columns = [{
         'title': '公告标题',

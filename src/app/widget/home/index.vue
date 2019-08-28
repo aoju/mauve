@@ -56,7 +56,7 @@
                             class="project-list"
                             style="margin-bottom: 24px;"
                             title="进行中的项目">
-                        <router-link slot="extra" to="/project/list/my">全部项目</router-link>
+                        <router-link slot="extra" to="/project/index/my">全部项目</router-link>
                         <div>
                             <a-card-grid :key="i" class="project-card-grid" v-for="(item, i) in projectList">
                                 <a-card :body-style="{ padding: 0 }" :bordered="false"
@@ -198,12 +198,12 @@
 <script>
     import {mapState} from 'vuex';
     import moment from 'moment';
-    import {getYiYan} from '../../frames/restapi/other';
+    import {getYiYan} from '../../feature/restapi/other';
     import {formatTaskTime, relativelyTime, showHelloTime} from '../../../assets/js/dateTime';
-    import {selfList as getProjectList} from '../../frames/restapi/project';
-    import {list as accountList} from '../../frames/restapi/user';
+    import {selfList as getProjectList} from '../../feature/restapi/project';
+    import {list as accountList} from '../../feature/restapi/user';
     import pagination from '../../shared/pagination';
-    import {getLogBySelfProject, selfList} from '../../frames/restapi/task';
+    import {getLogBySelfProject, selfList} from '../../feature/restapi/task';
 
     export default {
         'components': {},

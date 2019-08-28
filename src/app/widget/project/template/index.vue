@@ -1,6 +1,6 @@
 <template>
     <div class="project-template-index">
-        <wrapper-content :showHeader="false">
+        <wrapper :showHeader="false">
             <a-tabs :animated="false" v-model="viewType">
                 <a-tab-pane key="0" tab="自定义模板"></a-tab-pane>
                 <a-tab-pane key="1" tab="公共模板"></a-tab-pane>
@@ -51,7 +51,7 @@
                     </div>
                 </a-list-item>
             </a-list>
-        </wrapper-content>
+        </wrapper>
         <a-modal
                 :bodyStyle="{paddingBottom:'1px'}"
                 :footer="null"
@@ -113,10 +113,10 @@
     </div>
 </template>
 <script>
-    import {del, doData, list} from '@/app/frames/restapi/projectTemplate';
-    import {checkResponse, getApiUrl, getBase64} from '@/assets/js/utils';
-    import pagination from '@/app/shared/pagination';
-    import config from '@/app/frames/config';
+    import {del, doData, list} from '../../../feature/restapi/projectTemplate';
+    import {checkResponse, getApiUrl, getBase64} from '../../../../assets/js/utils';
+    import pagination from '../../../shared/pagination';
+    import config from '../../../feature/config/config';
     import {getAuthorization} from '../../../../assets/js/utils';
 
     export default {
