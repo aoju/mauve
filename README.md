@@ -2,14 +2,14 @@
  	<a target="_blank" href="https://travis-ci.org/aoju/bus">
  		<img src="https://travis-ci.org/aoju/bus.svg?branch=master">
  	</a>
- 	<a target="_blank" href="https://www.mysql.com">
- 		<img src="https://img.shields.io/badge/Mysql-5.7-blue.svg">
+ 	<a target="_blank" href="https://www.nodejs.org">
+ 		<img src="https://img.shields.io/badge/nodejs-8.0-blue.svg">
  	</a>
- 	<a target="_blank" href="http://www.php.net">
- 		<img src="https://img.shields.io/badge/php-7.2.0-yellow.svg">
+ 	<a target="_blank" href="https://www.vuejs.org">
+ 		<img src="https://img.shields.io/badge/vue-2.6.10-yellow.svg">
  	</a>
- 	<a target="_blank" href="http://www.thinkphp.cn/">
- 		<img src="https://img.shields.io/badge/thinkphp-5.1.0-blue.svg">
+ 	<a target="_blank" href="https://jquery.com">
+ 		<img src="https://img.shields.io/badge/jquery-3.4.1-blue.svg">
  	</a>
  	<a target="_blank" href="https://www.mit-license.org">
  		<img src="https://img.shields.io/badge/license-MIT-green.svg">
