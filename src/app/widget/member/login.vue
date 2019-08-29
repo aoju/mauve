@@ -1,118 +1,101 @@
 <template>
-<a-form
-        v-show="!oauthLoading"
-        class="user-layout-login"
-        ref="formLogin"
-        id="formLogin"
-        :form="form"
->
-    <a-tabs
-            :activeKey="customActiveKey"
-            :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-            @change="handleTabClick"
-    >
-        <a-tab-pane key="tab1" tab="账号密码登录" class="ant-tabs-taba">
-            <a-form-item>
-                <a-input size="large" type="text" placeholder="帐户名或邮箱地址"
-                         v-decorator="[
-        'account',
-        {rules: [{ required: true, message: '请输入帐户名或邮箱地址' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'blur'}
-    ]">
-                    <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                </a-input>
-            </a-form-item>
+    <a-form v-show="!oauthLoading"
+            class="user-layout-login"
+            ref="formLogin"
+            id="formLogin"
+            :form="form">
+        <a-tabs :activeKey="customActiveKey"
+                :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
+                @change="handleTabClick">
+            <a-tab-pane key="tab1" tab="账号密码登录" class="ant-tabs-nav ">
+                <a-form-item>
+                    <a-input size="large" type="text" placeholder="帐户名或邮箱地址"
+                             v-decorator="['account', {rules: [{ required: true, message: '请输入帐户名或邮箱地址' },
+                             { validator: this.handleUsernameOrEmail }], validateTrigger: 'blur'} ]">
+                        <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                    </a-input>
+                </a-form-item>
 
-            <a-form-item
-            >
-                <a-input size="large" type="password" autocomplete="false" placeholder="密码"
-                         v-decorator="[
-        'password',
-        {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
-    ]">
-                    <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                </a-input>
-            </a-form-item>
-        </a-tab-pane>
-        <a-tab-pane key="tab2" tab="手机号登录">
-            <a-form-item
-            >
-                <a-input size="large" type="text" placeholder="手机号"
-                         v-decorator="[
-        'mobile',
-        {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' },{ validator: this.handleUsernameOrEmail }], validateTrigger: 'change'}
-    ]">
-                    <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                </a-input>
-            </a-form-item>
+                <a-form-item>
+                    <a-input size="large" type="password" autocomplete="false" placeholder="密码"
+                             v-decorator="[ 'password',{rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}]">
+                        <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                    </a-input>
+                </a-form-item>
+            </a-tab-pane>
+            <a-tab-pane key="tab2" tab="手机号登录">
+                <a-form-item>
+                    <a-input size="large" type="text" placeholder="手机号"
+                             v-decorator="[ 'mobile',{rules: [
+                             { required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' },
+                             { validator: this.handleUsernameOrEmail }], validateTrigger: 'change'}
+                             ]">
+                        <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                    </a-input>
+                </a-form-item>
 
-            <a-row :gutter="16">
-                <a-col class="gutter-row" :span="16">
-                    <a-form-item
-                    >
-                        <a-input size="large" type="text" placeholder="验证码"
-                                 v-decorator="[
-        'captcha',
-        {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}
-    ]">
-                            <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                        </a-input>
-                    </a-form-item>
-                </a-col>
-                <a-col class="gutter-row" :span="8">
-                    <a-button
-                            class="getCaptcha"
-                            tabindex="-1"
-                            :disabled="state.smsSendBtn"
-                            @click.stop.prevent="getCaptcha"
-                            v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
-                    ></a-button>
-                </a-col>
-            </a-row>
-        </a-tab-pane>
-    </a-tabs>
+                <a-row :gutter="16">
+                    <a-col class="gutter-row" :span="16">
+                        <a-form-item>
+                            <a-input size="large" type="text" placeholder="验证码"
+                                     v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
+                                <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                            </a-input>
+                        </a-form-item>
+                    </a-col>
+                    <a-col class="gutter-row" :span="8">
+                        <a-button class="getCaptcha"
+                                tabindex="-1"
+                                :disabled="state.smsSendBtn"
+                                @click.stop.prevent="getCaptcha"
+                                v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
+                        ></a-button>
+                    </a-col>
+                </a-row>
+            </a-tab-pane>
+        </a-tabs>
 
-    <a-form-item style="margin-top:24px">
-        <a-button
-                size="large"
-                type="primary"
-                htmlType="submit"
-                class="login-button"
-                :loading="loginBtn"
-                @click.stop.prevent="handleSubmit"
-                :disabled="loginBtn"
-        >登录
-        </a-button>
-    </a-form-item>
+        <a-form-item style="margin-top:24px">
+            <a-button
+                    size="large"
+                    type="primary"
+                    htmlType="submit"
+                    class="login-button"
+                    :loading="loginBtn"
+                    @click.stop.prevent="handleSubmit"
+                    :disabled="loginBtn"
+            >登录
+            </a-button>
+        </a-form-item>
 
-    <div class="user-login-other">
-        <span>其他登录方式</span>
-        <a-tooltip :mouseEnterDelay="0.3"
-                   title="现已支持">
-            <a @click="dingTalkOauth">
-                <a-icon class="item-icon" type="dingding"/>
-            </a>
-        </a-tooltip>
+        <div class="user-login-other">
+            <span>其他登录方式</span>
+            <a-tooltip :mouseEnterDelay="0.3"
+                       title="现已支持">
+                <a @click="dingTalkOauth">
+                    <a-icon class="item-icon" type="dingding"/>
+                </a>
+            </a-tooltip>
             <a class="forge-password"
-                  @click="routerLink('/member/forgot')"
-        >忘记密码</a>
+               @click="routerLink('/member/forgot')"
+            >忘记密码</a>
             <a class="separator" href="#"> | </a>
-         <a class="register"
-            @click="routerLink('/member/register')"
-         >注册账户</a>
-    </div>
-</a-form>
+            <a class="register"
+               @click="routerLink('/member/register')"
+            >注册账户</a>
+        </div>
+    </a-form>
 </template>
 <script>
     import md5 from 'md5';
     import * as dd from 'dingtalk-jsapi';
     import {mapActions, mapState} from 'vuex';
-    import {getCaptcha, Login} from '../../feature/restapi/api.member';
+    import {_checkLogin, getCaptcha, Login} from '../../feature/restapi/api.member';
     import {info} from '../../feature/restapi/api.system';
     import config from '../../feature/config/config';
     import {checkResponse, createRoute, timeFix} from '../../../assets/js/utils';
     import {getStore} from '../../../assets/js/storage';
     import {checkInstall} from '../../feature/restapi/api.index';
-    import {_checkLogin} from '../../feature/restapi/api.member';
     import {dingTalkLoginByCode, dingTalkOauth} from '../../feature/restapi/api.ding.talk';
     import {notice} from '../../../assets/js/notify';
 
@@ -378,6 +361,41 @@
 </script>
 <style lang="less" scoped>
     .user-layout-login {
+        /deep/ .ant-form-item {
+            margin-bottom: 2px;
+            margin-top: 2px;
+        }
+
+        /deep/ .ant-tabs-ink-bar {
+            background-color: #fff;
+        }
+
+        /deep/ .ant-tabs-nav .ant-tabs-tab {
+            color: #fff;
+        }
+
+        /deep/ .ant-tabs-nav .ant-tabs-tab-active {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /deep/ .ant-tabs-nav .ant-tabs-tab:hover {
+            color: #fff;
+        }
+
+        .ant-btn-primary {
+            color: #44C97D;
+            background-color: #fff;
+            border-color: #fff;
+            font-weight: 700;
+        }
+
+        .ant-btn-primary:hover, .ant-btn-primary:focus {
+            color: #fff;
+            background-color: #35af69;
+            border-color: #fff;
+        }
+
         label {
             font-size: 14px;
         }
@@ -394,43 +412,10 @@
         }
 
         button.login-button {
-                padding: 0 15px;
-                font-size: 16px;
-                height: 40px;
-                width: 100%;
-        }
-
-        .ant-form-item {
-            margin-bottom: 2px;
-            margin-top: 2px;
-        }
-
-        .ant-tabs-ink-bar {
-            background-color: #fff;
-        }
-        .ant-tabs-nav .ant-tabs-tab {
-            color: #fff;
-        }
-        .ant-tabs-nav .ant-tabs-tab-active {
-            color: #fff;
-            font-weight: 700;
-        }
-
-        .ant-tabs-nav .ant-tabs-tab:hover {
-            color: #fff;
-        }
-
-        .ant-btn-primary {
-            color: #44C97D;
-            background-color: #fff;
-            border-color: #fff;
-            font-weight: 700;
-        }
-
-        .ant-btn-primary:hover, .ant-btn-primary:focus {
-            color: #fff;
-            background-color: #35af69;
-            border-color: #fff;
+            padding: 0 15px;
+            font-size: 16px;
+            height: 40px;
+            width: 100%;
         }
 
         .user-login-other {

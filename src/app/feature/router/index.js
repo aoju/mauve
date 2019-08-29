@@ -12,9 +12,7 @@ Vue.use(Router);
 const routes = [].concat(
     Home
 );
-// const router = new Router({
-//     routes: routers
-// });
+
 const menu = getStore('menu', true);
 if (menu) {
     menu.forEach(function (v) {
@@ -32,7 +30,7 @@ if (menu) {
     });
 }
 const router = new Router({
-    //'mode': 'history',
+    'mode': 'history',
     'routes': [
         {
             'path': '/',
