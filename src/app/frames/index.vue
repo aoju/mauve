@@ -120,9 +120,9 @@
 <script>
     import {mapState} from 'vuex';
     import ALayout from 'ant-design-vue/es/layout';
-    import Notice from './header/Notice';
-    import Avatar from './header/Avatar';
-    import Choice from './header/Choice';
+    import Notice from './header/notice';
+    import Avatar from './header/avatar';
+    import Choice from './header/choice';
     import VUploader from '../exports/tools/v.uploader';
     import Socket from '../exports/socket/socket';
     import config from '../feature/config/config';

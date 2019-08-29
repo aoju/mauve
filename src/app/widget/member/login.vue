@@ -376,7 +376,7 @@
         }
     };
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .user-layout-login {
         label {
             font-size: 14px;
@@ -400,8 +400,40 @@
                 width: 100%;
         }
 
-        .user-login-other {
+        .ant-form-item {
+            margin-bottom: 2px;
+            margin-top: 2px;
+        }
+
+        .ant-tabs-ink-bar {
+            background-color: #fff;
+        }
+        .ant-tabs-nav .ant-tabs-tab {
             color: #fff;
+        }
+        .ant-tabs-nav .ant-tabs-tab-active {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .ant-tabs-nav .ant-tabs-tab:hover {
+            color: #fff;
+        }
+
+        .ant-btn-primary {
+            color: #44C97D;
+            background-color: #fff;
+            border-color: #fff;
+            font-weight: 700;
+        }
+
+        .ant-btn-primary:hover, .ant-btn-primary:focus {
+            color: #fff;
+            background-color: #35af69;
+            border-color: #fff;
+        }
+
+        .user-login-other {
             text-align: left;
             margin-top: 24px;
             line-height: 22px;

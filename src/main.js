@@ -16,7 +16,7 @@ import {destroyNotice, notice} from './assets/js/notify';
 import App from './App';
 import store from './app/feature/stores/index';
 import router from './app/feature/router/index';
-import Wrapper from './app/frames/Wrapper';
+import Wrapper from './app/frames/wrapper';
 import common from './app/shared/common';
 
 moment.locale('zh-cn');

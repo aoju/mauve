@@ -7,7 +7,7 @@
     </div>
 </template>
 <script>
-    import ErrorPage from '../../frames/errors/errorPage';
+    import ErrorPage from '../../frames/errors/error.page';
 
     export default {
         'components': {

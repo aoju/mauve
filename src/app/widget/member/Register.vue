@@ -1,6 +1,5 @@
 <template>
     <div class="user-layout-register">
-        <h3><span>注册</span></h3>
         <a-form :autoFormCreate="(form)=>{this.form = form}" id="formRegister" ref="formRegister">
             <a-form-item
                     :fieldDecoratorOptions="{rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}"
@@ -51,7 +50,7 @@
                     </a-select>
                 </a-input>
             </a-form-item>
-            <a-row :gutter="16">
+            <a-row :gutter="16" style="margin-top: 12px;">
                 <a-col :span="16" class="gutter-row">
                     <a-form-item
                             :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}"
@@ -272,7 +271,7 @@
         }
     };
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .user-register {
 
         &.error {
@@ -305,6 +304,7 @@
             display: block;
             width: 100%;
             height: 40px;
+            margin-top: 2px;
         }
 
         .register-button {
@@ -312,8 +312,26 @@
         }
 
         .login {
+            color: #fff;
             float: right;
             line-height: 40px;
+        }
+
+        .ant-form-item {
+            margin-bottom: 2px;
+            margin-top: 2px;
+        }
+
+        .ant-btn-primary {
+            color: #fff;
+            background-color: #44C97D;
+            border-color: #fff;
+        }
+
+        .ant-btn-primary:hover, .ant-btn-primary:focus {
+            color: #fff;
+            background-color: #35af69;
+            border-color: #fff;
         }
     }
 </style>

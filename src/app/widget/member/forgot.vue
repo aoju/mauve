@@ -249,12 +249,23 @@
         'watch': {}
     };
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .user-layout-forgot {
 
         & > h3 {
             font-size: 16px;
             margin-bottom: 20px;
+        }
+
+        .ant-btn-primary:hover, .ant-btn-primary:focus {
+            color: #fff;
+            background-color: #35af69;
+            border-color: #fff;
+        }
+        .ant-btn-primary {
+            color: #fff;
+            background-color: #44C97D;
+            border-color: #fff;
         }
 
         .getCaptcha {
@@ -268,8 +279,14 @@
         }
 
         .login {
+            color: #fff;
             float: right;
             line-height: 40px;
+        }
+
+        .ant-form-item {
+            margin-bottom: 2px;
+            margin-top: 2px;
         }
     }
 </style>
