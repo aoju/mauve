@@ -78,7 +78,7 @@
     </div>
 </template>
 <script>
-    import {del, doData, list} from '../../../feature/restapi/taskStagesTemplate';
+    import {del, doData, list} from '../../../feature/restapi/api.task.stages.template';
     import {checkResponse, getBase64} from '../../../../assets/js/utils';
     import pagination from '../../../shared/pagination';
 

@@ -473,19 +473,19 @@
     import {mapState} from 'vuex';
     import $ from 'jquery';
     import moment from 'moment';
-    import taskDetail from './TaskDetail';
+    import taskDetail from './task.detail';
     import {
         del,
         edit,
         getVersionLog,
         getVersionTask as getVersionTask,
         read as getVersionInfo
-    } from '../../feature/restapi/projectVersion';
+    } from '../../feature/restapi/api.project.version';
     import {relativelyTaskTime, relativelyTime} from '../../../assets/js/dateTime';
     import {checkResponse} from '../../../assets/js/utils';
-    import {addVersionTask, changeStatus, removeVersionTask} from '../../feature/restapi/projectVersion';
-    import {list as getTaskStages, tasks as getTasks} from '../../feature/restapi/taskStages';
-    import {notice} from '../../../assets/js/notice';
+    import {addVersionTask, changeStatus, removeVersionTask} from '../../feature/restapi/api.project.version';
+    import {list as getTaskStages, tasks as getTasks} from '../../feature/restapi/api.task.stages';
+    import {notice} from '../../../assets/js/notify';
 
     export default {
         'name': 'version-detail',
@@ -921,7 +921,7 @@
 
 <style lang="less">
     @import "~ant-design-vue/lib/style/themes/default";
-    @import "../../../assets/css/components/task";
+    @import "../../../assets/css/default/task";
 
     .field-flex {
         display: flex;

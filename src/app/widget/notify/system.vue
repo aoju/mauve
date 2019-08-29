@@ -53,9 +53,9 @@
     </div>
 </template>
 <script>
-    import {del, list} from '../../feature/restapi/notify';
+    import {del, list} from '../../feature/restapi/api.notify';
     import {checkResponse} from '../../../assets/js/utils';
-    import {batchDel, setReadied} from '../../feature/restapi/notify';
+    import {batchDel, setReadied} from '../../feature/restapi/api.notify';
     import pagination from '../../shared/pagination';
 
     const columns = [{

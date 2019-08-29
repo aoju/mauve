@@ -74,10 +74,10 @@
 </template>
 <script>
     import {Button, Divider, Form, Input, Modal, Table} from 'ant-design-vue';
-    import {del, doAuth, forbid, getAuthList, resume} from '../../../feature/restapi/auth';
+    import {del, doAuth, forbid, getAuthList, resume} from '../../../feature/restapi/api.auth';
     import {checkResponse} from '../../../../assets/js/utils';
     import pagination from '../../../shared/pagination';
-    import {setDefault} from '../../../feature/restapi/auth';
+    import {setDefault} from '../../../feature/restapi/api.auth';
 
     const FormItem = Form.Item;
 

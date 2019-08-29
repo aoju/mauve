@@ -163,10 +163,10 @@
 <script>
     import moment from 'moment';
     import VeLine from 'v-charts/lib/line.common';
-    import {_projectStats, doData, read as getProject} from '../../../feature/restapi/project';
-    import {collect} from '../../../feature/restapi/projectCollect';
+    import {_projectStats, doData, read as getProject} from '../../../feature/restapi/api.project';
+    import {collect} from '../../../feature/restapi/api.project.collect';
     import {checkResponse} from '../../../../assets/js/utils';
-    import {dateTotalForProject, getLogBySelfProject} from '../../../feature/restapi/task';
+    import {dateTotalForProject, getLogBySelfProject} from '../../../feature/restapi/api.task';
     import {relativelyTime} from '../../../../assets/js/dateTime';
     import pagination from '../../../shared/pagination';
 

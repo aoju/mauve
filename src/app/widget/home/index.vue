@@ -181,7 +181,8 @@
                         <div class="members">
                             <a-row>
                                 <a-col :key="index" :span="12" v-for="(item, index) in accounts">
-                                    <a>
+                                    <a @click="routerLink('/member/profile/' + item.membar_account_code + '?key=3')"
+                                       style="display: flex;align-items: center">
                                         <a-avatar :src="item.avatar" size="small"/>
                                         <span class="member">{{ item.name }}</span>
                                     </a>
@@ -198,12 +199,12 @@
 <script>
     import {mapState} from 'vuex';
     import moment from 'moment';
-    import {getYiYan} from '../../feature/restapi/other';
+    import {getYiYan} from '../../feature/restapi/api.other';
     import {formatTaskTime, relativelyTime, showHelloTime} from '../../../assets/js/dateTime';
-    import {selfList as getProjectList} from '../../feature/restapi/project';
-    import {list as accountList} from '../../feature/restapi/user';
+    import {selfList as getProjectList} from '../../feature/restapi/api.project';
+    import {list as accountList} from '../../feature/restapi/api.member';
     import pagination from '../../shared/pagination';
-    import {getLogBySelfProject, selfList} from '../../feature/restapi/task';
+    import {getLogBySelfProject, selfList} from '../../feature/restapi/api.task';
 
     export default {
         'components': {},
@@ -485,7 +486,7 @@
                         line-height: 24px;
                         max-width: 100px;
                         vertical-align: top;
-                        margin-left: 12px;
+                        margin-left: 6px;
                         transition: all 0.3s;
                         display: inline-block;
                     }

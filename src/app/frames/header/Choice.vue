@@ -17,7 +17,7 @@
 
 <script>
     import {mapState} from 'vuex';
-    import {changeCurrentOrganization} from '../../feature/restapi/user';
+    import {changeCurrentOrganization} from '../../feature/restapi/api.member';
     import {createRoute ,checkResponse} from '../../../assets/js/utils';
 
     export default {

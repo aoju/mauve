@@ -2,7 +2,7 @@
     <div class="project-archive-index">
         <wrapper :showHeader="false">
             <div style="display: flex;justify-content: center">
-                <img alt="" src="../../../../assets/image/common/nullContent.png" style="height: 250px;"
+                <img alt="" src="../../../../assets/img/props/nullContent.png" style="height: 250px;"
                      v-show="!dataSource.length">
             </div>
             <a-list
@@ -46,10 +46,10 @@
     </div>
 </template>
 <script>
-    import {del, list} from '../../../feature/restapi/project';
+    import {del, list} from '../../../feature/restapi/api.project';
     import pagination from '../../../shared/pagination';
     import moment from 'moment';
-    import {recoveryArchive, recycle} from '../../../feature/restapi/project';
+    import {recoveryArchive, recycle} from '../../../feature/restapi/api.project';
 
     export default {
         'mixins': [pagination],

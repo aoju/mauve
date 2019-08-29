@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import taskDetail from '../../../exports/props/TaskDetail';
+    import taskDetail from '../../../exports/props/task.detail';
 
     export default {
         'name': 'task-detail-modal',

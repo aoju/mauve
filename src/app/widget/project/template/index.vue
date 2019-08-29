@@ -113,7 +113,7 @@
     </div>
 </template>
 <script>
-    import {del, doData, list} from '../../../feature/restapi/projectTemplate';
+    import {del, doData, list} from '../../../feature/restapi/api.project.template';
     import {checkResponse, getApiUrl, getBase64} from '../../../../assets/js/utils';
     import pagination from '../../../shared/pagination';
     import config from '../../../feature/config/config';

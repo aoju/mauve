@@ -90,9 +90,9 @@
 
 <script>
     import md5 from 'md5';
-    import {getCaptcha, register} from '../../feature/restapi/user';
+    import {getCaptcha, register} from '../../feature/restapi/api.member';
     import {checkResponse} from '../../../assets/js/utils';
-    import {notice} from '../../../assets/js/notice';
+    import {notice} from '../../../assets/js/notify';
 
     const levelNames = {
         '0': '低',

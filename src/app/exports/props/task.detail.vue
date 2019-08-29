@@ -1,5 +1,5 @@
 <template>
-    <div class="task-detail">
+    <div class="task-detail" id="task-detail">
         <a-spin :spinning="loading" class="task-detail-spin">
             <div :class="{'disabled': task.deleted}" class="task-header">
                     <span class="head-title" v-if="!task.deleted">
@@ -760,6 +760,7 @@
                                             class="member-item"
                                             icon="user"
                                             size="small"
+                                            @click="routerLink('/members/profile/' + member.membar_account_code + '?key=3')"
                                     />
                                 </a-tooltip>
                                 <a-dropdown :trigger="['click']" placement="bottomCenter"
@@ -872,7 +873,7 @@
                                         </div>
                                     </div>
                                 </template>
-                                <!--                                <span slot="title">Title</span>-->
+                                <!-- <span slot="title">Title</span>-->
                                 <a-textarea :rows="1" placeholder="支持@提及任务成员，Ctrl+Enter发表评论" ref="commentText"
                                             style="margin-right: 24px;"
                                             v-model="comment"/>
@@ -1017,15 +1018,15 @@
         save as createTask,
         star,
         taskDone
-    } from '../../feature/restapi/task';
-    import {del as delSourceLink} from '../../feature/restapi/sourceLink';
-    import {list as getTaskMembers} from '../../feature/restapi/taskMember';
-    import taskMemberMenu from '../props/TaskMemberMenu';
-    import taskTagMenu from '../props/TaskTagMenu';
-    import projectMemberMenu from '../props/ProjectMemberMenu';
-    import inviteProjectMember from '../props/InviteProjectMember';
+    } from '../../feature/restapi/api.task';
+    import {del as delSourceLink} from '../../feature/restapi/api.source.link';
+    import {list as getTaskMembers} from '../../feature/restapi/api.task.member';
+    import taskMemberMenu from './task.member.menu';
+    import taskTagMenu from './task.tag.menu';
+    import projectMemberMenu from './project.member.menu';
+    import inviteProjectMember from './invite.member.p';
     import {getStore} from '../../../assets/js/storage';
-    import {notice} from '../../../assets/js/notice';
+    import {notice} from '../../../assets/js/notify';
     import {relativelyTaskTime, relativelyTime} from '../../../assets/js/dateTime';
     import {checkResponse,getApiUrl} from '../../../assets/js/utils';
     import {
@@ -1036,8 +1037,9 @@
         setPrivate,
         setTag,
         taskSources
-    } from '../../feature/restapi/task';
+    } from '../../feature/restapi/api.task';
     import ATextarea from 'ant-design-vue/es/input/TextArea';
+    import {detail} from '../../feature/restapi/api.department.member';
 
     let tokenList = getStore('tokenList', true);
     let authorization = '';
@@ -1124,7 +1126,7 @@
                         'fullscreen'	// 全屏
                     ]
                 },
-
+                'departmentMemberInfo': null,
                 /*子任务*/
                 'childTaskList': [],
                 'showChildTask': false,
@@ -1814,6 +1816,14 @@
             getPopup() {
                 return document.getElementById('footer');
             },
+            getTaskMemberPopup() {
+                return document.getElementById('task-detail');
+            },
+            departmentMemberDetail(code) {
+                detail({'code': code,'organization': this.$store.state.currentOrganization.code}).then(res=>{
+                    this.departmentMemberInfo = res.data;
+                });
+            },
             selectMentionMember(member) {
                 this.showMentions = false;
                 this.comment += member.name + ' ';
@@ -2208,6 +2218,7 @@
 
                         .member-item {
                             margin-right: 10px;
+                            cursor: pointer;
 
                             &.invite {
                                 cursor: pointer;

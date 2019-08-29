@@ -61,8 +61,8 @@
 
 <script>
     import {checkResponse} from '../../../assets/js/utils';
-    import {del, list, recovery} from '../../feature/restapi/task';
-    import {del as delFile, list as getFiles, recovery as recoveryFile} from '../../feature/restapi/file';
+    import {del, list, recovery} from '../../feature/restapi/api.task';
+    import {del as delFile, list as getFiles, recovery as recoveryFile} from '../../feature/restapi/api.file';
     import pagination from '../../shared/pagination';
     import {relativelyTaskTime} from '../../../assets/js/dateTime';
 

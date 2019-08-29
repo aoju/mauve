@@ -306,18 +306,18 @@
 
 <script>
     import moment from 'moment';
-    import {read as getProject} from '../../../feature/restapi/project';
-    import {collect} from '../../../feature/restapi/projectCollect';
+    import {read as getProject} from '../../../feature/restapi/api.project';
+    import {collect} from '../../../feature/restapi/api.project.collect';
     import {checkResponse} from '../../../../assets/js/utils';
     import {relativelyTime} from '../../../../assets/js/dateTime';
     import pagination from '../../../shared/pagination';
-    import {del, edit, list as getProjectFeatureList, save} from '../../../feature/restapi/projectFeatures';
+    import {del, edit, list as getProjectFeatureList, save} from '../../../feature/restapi/api.project.feature';
     import {
         changeStatus,
         list as getProjectVersionList,
         save as saveProjectVersion
-    } from '../../../feature/restapi/projectVersion';
-    import versionDetail from '../../../exports/props/VersionDetail';
+    } from '../../../feature/restapi/api.project.version';
+    import versionDetail from '../../../exports/props/version.detail';
 
     export default {
         'name': 'project-space-features',

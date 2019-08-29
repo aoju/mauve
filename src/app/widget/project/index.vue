@@ -163,12 +163,12 @@
 <script>
     import moment from 'moment';
     import {checkResponse} from '../../../assets/js/utils';
-    import inviteProjectMember from '../../exports/props/InviteProjectMember';
-    import projectConfig from '../../exports/props/ProjectConfig';
-    import {doData, list, recycle} from '../../feature/restapi/project';
+    import inviteProjectMember from '../../exports/props/invite.member.p';
+    import projectConfig from '../../exports/props/project.config';
+    import {doData, list, recycle} from '../../feature/restapi/api.project';
     import pagination from '../../shared/pagination';
-    import {collect} from '../../feature/restapi/projectCollect';
-    import {list as projectTemplates} from '../../feature/restapi/projectTemplate';
+    import {collect} from '../../feature/restapi/api.project.collect';
+    import {list as projectTemplates} from '../../feature/restapi/api.project.template';
 
     export default {
         'components': {

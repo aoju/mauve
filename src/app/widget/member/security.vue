@@ -259,8 +259,8 @@
     import {mapState} from 'vuex';
     import setting from './setting';
     import {checkResponse} from '../../../assets/js/utils';
-    import {_bindMail, _bindMobile, _unbindDingtalk, editPassword, getCaptcha} from '../../feature/restapi/user';
-    import {dingTalkOauth} from '../../feature/restapi/oauth';
+    import {_bindMail, _bindMobile, _unbindDingtalk, editPassword, getCaptcha} from '../../feature/restapi/api.member';
+    import {dingTalkOauth} from '../../feature/restapi/api.ding.talk';
 
     export default {
         'name': 'security',

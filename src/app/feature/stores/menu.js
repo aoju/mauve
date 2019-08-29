@@ -1,4 +1,4 @@
-import {getMenuForUser} from '../../feature/restapi/menu';
+import {getMenuForUser} from '../restapi/api.menu';
 import {getStore, setStore} from '../../../assets/js/storage';
 
 const common = {

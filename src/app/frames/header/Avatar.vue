@@ -35,7 +35,7 @@
 
 <script>
     import {mapState} from 'vuex';
-    import {_out} from '../../feature/restapi/user';
+    import {_out} from '../../feature/restapi/api.member';
 
     export default {
         'name': 'Avatar',
@@ -57,9 +57,9 @@
                 } else if (action.key === 'setting') {
                     app.$router.push('/member/base');
                 } else if (action.key === 'theme') {
-                    let theme = 'dark';
+                    let theme = 'light';
                     if (this.theme === theme) {
-                        theme = 'light';
+                        theme = 'dark';
                     }
                     this.$store.dispatch('setTheme', theme);
                 }

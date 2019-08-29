@@ -198,9 +198,9 @@
 </template>
 <script>
     import {Button, Checkbox, Divider, Form, Input, Modal, Table} from 'ant-design-vue';
-    import {delMenu, doMenu, forbid, getMenu, resume} from '../../../feature/restapi/menu';
+    import {delMenu, doMenu, forbid, getMenu, resume} from '../../../feature/restapi/api.menu';
     import {checkResponse} from '../../../../assets/js/utils';
-    import {allList} from '../../../feature/restapi/node';
+    import {allList} from '../../../feature/restapi/api.node';
     import debounce from 'lodash/debounce';
 
     const FormItem = Form.Item;

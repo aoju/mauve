@@ -84,8 +84,8 @@
 
 <script>
     import _ from 'lodash';
-    import {list} from '../../feature/restapi/projectMember';
-    import {inviteMemberBatch, list as getTaskMembers} from '../../feature/restapi/taskMember';
+    import {list} from '../../feature/restapi/api.project.member';
+    import {inviteMemberBatch, list as getTaskMembers} from '../../feature/restapi/api.task.member';
 
     export default {
         'name': 'projectMemberMenu',

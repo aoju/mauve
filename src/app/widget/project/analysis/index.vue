@@ -174,10 +174,10 @@
     import {mapState} from 'vuex';
     import VeLine from 'v-charts/lib/line.common';
     import VeHistogram from 'v-charts/lib/histogram.common';
-    import ChartCard from '../../../exports/chart/ChartCard';
+    import ChartCard from '../../../exports/chart/chart.card';
     import Trend from '../../../exports/trend';
-    import MiniProgress from '../../../exports/chart/MiniProgress';
-    import RankList from '../../../exports/chart/RankList';
+    import MiniProgress from '../../../exports/chart/mini.progress';
+    import RankList from '../../../exports/chart/rank.list';
     import pagination from '../../../shared/pagination';
 
     const rankList = [];

@@ -28,7 +28,7 @@
                         </template>
                         <template v-else>
                             <div class="notFound">
-                                <img alt="not found" src="../../../assets/image/notify/laba.svg">
+                                <img alt="not found" src="../../../assets/img/notify/laba.svg">
                                 <div>你已读完所有消息</div>
                             </div>
                         </template>
@@ -60,7 +60,7 @@
                         </template>
                         <template v-else>
                             <div class="notFound">
-                                <img alt="not found" src="../../../assets/image/notify/bell.svg">
+                                <img alt="not found" src="../../../assets/img/notify/bell.svg">
                                 <div>你已查看所有通知</div>
                             </div>
                         </template>
@@ -98,7 +98,7 @@
                         </template>
                         <template v-else>
                             <div class="notFound">
-                                <img alt="not found" src="../../../assets/image/notify/ticket.svg">
+                                <img alt="not found" src="../../../assets/img/notify/ticket.svg">
                                 <div>你已完成所有待办</div>
                             </div>
                         </template>
@@ -117,10 +117,10 @@
 <script>
     import {mapState} from 'vuex';
     import moment from 'moment';
-    import {_clearAll, noReads} from '../../feature/restapi/notify';
-    import {notice} from '../../../assets/js/notice';
+    import {_clearAll, noReads} from '../../feature/restapi/api.notify';
+    import {notice} from '../../../assets/js/notify';
     import {showMsgNotification} from '../../../assets/js/notify';
-    import {selfList} from '../../feature/restapi/task';
+    import {selfList} from '../../feature/restapi/api.task';
 
     export default {
         'name': 'Notice',

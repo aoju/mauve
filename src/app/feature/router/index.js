@@ -6,7 +6,7 @@ import Home from './home';
 import {getStore, setStore} from '../../../assets/js/storage';
 import {createRoute, isTokenExpired} from '../../../assets/js/utils';
 import config from '../config/config';
-import {refreshAccessToken} from '../restapi/common';
+import {refreshAccessToken} from '../restapi/api.index';
 
 Vue.use(Router);
 const routes = [].concat(
@@ -68,7 +68,7 @@ const router = new Router({
         {
             'name': 'install',
             'path': '/install',
-            'component': resolve => require(['../../widget/error/install'], resolve),
+            'component': resolve => require(['../../widget/errors/install'], resolve),
             'meta': {'model': 'error'}
         },
         {
@@ -80,19 +80,19 @@ const router = new Router({
         {
             'name': '404',
             'path': '/404',
-            'component': resolve => require(['../../widget/error/404'], resolve),
+            'component': resolve => require(['../../widget/errors/404'], resolve),
             'meta': {'model': 'error'}
         },
         {
             'name': '403',
             'path': '/403',
-            'component': resolve => require(['../../widget/error/403'], resolve),
+            'component': resolve => require(['../../widget/errors/403'], resolve),
             'meta': {'model': 'error'}
         },
         {
             'name': '500',
             'path': '/500',
-            'component': resolve => require(['../../widget/error/500'], resolve),
+            'component': resolve => require(['../../widget/errors/500'], resolve),
             'meta': {'model': 'error'}
         }
     ]

@@ -398,18 +398,18 @@
         recovery,
         recoveryArchive,
         recycle
-    } from '../../feature/restapi/project';
+    } from '../../feature/restapi/api.project';
     import {
         _getTaskWorkflowRules,
         del as delTaskWorkflow,
         edit as EditTaskWorkflow,
         list as getTaskWorkflowList,
         save as saveTaskWorkflow
-    } from '../../feature/restapi/taskWorkflow';
-    import {_getAll as getTaskStages} from '../../feature/restapi/taskStages';
-    import {list as getProjectMembers} from '../../feature/restapi/projectMember';
+    } from '../../feature/restapi/api.task.workflow';
+    import {_getAll as getTaskStages} from '../../feature/restapi/api.task.stages';
+    import {list as getProjectMembers} from '../../feature/restapi/api.project.member';
 
-    import {notice} from '../../../assets/js/notice';
+    import {notice} from '../../../assets/js/notify';
     import {checkResponse, getApiUrl, getAuthorization, getBase64} from '../../../assets/js/utils';
 
     export default {

@@ -128,7 +128,7 @@
     </div>
 </template>
 <script>
-    import {checkInstall, install} from '../../feature/restapi/common';
+    import {checkInstall, install} from '../../feature/restapi/api.index';
     import {checkResponse} from '../../../assets/js/utils';
     import Index from '../../frames/home/index';
 

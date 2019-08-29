@@ -1,6 +1,3 @@
-/**
- * Home
- */
 export default [{
     //任务看板
     'name': 'task',

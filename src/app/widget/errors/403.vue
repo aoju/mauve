@@ -4,12 +4,12 @@
                 code="403"
                 desc="抱歉，你无权访问该页面"
         >
-            <img alt="" slot="img" src="../../../assets/image/error/403.svg">
+            <img alt="" slot="img" src="../../../assets/img/errors/403.svg">
         </ErrorPage>
     </div>
 </template>
 <script>
-    import ErrorPage from '../../frames/error/errorPage';
+    import ErrorPage from '../../frames/errors/errorPage';
 
     export default {
         'components': {

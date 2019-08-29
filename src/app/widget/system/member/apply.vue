@@ -22,7 +22,7 @@
 </template>
 <script>
     import {Button, Tree} from 'ant-design-vue';
-    import {apply} from '../../../feature/restapi/auth';
+    import {apply} from '../../../feature/restapi/api.auth';
 
     export default {
         'components': {

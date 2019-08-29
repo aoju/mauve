@@ -1,5 +1,5 @@
 import {removeStore, setStore} from '../../../assets/js/storage';
-import {_checkLogin, _currentMember} from '../restapi/user';
+import {_checkLogin, _currentMember} from '../restapi/api.member';
 
 export default {
     SET_LOGGED({commit}, data) {

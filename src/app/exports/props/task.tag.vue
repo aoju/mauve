@@ -75,10 +75,10 @@
 
 <script>
     import {checkResponse} from '../../../assets/js/utils';
-    import {del, list} from '../../feature/restapi/taskTag';
+    import {del, list} from '../../feature/restapi/api.task.tag';
     import pagination from '../../shared/pagination';
     import {formatTaskTime} from '../../../assets/js/dateTime';
-    import {getListByTaskTag} from '../../feature/restapi/task';
+    import {getListByTaskTag} from '../../feature/restapi/api.task';
     import moment from 'moment';
 
     export default {

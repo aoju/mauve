@@ -69,8 +69,8 @@
 </template>
 
 <script>
-    import {del, edit, list, save} from '../../feature/restapi/taskTag';
-    import {setTag, taskToTags} from '../../feature/restapi/task';
+    import {del, edit, list, save} from '../../feature/restapi/api.task.tag';
+    import {setTag, taskToTags} from '../../feature/restapi/api.task';
     import {checkResponse} from '../../../assets/js/utils';
 
     export default {

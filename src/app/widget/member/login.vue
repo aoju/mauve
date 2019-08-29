@@ -106,15 +106,15 @@
     import md5 from 'md5';
     import * as dd from 'dingtalk-jsapi';
     import {mapActions, mapState} from 'vuex';
-    import {getCaptcha, Login} from '../../feature/restapi/user';
-    import {info} from '../../feature/restapi/system';
+    import {getCaptcha, Login} from '../../feature/restapi/api.member';
+    import {info} from '../../feature/restapi/api.system';
     import config from '../../feature/config/config';
     import {checkResponse, createRoute, timeFix} from '../../../assets/js/utils';
     import {getStore} from '../../../assets/js/storage';
-    import {checkInstall} from '../../feature/restapi/common';
-    import {_checkLogin} from '../../feature/restapi/user';
-    import {dingTalkLoginByCode, dingTalkOauth} from '../../feature/restapi/oauth';
-    import {notice} from '../../../assets/js/notice';
+    import {checkInstall} from '../../feature/restapi/api.index';
+    import {_checkLogin} from '../../feature/restapi/api.member';
+    import {dingTalkLoginByCode, dingTalkOauth} from '../../feature/restapi/api.ding.talk';
+    import {notice} from '../../../assets/js/notify';
 
     export default {
         'components': {},

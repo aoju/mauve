@@ -114,7 +114,7 @@
 </template>
 <script>
     import AInput from 'ant-design-vue/es/input';
-    import {auth, del, doAccount, forbid, list, resume} from '../../../feature/restapi/user';
+    import {auth, del, doAccount, forbid, list, resume} from '../../../feature/restapi/api.member';
     import {checkResponse} from '../../../../assets/js/utils';
     import pagination from '../../../shared/pagination';
 

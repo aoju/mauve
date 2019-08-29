@@ -32,9 +32,9 @@
 <script>
     import {mapState} from 'vuex';
     import {checkResponse} from '../../../assets/js/utils';
-    import {inviteInfo} from '../../feature/restapi/common';
-    import {_joinByInviteLink} from '../../feature/restapi/projectMember';
-    import {_joinByInviteLink as joinOrganation} from '../../feature/restapi/user';
+    import {inviteInfo} from '../../feature/restapi/api.index';
+    import {_joinByInviteLink} from '../../feature/restapi/api.project.member';
+    import {_joinByInviteLink as joinOrganation} from '../../feature/restapi/api.member';
 
     export default {
         data() {

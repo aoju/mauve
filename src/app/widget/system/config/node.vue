@@ -31,8 +31,8 @@
 </template>
 <script>
     import {Button, Checkbox, Divider, Form, Input, Modal, Table} from 'ant-design-vue';
-    import EditableCell from '../../../exports/table/EditableCell';
-    import {clear, getNodeList, save} from '../../../feature/restapi/node';
+    import EditableCell from '../../../exports/table/editable.cell';
+    import {clear, getNodeList, save} from '../../../feature/restapi/api.node';
 
     const FormItem = Form.Item;
 

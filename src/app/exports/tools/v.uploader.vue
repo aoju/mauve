@@ -93,8 +93,8 @@
     import {checkResponse, getAuthorization} from '../../../assets/js/utils';
     import {mapState} from 'vuex';
     import {getStore} from '../../../assets/js/storage';
-    import {notice} from '../../../assets/js/notice';
-    import {uploadFiles} from '../../feature/restapi/file';
+    import {notice} from '../../../assets/js/notify';
+    import {uploadFiles} from '../../feature/restapi/api.file';
 
     export default {
         'name': 'v-uploader',

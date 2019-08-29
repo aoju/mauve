@@ -1,4 +1,4 @@
-import {notice} from './notice';
+import {notice} from './notify';
 import config from '../../app/feature/config/config';
 import {getStore} from './storage';
 

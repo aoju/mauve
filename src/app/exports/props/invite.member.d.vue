@@ -5,12 +5,12 @@
                 :title="actionInfo.modalTitle"
                 :width="360"
                 @cancel="cancel"
-                class="invite-project-member"
+                class="invite-department-member"
                 v-model="actionInfo.modalStatus"
         >
             <div class="header">
                 <span>账号邀请</span>
-                <a @click="createInviteLink">通过链接邀请</a>
+                <a @click="createInviteLink" v-if="!departmentCode">通过链接邀请</a>
             </div>
             <div class="search-content">
                 <a-input placeholder="输入昵称或邮箱查找" v-model="keyword">
@@ -30,7 +30,7 @@
                         <a-button @click="invite(item)" icon="user-add" size="small"
                                   type="dashed"
                                   v-if="!item.joined"
-                        >邀请</a-button>
+                        >添加</a-button>
                         <template v-else>
                              <a-icon type="user"></a-icon>
                             <span> 已加入</span>
@@ -64,18 +64,17 @@
             </div>
         </a-modal>
     </div>
-
 </template>
 
 <script>
-    import _ from 'lodash';
     import moment from 'moment';
-    import {inviteMember, searchInviteMember} from '../../feature/restapi/projectMember';
+    import _ from 'lodash';
+    import {inviteMember, searchInviteMember} from '../../feature/restapi/api.department.member';
     import {checkResponse} from '../../../assets/js/utils';
-    import {createInviteLink} from '../../feature/restapi/common';
+    import {createInviteLink} from '../../feature/restapi/api.index';
 
     export default {
-        'name': 'inviteProjectMember',
+        'name': 'inviteDepartmentMember',
         'props': {
             'value': {
                 'type': Boolean,
@@ -83,7 +82,7 @@
                     return false;
                 }
             },
-            'projectCode': {
+            'departmentCode': {
                 'type': [String, Number],
                 default() {
                     return '';
@@ -96,7 +95,7 @@
                 'actionInfo': {
                     'modalStatus': this.value,
                     'confirmLoading': false,
-                    'modalTitle': '邀请新成员'
+                    'modalTitle': this.departmentCode ? '添加成员至部门' : '添加成员至组织'
                 },
                 'linkInfo': {
                     'modalStatus': false,
@@ -119,23 +118,36 @@
                 this.search();
             }
         },
+        created() {
+            if (this.departmentCode) {
+                this.searching = true;
+                searchInviteMember(this.keyword, this.departmentCode).then(res => {
+                    this.searching = false;
+                    this.list = res.data;
+                });
+            }
+        },
         'methods': {
             invite(item) {
-                inviteMember(item.memberCode, this.projectCode).then((res) => {
+                inviteMember(item.accountCode, this.departmentCode).then((res) => {
                     const success = checkResponse(res);
                     if (success) {
                         item.joined = true;
+                        this.$emit('update', item);
                     }
                 });
             },
             createInviteLink() {
                 if (!this.linkInfo.link) {
-                    createInviteLink({'inviteType': 'project', 'sourceCode': this.projectCode}).then(res => {
+                    createInviteLink({
+                        'inviteType': 'organization',
+                        'sourceCode': this.$store.state.currentOrganization.code
+                    }).then(res => {
                         const success = checkResponse(res);
                         if (success) {
                             this.linkInfo.modalStatus = true;
                             this.linkInfo.link = window.location.href.split('#')[0] + '#/invite_from_link/' + res.data.code;
-                            this.linkInfo.overTime = moment(res.data.code.over_time).format('YYYY年M月D日 HH:mm');
+                            this.linkInfo.overTime = moment(res.data.over_time).format('YYYY年M月D日 HH:mm');
                         }
                     });
                 } else {
@@ -151,7 +163,7 @@
                         return false;
                     }
                     this.searching = true;
-                    searchInviteMember(this.keyword, this.projectCode).then(res => {
+                    searchInviteMember(this.keyword, this.departmentCode).then(res => {
                         this.searching = false;
                         this.list = res.data;
                     });
@@ -166,7 +178,7 @@
 </script>
 
 <style lang="less">
-    .invite-project-member {
+    .invite-department-member {
         .ant-modal-body {
             padding-top: 0;
             padding-bottom: 24px;

@@ -195,14 +195,14 @@
 
 <script>
     import _ from 'lodash';
-    import inviteDepartmentMember from '../../exports/props/InviteDepartmentMember';
-    import createDepartment from '../../exports/props/Department';
-    import {del as deleteDepartment, list} from '../../feature/restapi/department';
-    import {del, forbid, list as getMembers, resume} from '../../feature/restapi/user';
+    import inviteDepartmentMember from '../../exports/props/invite.member.d';
+    import createDepartment from '../../exports/props/department';
+    import {del as deleteDepartment, list} from '../../feature/restapi/api.department';
+    import {del, forbid, list as getMembers, resume} from '../../feature/restapi/api.member';
     import pagination from '../../shared/pagination';
     import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../assets/js/utils';
-    import {notice} from '../../../assets/js/notice';
-    import {removeMember} from '../../feature/restapi/departmentMember';
+    import {notice} from '../../../assets/js/notify';
+    import {removeMember} from '../../feature/restapi/api.department.member';
 
     export default {
         'name': 'member',

@@ -20,9 +20,9 @@
 </template>
 
 <script>
-    import {doData, read} from '../../feature/restapi/department';
+    import {doData, read} from '../../feature/restapi/api.department';
     import {checkResponse} from '../../../assets/js/utils';
-    import {notice} from '../../../assets/js/notice';
+    import {notice} from '../../../assets/js/notify';
 
     export default {
         'name': 'createDepartment',

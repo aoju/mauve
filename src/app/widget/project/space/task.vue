@@ -562,10 +562,10 @@
     import _ from 'lodash';
     import moment from 'moment';
     import draggable from 'vuedraggable';
-    import inviteProjectMember from '../../../exports/props/InviteProjectMember';
-    import projectConfig from '../../../exports/props/ProjectConfig';
-    import RecycleBin from '../../../exports/props/RecycleBin';
-    import TaskTag from '../../../exports/props/TaskTag';
+    import inviteProjectMember from '../../../exports/props/invite.member.p';
+    import projectConfig from '../../../exports/props/project.config';
+    import RecycleBin from '../../../exports/props/recyclebin';
+    import TaskTag from '../../../exports/props/task.tag';
 
     import {
         del as delStage,
@@ -574,20 +574,20 @@
         save as createState,
         sort,
         tasks as getTasks
-    } from '../../../feature/restapi/taskStages';
-    import {read as getProject} from '../../../feature/restapi/project';
-    import {inviteMember, list as getProjectMembers, removeMember} from '../../../feature/restapi/projectMember';
+    } from '../../../feature/restapi/api.task.stages';
+    import {read as getProject} from '../../../feature/restapi/api.project';
+    import {inviteMember, list as getProjectMembers, removeMember} from '../../../feature/restapi/api.project.member';
     import {
         batchAssignTask,
         recycleBatch,
         save as createTask,
         sort as sortTask,
         taskDone
-    } from '../../../feature/restapi/task';
+    } from '../../../feature/restapi/api.task';
     import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../../assets/js/utils';
     import {formatTaskTime} from '../../../../assets/js/dateTime';
-    import {collect} from '../../../feature/restapi/projectCollect';
-    import {notice} from '../../../../assets/js/notice';
+    import {collect} from '../../../feature/restapi/api.project.collect';
+    import {notice} from '../../../../assets/js/notify';
 
     export default {
         'name': 'project-space-task',
@@ -1228,7 +1228,7 @@
 </script>
 
 <style lang="less">
-    @import "../../../../assets/css/components/task";
+    @import "../../../../assets/css/default/task";
 
     .project-space-task {
         .tasks-loading {

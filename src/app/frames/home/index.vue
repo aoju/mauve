@@ -6,7 +6,7 @@
                 <div class="info-holder">
                     <h3>协作，让企业和团队实现目标</h3>
                     <p>一切工作都可以从这里开始。无论是策划活动、研发软件、制造机器人、建设发电站或者发射卫星，团队成员以更高效的协作方式，围绕目标不断创造成果。</p>
-                    <img src="../../../assets/image/graphic.svg">
+                    <img src="../../../assets/img/graphic.svg">
                 </div>
             </div>
             <div class="form-holder">
@@ -15,7 +15,7 @@
                         <div class="website-logo-inside">
                             <a href="#">
                                 <div class="logo">
-                                    <img class="logo-size" src=../../../assets/image/logo.png alt="">
+                                    <img class="logo-size" src=../../../assets/img/logo.png alt="">
                                     <span class="title">Team Work</span>
                                 </div>
                             </a>

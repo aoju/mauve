@@ -4,7 +4,7 @@ import * as utils from './utils';
 import {getStore} from './storage';
 import $store from '../../app/feature/stores';
 import $router from '../../app/feature/router';
-import {notice} from './notice';
+import {notice} from './notify';
 import config from '../../app/feature/config/config';
 
 const HOME_PAGE = config.HOME_PAGE;

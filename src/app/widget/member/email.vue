@@ -24,7 +24,7 @@
 </template>
 <script>
 
-    import {_checkBindMail} from '../../feature/restapi/user';
+    import {_checkBindMail} from '../../feature/restapi/api.member';
     import {checkResponse} from '../../../assets/js/utils';
 
     export default {

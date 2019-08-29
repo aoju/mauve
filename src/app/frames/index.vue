@@ -5,7 +5,7 @@
             <a-layout :class="layoutClass" id="layout">
                 <a-layout-header :class="{'collapsed':collapsed}">
                     <div @click="()=>{this.$router.push(config.HOME_PAGE)}" class="logo">
-                        <img alt="" class="logo-img" src="../../assets/image/common/logo.png">
+                        <img alt="" class="logo-img" src="../../assets/img/props/logo.png">
                         <span class="title" v-if="system">
                             {{system.app_name}}
                              <span class="version">{{system.app_version}}</span>
@@ -123,10 +123,10 @@
     import Notice from './header/Notice';
     import Avatar from './header/Avatar';
     import Choice from './header/Choice';
-    import VUploader from '../exports/tools/VUploader';
+    import VUploader from '../exports/tools/v.uploader';
     import Socket from '../exports/socket/socket';
     import config from '../feature/config/config';
-    import {notice} from '../../assets/js/notice';
+    import {notice} from '../../assets/js/notify';
 
     const ASider = ALayout.Sider;
     const AFooter = ALayout.Footer;

@@ -161,13 +161,13 @@
 
 <script>
     import {mapState} from 'vuex';
-    import {read as getProject} from '../../../feature/restapi/project';
-    import {collect} from '../../../feature/restapi/projectCollect';
+    import {read as getProject} from '../../../feature/restapi/api.project';
+    import {collect} from '../../../feature/restapi/api.project.collect';
     import {checkResponse} from '../../../../assets/js/utils';
     import {relativelyTime} from '../../../../assets/js/dateTime';
-    import {edit, list, recycle} from '../../../feature/restapi/file';
+    import {edit, list, recycle} from '../../../feature/restapi/api.file';
     import pagination from '../../../shared/pagination';
-    import {notice} from '../../../../assets/js/notice';
+    import {notice} from '../../../../assets/js/notify';
 
     export default {
         'name': 'project-space-files',

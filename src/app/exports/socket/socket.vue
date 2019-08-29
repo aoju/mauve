@@ -6,7 +6,7 @@
 <script>
     import Vue from 'vue';
     import {getStore, setStore} from '../../../assets/js/storage';
-    import {bindClientId} from '../../feature/restapi/common';
+    import {bindClientId} from '../../feature/restapi/api.index';
     import config from '../../feature/config/config';
 
     export default {

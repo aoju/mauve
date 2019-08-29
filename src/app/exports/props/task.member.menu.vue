@@ -87,9 +87,9 @@
 
 <script>
     import _ from 'lodash';
-    import {list} from '../../feature/restapi/projectMember';
-    import {list as getTaskMembers} from '../../feature/restapi/taskMember';
-    import {assignTask} from '../../feature/restapi/task';
+    import {list} from '../../feature/restapi/api.project.member';
+    import {list as getTaskMembers} from '../../feature/restapi/api.task.member';
+    import {assignTask} from '../../feature/restapi/api.task';
 
     export default {
         'name': 'taskMemberMenu',

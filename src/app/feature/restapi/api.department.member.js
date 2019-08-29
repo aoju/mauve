@@ -30,4 +30,7 @@ export function list(data) {
 export function _downloadTemplate() {
     return getApiUrl('project/department_member/_downloadTemplate');
 }
+export function detail(data) {
+    return $http.post('project/department_member/detail', data);
+}
 
