@@ -126,12 +126,12 @@ module.exports = {
         'https': false,
         'hotOnly': false,
         'proxy': {
-            '/': {
-                'target': 'https://localhost:443',
+            '/rest': {
+                'target': 'https://team.hidoctor.wiki',
                 'ws': true,
                 'changOrigin': true,
                 'pathRewrite': {
-                    '^/': ''
+                    '^/rest': ''
                 }
             }
         }
