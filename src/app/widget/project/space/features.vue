@@ -4,18 +4,21 @@
             <div class="project-nav-header">
                 <a-breadcrumb>
                     <a-breadcrumb-item>
-                        <a-tooltip :mouseEnterDelay="0.3" :title="project.name">
-                            <span class="nav-title">{{ project.name }}</span>
-                        </a-tooltip>
+                        <router-link to="/home">
+                            <a-icon type="home"/>
+                            首页
+                        </router-link>
+                    </a-breadcrumb-item>
+                    <a-breadcrumb-item>
+                        <project-select class="nav-title" style="display: inline-block" :code="code"></project-select>
                         <span class="actions">
                              <a-tooltip :mouseEnterDelay="0.3" :title="project.collected ? '取消收藏' : '加入收藏'"
                                         @click="collectProject">
-                            <a-icon style="color: grey;" theme="filled" type="star" v-show="!project.collected"/>
-                            <a-icon style="color: #ffaf38;" theme="filled" type="star" v-show="project.collected"/>
+                            <a-icon type="star" theme="filled" style="color: grey;" v-show="!project.collected"/>
+                            <a-icon type="star" theme="filled" style="color: #ffaf38;" v-show="project.collected"/>
                         </a-tooltip>
                         </span>
-                        <span class="label label-normal" v-if="project.private === 0"><a-icon
-                                type="global"/> 公开</span>
+                        <span class="label label-normal" v-if="project.private === 0"><a-icon type="global"/> 公开</span>
                     </a-breadcrumb-item>
                 </a-breadcrumb>
             </div>
@@ -318,10 +321,14 @@
         save as saveProjectVersion
     } from '../../../feature/restapi/api.project.version';
     import versionDetail from '../../../exports/props/version.detail';
+    import projectSelect from '../../../exports/props/project.select';
 
     export default {
         'name': 'project-space-features',
-        'components': {versionDetail},
+        'components': {
+            versionDetail,
+            projectSelect
+        },
         'mixins': [pagination],
         data() {
             return {

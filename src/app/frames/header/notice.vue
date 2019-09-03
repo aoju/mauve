@@ -65,7 +65,7 @@
                             </div>
                         </template>
                     </a-tab-pane>
-                    <a-tab-pane key="3">
+                    <!--<a-tab-pane key="3">
                         <span slot="tab">待办<span
                                 v-if="task.total && task.total">({{task.total}})</span></span>
                         <template v-if="task.total && task.total">
@@ -102,7 +102,7 @@
                                 <div>你已完成所有待办</div>
                             </div>
                         </template>
-                    </a-tab-pane>
+                    </a-tab-pane>-->
                 </a-tabs>
             </a-spin>
         </template>

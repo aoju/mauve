@@ -3,7 +3,7 @@ export default [{
     'name': 'task',
     'path': '/project/space/task/:code',
     'component': resolve => require(['../../widget/project/space/task'], resolve),
-    'meta': {'model': 'Project', 'info': {'show_slider': false}},
+    'meta': {'model': '122', 'info': {'show_slider': false}},
     'children': [{
         //任务详情
         'name': 'taskdetail',

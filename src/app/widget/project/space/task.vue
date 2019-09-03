@@ -4,14 +4,18 @@
             <div class="project-nav-header">
                 <a-breadcrumb>
                     <a-breadcrumb-item>
-                        <a-tooltip :mouseEnterDelay="0.3" :title="project.name">
-                            <span class="nav-title">{{ project.name }}</span>
-                        </a-tooltip>
+                        <router-link to="/home">
+                            <a-icon type="home"/>
+                            首页
+                        </router-link>
+                    </a-breadcrumb-item>
+                    <a-breadcrumb-item>
+                        <project-select class="nav-title" style="display: inline-block" :code="code"></project-select>
                         <span class="actions">
                              <a-tooltip :mouseEnterDelay="0.3" :title="project.collected ? '取消收藏' : '加入收藏'"
                                         @click="collectProject">
-                            <a-icon style="color: grey;" theme="filled" type="star" v-show="!project.collected"/>
-                            <a-icon style="color: #ffaf38;" theme="filled" type="star" v-show="project.collected"/>
+                            <a-icon type="star" theme="filled" style="color: grey;" v-show="!project.collected"/>
+                            <a-icon type="star" theme="filled" style="color: #ffaf38;" v-show="project.collected"/>
                         </a-tooltip>
                         </span>
                         <span class="label label-normal" v-if="project.private === 0"><a-icon type="global"/> 公开</span>
@@ -566,6 +570,7 @@
     import projectConfig from '../../../exports/props/project.config';
     import RecycleBin from '../../../exports/props/recyclebin';
     import TaskTag from '../../../exports/props/task.tag';
+    import projectSelect from '../../../exports/props/project.select';
 
     import {
         del as delStage,
@@ -595,6 +600,7 @@
             RecycleBin,
             TaskTag,
             draggable,
+            projectSelect,
             inviteProjectMember,
             projectConfig
         },
@@ -636,7 +642,6 @@
                 'configDraw': {
                     'visible': false
                 },
-
 
                 'downLoadUrl': getUploadUrl('project/task/_downloadTemplate'),
                 'uploadLoading': false,
@@ -690,6 +695,13 @@
         },
         'watch': {
             $route(to, from) {
+                if (this.code !== to.params.code) {
+                    this.code = to.params.code;
+                    this.defaultExecutor = this.userInfo;
+                    this.getProject();
+                    this.getProjectMembers();
+                    this.init();
+                }
                 if (from.name === 'taskdetail') {
                     const stageIndex = from.query.from;
                     // this.getTaskStages(false);

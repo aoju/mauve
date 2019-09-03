@@ -64,7 +64,8 @@
                                     <a-card-meta>
                                         <div class="card-title" slot="title">
                                             <a-avatar :src="item.cover" size="small"/>
-                                            <router-link :to="'/project/space/task/' + item.code">{{ item.name }}
+                                            <router-link :to="'/project/space/task/' + item.code">
+                                                <a-icon type="star" theme="filled" style="color: #ffaf38;margin-right: 6px;" v-show="item.collected"/>{{ item.name }}
                                             </router-link>
                                         </div>
                                         <div class="card-description" slot="description">

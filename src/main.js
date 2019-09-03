@@ -13,7 +13,7 @@ import './assets/css/theme.less';
 import './assets/icon/iconfont';
 import './app/shared/filter';
 import {destroyNotice, notice} from './assets/js/notify';
-import App from './App';
+import App from './app';
 import store from './app/feature/stores/index';
 import router from './app/feature/router/index';
 import Wrapper from './app/frames/wrapper';
