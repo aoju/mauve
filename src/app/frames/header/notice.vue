@@ -165,7 +165,7 @@
         'methods': {
             init() {
                 this.fetchNotice();
-                this.getTasks();
+                //this.getTasks();
             },
             fetchNotice() {
                 let app = this;
