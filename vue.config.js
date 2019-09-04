@@ -127,7 +127,7 @@ module.exports = {
         'hotOnly': false,
         'proxy': {
             '/rest': {
-                'target': 'https://team.hidoctor.wiki',
+                'target': 'https://localhost',
                 'ws': true,
                 'changOrigin': true,
                 'pathRewrite': {

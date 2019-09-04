@@ -59,7 +59,7 @@
                                 });
                                 app.$router.addRoutes(routes);
                                 app.$store.dispatch('windowLoading', false);
-                                location.reload();
+                                app.$router.replace('/');
                             }
                         }, 500);
                     }
