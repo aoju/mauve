@@ -16,7 +16,7 @@
                             <a href="#">
                                 <div class="logo">
                                     <img class="logo-size" src=../../../assets/img/logo.png alt="">
-                                    <span class="title">Team Work</span>
+                                    <span class="title">Team EE</span>
                                 </div>
                             </a>
                         </div>

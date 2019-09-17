@@ -5,6 +5,6 @@
           <a href="_self">条款</a>
       </div>-->
     <div class="copyright">
-        Copyright &copy; 2019 Team Work.
+        Copyright &copy; 2019 TTeam EE.
     </div>
 </div>

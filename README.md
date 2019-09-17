@@ -52,7 +52,7 @@
  server {
    listen       80;
    listen       443 ssl;
-   server_name  localhost;
+   server_name  teamee.cn;
  
    ssl on;
    ssl_certificate     /data/000x/cert.d/mauve.pem;
