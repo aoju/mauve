@@ -1449,13 +1449,13 @@
                         star(app.code, this.task.stared);
                         return true;
                     case 'open':
-                        let url = window.location.href;
-                        if (url.indexOf('?') !== -1) {
-                            url += '&full-screen';
-                        }else{
-                            url += '?full-screen';
+                        this.url = window.location.href;
+                        if (this.url.indexOf('?') !== -1) {
+                            this.url += '&full-screen';
+                        } else {
+                            this.url += '?full-screen';
                         }
-                        window.open(url);
+                        window.open(this.url);
                         break;
                     case 'private':
                         setPrivate(app.code, Number(!this.task['private'])).then(res => {
