@@ -1,6 +1,6 @@
  <p align="center">
- 	<a target="_blank" href="https://travis-ci.org/aoju/bus">
- 		<img src="https://travis-ci.org/aoju/bus.svg?branch=master">
+ 	<a target="_blank" href="https://travis-ci.org/aoju/mauve">
+ 		<img src="https://travis-ci.org/aoju/mauve.svg?branch=master">
  	</a>
  	<a target="_blank" href="https://www.nodejs.org">
  		<img src="https://img.shields.io/badge/nodejs-8.0-blue.svg">
