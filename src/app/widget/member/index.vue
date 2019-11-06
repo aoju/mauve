@@ -203,6 +203,7 @@
     import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../assets/js/utils';
     import {notice} from '../../../assets/js/notify';
     import {removeMember} from '../../feature/restapi/api.department.member';
+    import {getStore} from '../../../assets/js/storage';
 
     export default {
         'name': 'member',
@@ -246,7 +247,12 @@
                 return this.currentDepartmentCode ? '部门' : '组织';
             },
             headers() {
-                return getAuthorization();
+                let headers = getAuthorization();
+                let organization = getStore('currentOrganization', true);
+                if (organization) {
+                    headers.organizationCode = organization.code;
+                }
+                return headers;
             }
         },
         'watch': {
