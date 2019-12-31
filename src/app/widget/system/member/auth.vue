@@ -218,7 +218,6 @@
                     //新增
                     Object.assign(obj, app.newData);
                 }
-                console.log(obj);
                 doAuth(obj).then(res => {
                     app.actionInfo.confirmLoading = false;
                     if (!checkResponse(res)) {

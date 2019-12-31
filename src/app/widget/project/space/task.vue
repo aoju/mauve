@@ -731,7 +731,6 @@
                 }
             },
             viewRefresh() {
-                // console.log('viewRefresh');
                 // this.getTaskStages(false);
             },
             'inviteMemberDraw': {

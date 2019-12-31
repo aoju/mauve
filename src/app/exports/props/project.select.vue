@@ -98,7 +98,6 @@
                 this.loading = loading;
                 this.requestData.pageSize = 50;
                 getProjectList(this.requestData).then(res => {
-                    console.log(res);
                     this.projectList = res.data.list;
                     this.projectListCopy = res.data.list;
                     this.projectTotal = res.data.total;

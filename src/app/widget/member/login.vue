@@ -130,7 +130,7 @@
             })
         },
         mounted() {
-            this.checkInstall();
+            //this.checkInstall();
             if (this.$route.query.logged) {
                 this.oauthLoading = true;
                 this.checkLogin();
@@ -142,7 +142,7 @@
         },
         'methods': {
             ...mapActions(['Login', 'Logout']),
-            checkInstall() {
+          /*  checkInstall() {
                 checkInstall().then(res => {
                     if (!checkResponse(res)) {
                         this.$router.push({'name': 'install'});
@@ -155,7 +155,7 @@
                         }
                     });
                 });
-            },
+            },*/
             // handler
             handleUsernameOrEmail(rule, value, callback) {
                 const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
