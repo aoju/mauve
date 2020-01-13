@@ -127,7 +127,7 @@ module.exports = {
         'hotOnly': false,
         'proxy': {
             '/rest': {
-                'target': 'http://xxx.vomi/rest',
+                'target': 'http://xxx.com/rest',
                 'ws': true,
                 'changOrigin': true,
                 'pathRewrite': {
