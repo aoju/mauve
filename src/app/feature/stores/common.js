@@ -1,4 +1,4 @@
-import {getStore, setStore} from '../../../assets/js/storage';
+import {getStore, setStore} from '../../shared/storage';
 
 const common = {
     'state': {

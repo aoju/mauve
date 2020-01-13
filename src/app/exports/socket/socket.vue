@@ -5,7 +5,7 @@
 
 <script>
     import Vue from 'vue';
-    import {getStore, setStore} from '../../../assets/js/storage';
+    import {getStore, setStore} from '../../shared/storage';
     import {bindClientId} from '../../feature/restapi/api.index';
     import config from '../../feature/config/config';
 

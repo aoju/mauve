@@ -1,4 +1,4 @@
-import $http from '../../../assets/js/http';
+import $http from '../../shared/http';
 
 export function install(data) {
     return $http.post('index/index/install', data);

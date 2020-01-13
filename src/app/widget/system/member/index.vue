@@ -115,7 +115,7 @@
 <script>
     import AInput from 'ant-design-vue/es/input';
     import {auth, del, doAccount, forbid, list, resume} from '../../../feature/restapi/api.member';
-    import {checkResponse} from '../../../../assets/js/utils';
+    import {checkResponse} from '../../../shared/utils';
     import pagination from '../../../shared/pagination';
 
     const ATextArea = AInput.TextArea;

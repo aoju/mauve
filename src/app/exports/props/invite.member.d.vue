@@ -70,7 +70,7 @@
     import moment from 'moment';
     import _ from 'lodash';
     import {inviteMember, searchInviteMember} from '../../feature/restapi/api.department.member';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
     import {createInviteLink} from '../../feature/restapi/api.index';
 
     export default {

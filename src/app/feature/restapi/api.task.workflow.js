@@ -1,4 +1,4 @@
-import $http from '../../../assets/js/http';
+import $http from '../../shared/http';
 
 export function list(data) {
     return $http.post('project/task_workflow', data);

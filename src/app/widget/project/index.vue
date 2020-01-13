@@ -162,7 +162,7 @@
 </template>
 <script>
     import moment from 'moment';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
     import inviteProjectMember from '../../exports/props/invite.member.p';
     import projectConfig from '../../exports/props/project.config';
     import {doData, list, recycle} from '../../feature/restapi/api.project';

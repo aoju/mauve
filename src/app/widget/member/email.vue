@@ -25,7 +25,7 @@
 <script>
 
     import {_checkBindMail} from '../../feature/restapi/api.member';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
 
     export default {
         data() {

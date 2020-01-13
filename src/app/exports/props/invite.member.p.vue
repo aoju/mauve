@@ -71,7 +71,7 @@
     import _ from 'lodash';
     import moment from 'moment';
     import {inviteMember, searchInviteMember} from '../../feature/restapi/api.project.member';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
     import {createInviteLink} from '../../feature/restapi/api.index';
 
     export default {

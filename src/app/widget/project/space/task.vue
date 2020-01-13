@@ -589,10 +589,10 @@
         sort as sortTask,
         taskDone
     } from '../../../feature/restapi/api.task';
-    import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../../assets/js/utils';
-    import {formatTaskTime} from '../../../../assets/js/dateTime';
+    import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../shared/utils';
+    import {formatTaskTime} from '../../../shared/dateTime';
     import {collect} from '../../../feature/restapi/api.project.collect';
-    import {notice} from '../../../../assets/js/notify';
+    import {notice} from '../../../shared/notify';
 
     export default {
         'name': 'project-space-task',

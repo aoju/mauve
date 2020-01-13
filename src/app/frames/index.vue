@@ -126,7 +126,7 @@
     import VUploader from '../exports/tools/v.uploader';
     import Socket from '../exports/socket/socket';
     import config from '../feature/config/config';
-    import {notice} from '../../assets/js/notify';
+    import {notice} from '../shared/notify';
 
     const ASider = ALayout.Sider;
     const AFooter = ALayout.Footer;

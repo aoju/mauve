@@ -1,4 +1,4 @@
-import {removeStore, setStore} from '../../../assets/js/storage';
+import {removeStore, setStore} from '../../shared/storage';
 import {_checkLogin, _currentMember} from '../restapi/api.member';
 
 export default {

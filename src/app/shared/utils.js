@@ -1,5 +1,5 @@
 import {notice} from './notify';
-import config from '../../app/feature/config/config';
+import config from '../feature/config/config';
 import {getStore} from './storage';
 
 const crossDomain = config.crossDomain;

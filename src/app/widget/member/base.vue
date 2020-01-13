@@ -74,9 +74,9 @@
 <script>
     import {mapState} from 'vuex';
     import setting from './setting';
-    import {checkResponse, getApiUrl, getAuthorization, getBase64} from '../../../assets/js/utils';
+    import {checkResponse, getApiUrl, getAuthorization, getBase64} from '../../shared/utils';
     import {editPersonal} from '../../feature/restapi/api.member';
-    import {destroyNotice, notice} from '../../../assets/js/notify';
+    import {destroyNotice, notice} from '../../shared/notify';
 
     export default {
         'name': 'base',

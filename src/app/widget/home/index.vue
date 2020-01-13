@@ -201,7 +201,7 @@
     import {mapState} from 'vuex';
     import moment from 'moment';
     import {getYiYan} from '../../feature/restapi/api.other';
-    import {formatTaskTime, relativelyTime, showHelloTime} from '../../../assets/js/dateTime';
+    import {formatTaskTime, relativelyTime, showHelloTime} from '../../shared/dateTime';
     import {selfList as getProjectList} from '../../feature/restapi/api.project';
     import {list as accountList} from '../../feature/restapi/api.member';
     import pagination from '../../shared/pagination';

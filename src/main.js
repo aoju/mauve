@@ -12,7 +12,7 @@ import 'moment/locale/zh-cn';
 import './assets/css/theme.less';
 import './assets/icon/iconfont';
 import './app/shared/filter';
-import {destroyNotice, notice} from './assets/js/notify';
+import {destroyNotice, notice} from './app/shared/notify';
 import App from './app';
 import store from './app/feature/stores/index';
 import router from './app/feature/router/index';

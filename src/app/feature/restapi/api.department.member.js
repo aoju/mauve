@@ -1,5 +1,5 @@
-import $http from '../../../assets/js/http';
-import {getApiUrl} from '../../../assets/js/utils';
+import $http from '../../shared/http';
+import {getApiUrl} from '../../shared/utils';
 
 /* 查找用户 */
 export function searchInviteMember(keyword, departmentCode) {

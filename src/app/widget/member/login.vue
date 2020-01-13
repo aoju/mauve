@@ -93,11 +93,11 @@
     import {_checkLogin, getCaptcha, Login} from '../../feature/restapi/api.member';
     import {info} from '../../feature/restapi/api.system';
     import config from '../../feature/config/config';
-    import {checkResponse, createRoute, timeFix} from '../../../assets/js/utils';
-    import {getStore} from '../../../assets/js/storage';
+    import {checkResponse, createRoute, timeFix} from '../../shared/utils';
+    import {getStore} from '../../shared/storage';
     import {checkInstall} from '../../feature/restapi/api.index';
     import {dingTalkLoginByCode, dingTalkOauth} from '../../feature/restapi/api.ding.talk';
-    import {notice} from '../../../assets/js/notify';
+    import {notice} from '../../shared/notify';
 
     export default {
         'components': {},

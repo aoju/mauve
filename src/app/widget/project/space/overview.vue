@@ -168,9 +168,9 @@
     import VeLine from 'v-charts/lib/line.common';
     import {_projectStats, doData, read as getProject} from '../../../feature/restapi/api.project';
     import {collect} from '../../../feature/restapi/api.project.collect';
-    import {checkResponse} from '../../../../assets/js/utils';
+    import {checkResponse} from '../../../shared/utils';
     import {dateTotalForProject, getLogBySelfProject} from '../../../feature/restapi/api.task';
-    import {relativelyTime} from '../../../../assets/js/dateTime';
+    import {relativelyTime} from '../../../shared/dateTime';
     import pagination from '../../../shared/pagination';
     import projectSelect from '../../../exports/props/project.select';
 

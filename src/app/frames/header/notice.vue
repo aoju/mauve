@@ -118,8 +118,8 @@
     import {mapState} from 'vuex';
     import moment from 'moment';
     import {_clearAll, noReads} from '../../feature/restapi/api.notify';
-    import {notice} from '../../../assets/js/notify';
-    import {showMsgNotification} from '../../../assets/js/notify';
+    import {notice} from '../../shared/notify';
+    import {showMsgNotification} from '../../shared/notify';
     import {selfList} from '../../feature/restapi/api.task';
 
     export default {

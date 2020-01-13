@@ -1074,10 +1074,10 @@
     import taskTagMenu from './task.tag.menu';
     import projectMemberMenu from './project.member.menu';
     import inviteProjectMember from './invite.member.p';
-    import {getStore} from '../../../assets/js/storage';
-    import {notice} from '../../../assets/js/notify';
-    import {relativelyTaskTime, relativelyTime} from '../../../assets/js/dateTime';
-    import {checkResponse,getApiUrl} from '../../../assets/js/utils';
+    import {getStore} from '../../shared/storage';
+    import {notice} from '../../shared/notify';
+    import {relativelyTaskTime, relativelyTime} from '../../shared/dateTime';
+    import {checkResponse,getApiUrl} from '../../shared/utils';
     import {
         _taskWorkTimeList,
         delTaskWorkTime,

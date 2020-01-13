@@ -21,8 +21,8 @@
 
 <script>
     import {doData, read} from '../../feature/restapi/api.department';
-    import {checkResponse} from '../../../assets/js/utils';
-    import {notice} from '../../../assets/js/notify';
+    import {checkResponse} from '../../shared/utils';
+    import {notice} from '../../shared/notify';
 
     export default {
         'name': 'createDepartment',

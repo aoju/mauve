@@ -1,4 +1,4 @@
-import $http from '../../../assets/js/http';
+import $http from '../../shared/http';
 
 export function _clearAll(data) {
     return $http.post('project/notify/_clearAll', data);

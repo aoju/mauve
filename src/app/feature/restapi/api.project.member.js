@@ -1,4 +1,4 @@
-import $http from '../../../assets/js/http';
+import $http from '../../shared/http';
 
 /* 查找用户 */
 export function searchInviteMember(keyword, code) {

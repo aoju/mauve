@@ -248,11 +248,11 @@
     import moment from 'moment';
     import taskDetail from '../../exports/props/task.detail';
     import pagination from '../../shared/pagination';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
     import {editAccount, read} from '../../feature/restapi/api.member';
     import {selfList} from '../../feature/restapi/api.task';
     import {selfList as getProjectList} from '../../feature/restapi/api.project';
-    import {formatTaskTime} from '../../../assets/js/dateTime';
+    import {formatTaskTime} from '../../shared/dateTime';
 
     export default {
         'name': 'memberProfile',

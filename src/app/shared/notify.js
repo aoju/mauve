@@ -3,7 +3,7 @@ import {message, notification} from 'ant-design-vue';
 export const showMsgNotification = (title, msg, $opt = {}) => {
     let options = {
         'body': msg,
-        'icon': $opt.icon || 'http://static.vilson.xyz/preview.jpg',
+        'icon': $opt.icon || '/img/preview.jpg',
         'showTime': $opt.showTime || 15000,
         'onclick': $opt.onclick,
         'onshow': $opt.onshow,

@@ -1,5 +1,5 @@
-import $http from '../../../assets/js/http';
-import {getFullUrl} from '../../../assets/js/utils';
+import $http from '../../shared/http';
+import {getFullUrl} from '../../shared/utils';
 
 export function dingTalkOauth() {
     return getFullUrl('index/oauth/dingTalkOauth');

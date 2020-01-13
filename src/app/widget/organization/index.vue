@@ -73,7 +73,7 @@
 </template>
 <script>
     import {del, doData, list} from '../../feature/restapi/api.organization';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
     import pagination from '../../shared/pagination';
     import moment from 'moment';
 

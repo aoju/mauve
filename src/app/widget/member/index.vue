@@ -200,10 +200,10 @@
     import {del as deleteDepartment, list} from '../../feature/restapi/api.department';
     import {del, forbid, list as getMembers, resume} from '../../feature/restapi/api.member';
     import pagination from '../../shared/pagination';
-    import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../../assets/js/utils';
-    import {notice} from '../../../assets/js/notify';
+    import {checkResponse, getApiUrl, getAuthorization, getUploadUrl} from '../../shared/utils';
+    import {notice} from '../../shared/notify';
     import {removeMember} from '../../feature/restapi/api.department.member';
-    import {getStore} from '../../../assets/js/storage';
+    import {getStore} from '../../shared/storage';
 
     export default {
         'name': 'member',

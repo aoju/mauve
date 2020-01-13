@@ -311,8 +311,8 @@
     import moment from 'moment';
     import {read as getProject} from '../../../feature/restapi/api.project';
     import {collect} from '../../../feature/restapi/api.project.collect';
-    import {checkResponse} from '../../../../assets/js/utils';
-    import {relativelyTime} from '../../../../assets/js/dateTime';
+    import {checkResponse} from '../../../shared/utils';
+    import {relativelyTime} from '../../../shared/dateTime';
     import pagination from '../../../shared/pagination';
     import {del, edit, list as getProjectFeatureList, save} from '../../../feature/restapi/api.project.feature';
     import {

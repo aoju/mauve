@@ -114,10 +114,10 @@
 </template>
 <script>
     import {del, doData, list} from '../../../feature/restapi/api.project.template';
-    import {checkResponse, getApiUrl, getBase64} from '../../../../assets/js/utils';
+    import {checkResponse, getApiUrl, getBase64} from '../../../shared/utils';
     import pagination from '../../../shared/pagination';
     import config from '../../../feature/config/config';
-    import {getAuthorization} from '../../../../assets/js/utils';
+    import {getAuthorization} from '../../../shared/utils';
 
     export default {
         'components': {},

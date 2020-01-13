@@ -3,8 +3,8 @@ import store from '../../feature/stores';
 import Router from 'vue-router';
 import Index from '../../frames/index';
 import Home from './home';
-import {getStore, setStore} from '../../../assets/js/storage';
-import {createRoute, isTokenExpired} from '../../../assets/js/utils';
+import {getStore, setStore} from '../../shared/storage';
+import {createRoute, isTokenExpired} from '../../shared/utils';
 import config from '../config/config';
 import {refreshAccessToken} from '../restapi/api.index';
 

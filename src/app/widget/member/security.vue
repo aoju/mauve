@@ -258,7 +258,7 @@
     import md5 from 'md5';
     import {mapState} from 'vuex';
     import setting from './setting';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
     import {_bindMail, _bindMobile, _unbindDingtalk, editPassword, getCaptcha} from '../../feature/restapi/api.member';
     import {dingTalkOauth} from '../../feature/restapi/api.ding.talk';
 

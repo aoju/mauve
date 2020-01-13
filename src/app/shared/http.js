@@ -2,10 +2,10 @@ import {message} from 'ant-design-vue';
 import Axios from 'axios';
 import * as utils from './utils';
 import {getStore} from './storage';
-import $store from '../../app/feature/stores';
-import $router from '../../app/feature/router';
+import $store from '../feature/stores';
+import $router from '../feature/router';
 import {notice} from './notify';
-import config from '../../app/feature/config/config';
+import config from '../feature/config/config';
 
 const HOME_PAGE = config.HOME_PAGE;
 const crossDomain = config.crossDomain;

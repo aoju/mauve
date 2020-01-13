@@ -1,5 +1,5 @@
-import $http from '../../../assets/js/http';
-import {getApiUrl} from '../../../assets/js/utils';
+import $http from '../../shared/http';
+import {getApiUrl} from '../../shared/utils';
 
 export function list(data) {
     return $http.post('project/file', data);

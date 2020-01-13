@@ -54,7 +54,7 @@
 </template>
 <script>
     import {del, list} from '../../feature/restapi/api.notify';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
     import {batchDel, setReadied} from '../../feature/restapi/api.notify';
     import pagination from '../../shared/pagination';
 

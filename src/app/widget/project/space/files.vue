@@ -166,11 +166,11 @@
     import {mapState} from 'vuex';
     import {read as getProject} from '../../../feature/restapi/api.project';
     import {collect} from '../../../feature/restapi/api.project.collect';
-    import {checkResponse} from '../../../../assets/js/utils';
-    import {relativelyTime} from '../../../../assets/js/dateTime';
+    import {checkResponse} from '../../../shared/utils';
+    import {relativelyTime} from '../../../shared/dateTime';
     import {edit, list, recycle} from '../../../feature/restapi/api.file';
     import pagination from '../../../shared/pagination';
-    import {notice} from '../../../../assets/js/notify';
+    import {notice} from '../../../shared/notify';
     import projectSelect from '../../../exports/props/project.select';
 
     export default {

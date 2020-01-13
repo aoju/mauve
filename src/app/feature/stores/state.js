@@ -1,4 +1,4 @@
-import {getStore} from '../../../assets/js/storage';
+import {getStore} from '../../shared/storage';
 
 const userInfo = getStore('userInfo', true);
 const theme = getStore('theme');

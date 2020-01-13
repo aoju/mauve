@@ -74,10 +74,10 @@
 </template>
 
 <script>
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
     import {del, list} from '../../feature/restapi/api.task.tag';
     import pagination from '../../shared/pagination';
-    import {formatTaskTime} from '../../../assets/js/dateTime';
+    import {formatTaskTime} from '../../shared/dateTime';
     import {getListByTaskTag} from '../../feature/restapi/api.task';
     import moment from 'moment';
 

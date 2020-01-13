@@ -481,11 +481,11 @@
         getVersionTask as getVersionTask,
         read as getVersionInfo
     } from '../../feature/restapi/api.project.version';
-    import {relativelyTaskTime, relativelyTime} from '../../../assets/js/dateTime';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {relativelyTaskTime, relativelyTime} from '../../shared/dateTime';
+    import {checkResponse} from '../../shared/utils';
     import {addVersionTask, changeStatus, removeVersionTask} from '../../feature/restapi/api.project.version';
     import {list as getTaskStages, tasks as getTasks} from '../../feature/restapi/api.task.stages';
-    import {notice} from '../../../assets/js/notify';
+    import {notice} from '../../shared/notify';
 
     export default {
         'name': 'version-detail',

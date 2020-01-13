@@ -71,7 +71,7 @@
 <script>
     import {del, edit, list, save} from '../../feature/restapi/api.task.tag';
     import {setTag, taskToTags} from '../../feature/restapi/api.task';
-    import {checkResponse} from '../../../assets/js/utils';
+    import {checkResponse} from '../../shared/utils';
 
     export default {
         'name': 'taskTagMenu',

@@ -7,10 +7,6 @@ export default {
                 'total': 0,
                 'showTotal': (total, range) => `共 ${total} 条`
             }
-            // requestData: {
-            //     page: this.pagination.page,
-            //     pageSize: this.pagination.pageSize,
-            // },
         };
     },
     'computed': {

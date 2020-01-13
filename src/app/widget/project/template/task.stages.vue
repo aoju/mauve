@@ -79,7 +79,7 @@
 </template>
 <script>
     import {del, doData, list} from '../../../feature/restapi/api.task.stages.template';
-    import {checkResponse, getBase64} from '../../../../assets/js/utils';
+    import {checkResponse, getBase64} from '../../../shared/utils';
     import pagination from '../../../shared/pagination';
 
     export default {

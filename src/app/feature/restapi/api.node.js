@@ -1,4 +1,4 @@
-import $http from '../../../assets/js/http';
+import $http from '../../shared/http';
 
 export function getNodeList(module = '') {
     return $http.post('project/node', {'module': module});

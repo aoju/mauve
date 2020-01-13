@@ -1,4 +1,4 @@
-import $http from '../../../assets/js/http';
+import $http from '../../shared/http';
 
 /*收藏项目*/
 export function collect(code, type = 'collect') {

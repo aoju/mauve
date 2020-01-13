@@ -98,8 +98,8 @@
 
 <script>
     import md5 from 'md5';
-    import {checkResponse} from '../../../assets/js/utils';
-    import {notice} from '../../../assets/js/notify';
+    import {checkResponse} from '../../shared/utils';
+    import {notice} from '../../shared/notify';
     import {_getMailCaptcha, _resetPasswordByMail} from '../../feature/restapi/api.member';
 
     const levelNames = {

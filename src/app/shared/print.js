@@ -129,7 +129,6 @@ Print.prototype = {
 };
 const MyPlugin = {};
 MyPlugin.install = function (Vue, options) {
-    // 4. 添加实例方法
     Vue.prototype.$print = Print;
 };
 export default MyPlugin

@@ -416,8 +416,8 @@
     import {_getAll as getTaskStages} from '../../feature/restapi/api.task.stages';
     import {list as getProjectMembers} from '../../feature/restapi/api.project.member';
 
-    import {notice} from '../../../assets/js/notify';
-    import {checkResponse, getApiUrl, getAuthorization, getBase64} from '../../../assets/js/utils';
+    import {notice} from '../../shared/notify';
+    import {checkResponse, getApiUrl, getAuthorization, getBase64} from '../../shared/utils';
 
     export default {
         'name': 'projectConfig',

@@ -90,10 +90,10 @@
 </template>
 
 <script>
-    import {checkResponse, getAuthorization} from '../../../assets/js/utils';
+    import {checkResponse, getAuthorization} from '../../shared/utils';
     import {mapState} from 'vuex';
-    import {getStore} from '../../../assets/js/storage';
-    import {notice} from '../../../assets/js/notify';
+    import {getStore} from '../../shared/storage';
+    import {notice} from '../../shared/notify';
     import {uploadFiles} from '../../feature/restapi/api.file';
 
     export default {
