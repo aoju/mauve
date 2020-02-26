@@ -17,8 +17,7 @@
  </p>
  
  <p align="center">
-	-- QQ群①：<a href="https://shang.qq.com/wpa/qunwpa?idkey=17fadd02891457034c6536c984f0d7db29b73ea14c9b86bba39ce18ed7a90e18">839128</a> --
-	-- QQ群②：<a href="https://shang.qq.com/wpa/qunwpa?idkey=c207666cbc107d03d368bde8fc15605bb883ebc482e28d440de149e3e2217460">839120</a> --
+	-- QQ群①：839120 --
  </p>
  
  **Mauve是一个基于 [Diatto](https://github.com/aoju/diatto.git) 使用的协同软件,帮助团队轻松共享和讨论工作中的任务、文件、分享、日程等内容，让团队协作焕发无限可能。所以你随时随地都可以和团队协作**
